@@ -32,14 +32,17 @@ def create_date_file(file):
         return
 
 
-DATE_FILE = create_date_file(True)
+DATE_FILE = create_date_file(False)
 
 
 def date_write(text, file):
-    with open(file, mode='a') as gaming_log:
-        gaming_log.write(str(pygame.time.get_ticks()) + ":" + text + "\n")
-    del gaming_log
-    print(str(pygame.time.get_ticks()) + ":" + text)
+    try:
+        with open(file, mode='a') as gaming_log:
+            gaming_log.write(str(pygame.time.get_ticks()) + ":" + text + "\n")
+        del gaming_log
+        print(str(pygame.time.get_ticks()) + ":" + text)
+    except:
+        return
 
 
 # 坐标转换函数 方框坐标(g_pos)转像素坐标(p_pos)中心点&像素坐标转方框坐标
