@@ -77,8 +77,6 @@ def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
                 fight_pos_l.append(per_g_pos + 99 * i)
             if per_g_pos + 101 * i in dict_map_pos["game available"]:
                 fight_pos_l.append(per_g_pos + 101 * i)
-        print(fight_pos_l)
-        print(per_g_pos)
         if other_per_g_pos in fight_pos_l:
             return 2
     elif dice_val == "bomb":
@@ -92,7 +90,11 @@ def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
     return 0
 
 
-def move_click(list_pos):
+def move_click(list_pos, AI=None):
+    if AI:
+        pos = random.choice(list_pos)
+        pos = (pos, code.change_pos(pos))
+        return pos
     if not list_pos:
         return None
     while True:

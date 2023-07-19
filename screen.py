@@ -24,7 +24,7 @@ class Menu:
 
     def menu_main(self):
         code.SCREEN.blit(self.__main_bg, (0, 0))
-        code.text_display("Game Ver: 0.02", (477, 26.5), color=code.RED)
+        code.text_display("Game Ver: 0.04", (477, 26.5), color=code.RED)
         code.text_display("Start Game", (424, 183.5), color=code.WHITE)
         code.text_display("Course", (424, 291.5), color=code.WHITE)
         code.text_display("Setting", (424, 397.5), color=code.WHITE)
@@ -198,10 +198,10 @@ class Gaming:
                 code.SCREEN.blit(self.red_dot_mark, code.change_pos(i))
         pygame.display.flip()
 
-    def display_statue_text_new(self, this_text):
-        code.text_display("")
-
-    def gaming_throw(self):
+    def gaming_throw(self, AI=None):
+        if AI:
+            time.sleep(0.5)
+            return
         code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.RED, center=True)
         pygame.display.flip()
         while True:
