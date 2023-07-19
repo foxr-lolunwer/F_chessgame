@@ -124,7 +124,7 @@ class UI:
     def __init__(self):
         self.__gaming_bottom = pygame.image.load(code.Config["IMG"]["gaming ui bottom"]).convert()
 
-    def ui_gaming_bottom(self):
+    def ui_gaming_val(self, occ_dict):
         code.SCREEN.blit(self.__gaming_bottom, (0, 477))
         code.text_display("Player 1", (43, 487), code.FONT_BIG, center=False)
         code.text_display("HP:", (43, 537), center=False)
@@ -133,8 +133,12 @@ class UI:
         code.text_display("HP:", (149, 537), center=False)
         code.text_display("DEF:", (149, 557), center=False)
         code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY, center=True)  # 掷骰子按钮
+        i = 0
+        for k in occ_dict.keys():
+            code.text_display("%05s : %02s" % (k, occ_dict[k]), code.change_pos(211 + i), code.FONT_MID, color=code.RED,
+                              button_color=code.WHITE, center=False)
+            i += 100
         pygame.display.flip()
-
 
     def ui_gaming_data_new(self, per1, per2):
         code.text_display("%02s" % str(per1.HP), (73, 537), center=False, button_color=code.GRAY_BG, color=code.RED)
@@ -178,11 +182,17 @@ class Gaming:
         else:
             self.new_val()
 
-    def flip_screen(self, person1, person2, count):
+    def flip_screen(self, person1, person2, count, occ_dict=None):
         code.SCREEN.blit(self.__map_img, (0, 0))
         code.SCREEN.blit(person1.img[0], person1.pos[1])
         code.SCREEN.blit(person2.img[0], person2.pos[1])
         ui_gaming_turn(count)
+        if occ_dict:
+            i = 0
+            for k in occ_dict.keys():
+                code.text_display("%05s : %02s" % (k, occ_dict[k]), code.change_pos(211 + i), code.FONT_MID,
+                                  color=code.RED, button_color=code.WHITE, center=False)
+                i += 100
         pygame.display.flip()
 
     def display_move_red_dot(self, g_pos):
@@ -218,3 +228,13 @@ class Gaming:
                                       center=True)
                     pygame.display.flip()
                     break
+
+    def screen_win(self, winner):
+        if winner:
+            code.text_display(winner + "win this game!", code.change_pos(515), code.FONT_BIG, button_color=code.RED,
+                              color=code.WHITE)
+            pygame.display.flip()
+            time.sleep(2)
+            return "over"
+        return None
+

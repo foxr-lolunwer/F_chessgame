@@ -9,7 +9,7 @@ class Person:
                     pygame.image.load(code.Config["IMG"]["person " + number][1]).convert())
         self.img[0].set_colorkey(code.WHITE)
         self.img[1].set_colorkey(code.WHITE)
-        self.HP = 5
+        self.HP = 0
         self.DEF_prop = 0
         self.DEF_dice = 0
         self.pos = pos
@@ -37,21 +37,24 @@ class Person:
         if self.pos[0] in [208, 802]:
             if self.HP < 9:
                 self.HP += 1
-            return
+            return None
         # 堡垒点位
         elif self.pos[0] in [406, 604]:
             self.DEF_prop = 1
-            return
+            return None
         # 大炮点位
         elif self.pos[0] == 505:
             self.damage_mul = 2
-            return
+            return None
         # 再次移动点位
         elif self.pos[0] in [404, 606]:
             self.action_move += 1
-            return
+            return None
+        # 占领点位
+        elif self.pos[0] in dict_map_pos["win dot"]:
+            return self.pos[0]
         else:
-            return
+            return None
 
 
 # class AIPerson(Person):

@@ -3,7 +3,7 @@
     "game speed": "mid",
     "game volume": 0.2,
     "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
-    "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield", "X explosion", "X explosion", "X explosion", "X explosion","X explosion","X explosion","X explosion","X explosion","X explosion","X explosion"]
+    "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"]
   },
   "IMG": {
     "icon": "resource/img/icon.ico",
@@ -34,6 +34,12 @@
         "cannon dot": [505],
         "spurt dot": [404, 606]
       },
+      "win dot occ list": {
+          "303": "",
+          "307": "",
+          "703": "",
+          "707": ""
+        },
       "person capacity": 2,
       "person init pos": [109, 901]
     }

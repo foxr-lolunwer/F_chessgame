@@ -101,3 +101,18 @@ def move_click(list_pos):
             pos = (down_mouse_move_g_pos, code.change_pos(down_mouse_move_g_pos))  # 新位置坐标
             return pos
 
+
+def find_winner(player1_hp=True, player2_hp=True, occ_dict=None):
+    # 如果player1生命为零
+    if not player1_hp:
+        return "p2"
+    # 如果player2生命为零
+    if not player2_hp:
+        return "p1"
+    if occ_dict:
+        occ_list = []
+        for k in occ_dict.keys():
+            occ_list.append(occ_dict[k])
+        if len(set(occ_list)) == 1 and occ_list[0] != "":
+            return occ_list[0]
+    return None

@@ -8,12 +8,15 @@ import operation
 import person
 import screen
 
+
 if __name__ == '__main__':
     code.game_init()
     menu = screen.Menu()
     ui = screen.UI()
     gaming_screen = screen.Gaming()
     map_pos = gaming_screen.map["list pos"]
+    win_dot_occ = code.Config["MAP"]["map 1"]["win dot occ list"]
+    print(win_dot_occ)
     count = 0
     while True:
         screen.load()
@@ -28,8 +31,8 @@ if __name__ == '__main__':
                 player1 = person.Person("1", (gaming_screen.map["person init pos"][0], code.change_pos(gaming_screen.map["person init pos"][0])))
                 player2 = person.Person("2", (gaming_screen.map["person init pos"][1], code.change_pos(gaming_screen.map["person init pos"][1])))
                 gaming_screen.start_init()
-                gaming_screen.flip_screen(player1, player2, count)
-                ui.ui_gaming_bottom()
+                gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                ui.ui_gaming_val(win_dot_occ)
                 TURN = True
                 # 开始回合
                 while TURN:
@@ -49,11 +52,12 @@ if __name__ == '__main__':
                     person_pos = operation.move_click(command)
                     player1.pos = person_pos
                     player1.action_move -= 1
-
-                    print(player1.occ_buff(map_pos))
-
+                    if player1.occ_buff(map_pos):
+                        win_dot_occ[str(player1.pos[0])] = "p1"
                     ui.ui_gaming_data_new(player1, player2)
-                    gaming_screen.flip_screen(player1, player2, count)
+                    gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                    if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                        break
                     if player1.action_move > 0:
                         player1.selected()
                         command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
@@ -61,11 +65,12 @@ if __name__ == '__main__':
                         person_pos = operation.move_click(command)
                         player1.pos = person_pos
                         player1.action_move -= 1
-
-                        print(player1.occ_buff(map_pos))
-
+                        if player1.occ_buff(map_pos):
+                            win_dot_occ[str(player1.pos[0])] = "p1"
                         ui.ui_gaming_data_new(player1, player2)
-                        gaming_screen.flip_screen(player1, player2, count)
+                        gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                        if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                            break
                     # move p2
                     player2.selected()
                     gaming_screen.gaming_throw()
@@ -79,11 +84,12 @@ if __name__ == '__main__':
                     person_pos = operation.move_click(command)
                     player2.pos = person_pos
                     player2.action_move -= 1
-
-                    print(player2.occ_buff(map_pos))
-
+                    if player2.occ_buff(map_pos):
+                        win_dot_occ[str(player2.pos[0])] = "p2"
                     ui.ui_gaming_data_new(player1, player2)
-                    gaming_screen.flip_screen(player1, player2, count)
+                    gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                    if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                        break
                     if player2.action_move > 0:
                         player2.selected()
                         command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
@@ -91,11 +97,12 @@ if __name__ == '__main__':
                         person_pos = operation.move_click(command)
                         player2.pos = person_pos
                         player2.action_move -= 1
-
-                        print(player2.occ_buff(map_pos))
-
+                        if player2.occ_buff(map_pos):
+                            win_dot_occ[str(player2.pos[0])] = "p2"
                         ui.ui_gaming_data_new(player1, player2)
-                        gaming_screen.flip_screen(player1, player2, count)
+                        gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                        if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                            break
                     # p1 fight
                     if player1.DEF_dice:
                         player1.DEF_dice = 0
@@ -118,6 +125,8 @@ if __name__ == '__main__':
                         player1.DEF_dice += 1
                     else:
                         "fight error"
+                    if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
+                        break
                     ui.ui_gaming_data_new(player1, player2)
                     player1.selected(False)
                     print("%d %d" % (player2.DEF_dice, player2.DEF_prop))
