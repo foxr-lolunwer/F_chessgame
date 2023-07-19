@@ -104,10 +104,10 @@ def move_click(list_pos):
 
 def find_winner(player1_hp=True, player2_hp=True, occ_dict=None):
     # 如果player1生命为零
-    if not player1_hp:
+    if player1_hp <= 0:
         return "p2"
     # 如果player2生命为零
-    if not player2_hp:
+    if player2_hp <= 0:
         return "p1"
     if occ_dict:
         occ_list = []
