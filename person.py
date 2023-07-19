@@ -9,7 +9,7 @@ class Person:
                     pygame.image.load(code.Config["IMG"]["person " + number][1]).convert())
         self.img[0].set_colorkey(code.WHITE)
         self.img[1].set_colorkey(code.WHITE)
-        self.HP = 0
+        self.HP = 5
         self.DEF_prop = 0
         self.DEF_dice = 0
         self.pos = pos

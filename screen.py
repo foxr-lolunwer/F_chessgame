@@ -30,7 +30,6 @@ class Menu:
         code.text_display("Setting", (424, 397.5), color=code.WHITE)
         code.text_display("Exit Game", (424, 503.5), color=code.WHITE)
         pygame.display.flip()
-        code.date_write("-MAIN MENU INIT DONE-", code.DATE_FILE)
         while True:
             # 鼠标点击相应按钮并执行相应程序
             down_mouse_move_g_pos = code.get_mouse_pos("once")
@@ -72,8 +71,6 @@ class Menu:
         code.text_display("EXIT", code.change_pos(202), size=code.FONT_BIG, color=code.WHITE, button_color=code.RED)
         self.__box_set_speeed()
         pygame.display.flip()
-
-        code.date_write("-SETTING MENU DONE-", code.DATE_FILE)
 
         while True:
             down_mouse_g_pos = code.get_mouse_pos("once")
@@ -210,7 +207,6 @@ class Gaming:
         while True:
             code.CLOCK.tick(10)
             event = pygame.event.wait()
-            print(event)
             if event.type == pygame.WINDOWCLOSE:
                 pygame.quit()
                 sys.exit()
@@ -229,6 +225,11 @@ class Gaming:
                     pygame.display.flip()
                     break
 
+    def display_statue(self, text, screen):
+        pygame.draw.rect(screen, code.WHITE, (535, 456, 530, 108))
+        code.text_display(text, code.change_pos(1115), code.FONT_BIG, color=code.GRAY)
+        pygame.display.flip()
+
     def screen_win(self, winner):
         if winner:
             code.text_display(winner + "win this game!", code.change_pos(515), code.FONT_BIG, button_color=code.RED,
@@ -237,4 +238,3 @@ class Gaming:
             time.sleep(2)
             return "over"
         return None
-
