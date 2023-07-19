@@ -57,14 +57,14 @@ class Person:
             return None
 
 
-# class AIPerson(Person):
-#     def __init__(self, hp, ai_def, number, name="AI"):
-#         super().__init__(number)
-#         self.img = (pygame.image.load(code.Config["IMG"]["person" + number][0]).convert(),
-#                     pygame.image.load(code.Config["IMG"]["person" + number][1]).convert())
-#         self.HP = hp
-#         self.DEF_prop = 0
-#         self.DEF_dice = 0
-#         self.DEF_ai = ai_def
-#         self.pos = [0, (0, 0)]
-#         self.name = name
+class AIPerson(Person):
+    def __init__(self, hp, ai_def, number, pos, AI_Config_difficulty, name="AI"):
+        super().__init__(number, pos)
+        self.img = (pygame.image.load(code.Config["IMG"]["person" + number][0]).convert(),
+                    pygame.image.load(code.Config["IMG"]["person" + number][1]).convert())
+        self.HP = AI_Config_difficulty["hp init"]
+        self.DEF_prop = 0
+        self.DEF_dice = 0
+        self.DEF_ai = ai_def
+        self.pos = [0, (0, 0)]
+        self.name = name
