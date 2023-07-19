@@ -69,16 +69,18 @@ def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
     elif dice_val == "X explosion":
         fight_pos_l = []
         for i in range(1, 10):
-            if per_g_pos - 101 * i not in dict_map_pos["game available"]:
+            if per_g_pos - 101 * i in dict_map_pos["game available"]:
                 fight_pos_l.append(per_g_pos - 101 * i)
-            if per_g_pos - 99 * i not in dict_map_pos["game available"]:
+            if per_g_pos - 99 * i in dict_map_pos["game available"]:
                 fight_pos_l.append(per_g_pos - 99 * i)
-            if per_g_pos + 99 * i not in dict_map_pos["game available"]:
+            if per_g_pos + 99 * i in dict_map_pos["game available"]:
                 fight_pos_l.append(per_g_pos + 99 * i)
-            if per_g_pos + 101 * i not in dict_map_pos["game available"]:
+            if per_g_pos + 101 * i in dict_map_pos["game available"]:
                 fight_pos_l.append(per_g_pos + 101 * i)
+        print(fight_pos_l)
+        print(per_g_pos)
         if other_per_g_pos in fight_pos_l:
-            return -2
+            return 2
     elif dice_val == "bomb":
         return 1
     elif dice_val == "life recovery":

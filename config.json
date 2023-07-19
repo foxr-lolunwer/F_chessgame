@@ -3,7 +3,7 @@
     "game speed": "mid",
     "game volume": 0.2,
     "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
-    "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"]
+    "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield", "X explosion", "X explosion", "X explosion", "X explosion","X explosion","X explosion","X explosion","X explosion","X explosion","X explosion"]
   },
   "IMG": {
     "icon": "resource/img/icon.ico",
