@@ -33,7 +33,7 @@ class Menu:
         code.date_write("-MAIN MENU INIT DONE-", code.DATE_FILE)
         while True:
             # 鼠标点击相应按钮并执行相应程序
-            down_mouse_move_g_pos = code.get_mouse_pos()
+            down_mouse_move_g_pos = code.get_mouse_pos("once")
             # 开始游戏
             if down_mouse_move_g_pos in [407, 408, 409]:
                 return "start"
@@ -76,7 +76,7 @@ class Menu:
         code.date_write("-SETTING MENU DONE-", code.DATE_FILE)
 
         while True:
-            down_mouse_g_pos = code.get_mouse_pos()
+            down_mouse_g_pos = code.get_mouse_pos("once")
             if down_mouse_g_pos == 202:
                 return
             elif down_mouse_g_pos == 405:
@@ -95,6 +95,7 @@ class Menu:
                 continue
 
     def menu_course(self):
+        code.game_pause()
         return
 
     def __set_speed(self, val):
@@ -131,7 +132,7 @@ class UI:
         code.text_display("Player 2", (149, 487), code.FONT_BIG, center=False)
         code.text_display("HP:", (149, 537), center=False)
         code.text_display("DEF:", (149, 557), center=False)
-        code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.WHITE, center=True)  # 掷骰子按钮
+        code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY, center=True)  # 掷骰子按钮
         pygame.display.flip()
 
 
@@ -194,7 +195,7 @@ class Gaming:
         code.text_display("")
 
     def gaming_throw(self):
-        code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.RED, center=True)
+        code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.RED, center=True)
         pygame.display.flip()
         while True:
             code.CLOCK.tick(10)
@@ -206,14 +207,14 @@ class Gaming:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 event.pos = (event.pos[0], event.pos[1])
                 count = code.change_pos(event.pos)
-                if count in (117, 118, 119):
-                    code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.GRAY_BG,
+                if count in (1107, 1108, 1109):
+                    code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
                                       center=True)
                     pygame.display.flip()
                     break
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.GRAY_BG,
+                if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
+                    code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
                                       center=True)
                     pygame.display.flip()
                     break

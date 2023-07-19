@@ -9,7 +9,7 @@ content = f.read()
 Config = json.loads(content)
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("ChessGame Ver0.02")  # 窗口标题显示
+pygame.display.set_caption("ChessGame Ver0.04")  # 窗口标题显示
 SCREEN = pygame.display.set_mode((1060, 636))  # 设置游戏窗口大小：530*636（像素）
 icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
 pygame.display.set_icon(icon)  # 显示窗口坐标
@@ -61,12 +61,24 @@ def change_pos(pos, center_pos=False):
 
 
 # 获取鼠标位置的方框坐标
-def get_mouse_pos():
-    while True:
+def get_mouse_pos(key="none"):
+    if key == "none":
+        while True:
+            event_move = pygame.event.wait()
+            if event_move.type == pygame.MOUSEBUTTONDOWN:
+                event_move.pos = (event_move.pos[0], event_move.pos[1])
+                return change_pos(event_move.pos)
+            if event_move.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+    if key == "once":
         event_move = pygame.event.wait()
         if event_move.type == pygame.MOUSEBUTTONDOWN:
             event_move.pos = (event_move.pos[0], event_move.pos[1])
             return change_pos(event_move.pos)
+        if event_move.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
 
 # 游戏初始化
@@ -106,3 +118,12 @@ def text_display(text, pos, size=FONT_MID, anti=True, center=True, button_color=
         text_show.set_colorkey(WHITE)
     SCREEN.blit(text_show, text_rect)
     return text_rect
+
+
+def game_pause():
+    event = pygame.event.wait()
+    if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
+
+
