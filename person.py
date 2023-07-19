@@ -1,0 +1,67 @@
+import pygame
+
+import code
+
+
+class Person:
+    def __init__(self, number, pos):
+        self.img = (pygame.image.load(code.Config["IMG"]["person " + number][0]).convert(),
+                    pygame.image.load(code.Config["IMG"]["person " + number][1]).convert())
+        self.img[0].set_colorkey(code.WHITE)
+        self.img[1].set_colorkey(code.WHITE)
+        self.HP = 5
+        self.DEF_prop = 0
+        self.DEF_dice = 0
+        self.pos = pos
+        self.name = None
+        self.damage_mul = 1
+        self.action_move = 1
+        self.action_damage = 1
+
+    def selected(self, statue=True):
+        if statue:
+            code.SCREEN.blit(self.img[1], self.pos[1])
+        else:
+            code.SCREEN.blit(self.img[0], self.pos[1])
+        pygame.display.flip()
+
+    def flip_person_pos(self, i):
+        code.SCREEN.blit(self.img[i], self.pos[1])
+        pygame.display.flip()
+        
+    def occ_buff(self, dict_map_pos):
+        self.DEF_dice = 0
+        if self.pos[0] not in dict_map_pos["game available"]:
+            return None
+        # 生命恢复点位
+        if self.pos[0] in [208, 802]:
+            if self.HP < 9:
+                self.HP += 1
+            return
+        # 堡垒点位
+        elif self.pos[0] in [406, 604]:
+            self.DEF_prop = 1
+            return
+        # 大炮点位
+        elif self.pos[0] == 505:
+            self.damage_mul = 2
+            return
+        # 再次移动点位
+        elif self.pos[0] in [404, 606]:
+            self.action_move += 1
+            return
+        else:
+            return
+
+
+# class AIPerson(Person):
+#     def __init__(self, hp, ai_def, number, name="AI"):
+#         super().__init__(number)
+#         self.img = (pygame.image.load(code.Config["IMG"]["person" + number][0]).convert(),
+#                     pygame.image.load(code.Config["IMG"]["person" + number][1]).convert())
+#         self.HP = hp
+#         self.DEF_prop = 0
+#         self.DEF_dice = 0
+#         self.DEF_ai = ai_def
+#         self.pos = [0, (0, 0)]
+#         self.name = name

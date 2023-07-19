@@ -1,0 +1,41 @@
+{
+  "SETTING": {
+    "game speed": "mid",
+    "game volume": 0.2,
+    "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
+    "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"]
+  },
+  "IMG": {
+    "icon": "resource/img/icon.ico",
+    "load": "resource/img/load.png",
+    "main menu": "resource/img/menu_main_bg.png",
+    "person": ["resource/img/person.png", "resource/img/select_person.png"],
+    "person 1": ["resource/img/person_p1.png", "resource/img/select_person_p1.png"],
+    "person 2": ["resource/img/person_p2.png", "resource/img/select_person_p2.png"],
+    "select box": ["resource/img/select_box.png", "resource/img/selected_box.png"],
+    "select mark": "resource/img/mark_select_red_dot.png",
+    "gaming ui bottom": "resource/img/gaming_bottom.png"
+  },
+  "SOUND": {
+    "shot": "resource/sound/effect/shot.wav"
+  },
+  "MAP": {
+    "map 1": {
+      "img": "resource/img/map1.png",
+      "list pos": {
+        "tp available": [304, 305, 306, 403, 405, 407, 503, 504, 506, 507, 603, 605, 607, 704, 705, 706],
+        "win dot": [303, 307, 703, 707],
+        "special dot": [208, 303, 307, 404, 406, 505, 604, 606, 703, 707, 802],
+        "game available": [107, 108, 109, 207, 208, 209, 303, 304, 305, 306, 307, 308, 309, 403, 404, 405, 406, 407,
+          503, 504, 505, 506, 507, 603, 604, 605, 606, 607, 701, 702, 703, 704, 705, 706, 707, 801, 802, 803, 901, 902,
+          903],
+        "recovery dot": [208, 802],
+        "fort dot": [406, 604],
+        "cannon dot": [505],
+        "spurt dot": [404, 606]
+      },
+      "person capacity": 2,
+      "person init pos": [109, 901]
+    }
+  }
+}
