@@ -1,3 +1,4 @@
+import sys
 import time
 
 import pygame
@@ -130,7 +131,7 @@ class UI:
         code.text_display("Player 2", (149, 487), code.FONT_BIG, center=False)
         code.text_display("HP:", (149, 537), center=False)
         code.text_display("DEF:", (149, 557), center=False)
-        code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.WHITE, center=False)  # 掷骰子按钮
+        code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.WHITE, center=True)  # 掷骰子按钮
         pygame.display.flip()
 
 
@@ -191,3 +192,21 @@ class Gaming:
 
     def display_statue_text_new(self, this_text):
         code.text_display("")
+
+    def gaming_throw(self):
+        code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.RED, center=True)
+        pygame.display.flip()
+        while True:
+            code.CLOCK.tick(10)
+            event = pygame.event.wait()
+            print(event)
+            if event.type == pygame.WINDOWCLOSE:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                event.pos = (event.pos[0], event.pos[1])
+                count = code.change_pos(event.pos)
+                if count in (117, 118, 119):
+                    code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.GRAY_BG, center=True)
+                    pygame.display.flip()
+                    break

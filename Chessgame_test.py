@@ -38,6 +38,7 @@ if __name__ == '__main__':
                     screen.ui_gaming_turn(count)
                     # move p1
                     player1.selected()
+                    gaming_screen.gaming_throw()
                     command_move = operation.dice("m")
                     command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
@@ -59,6 +60,7 @@ if __name__ == '__main__':
                         gaming_screen.flip_screen(player1, player2, count)
                     # move p2
                     player2.selected()
+                    gaming_screen.gaming_throw()
                     command_move = operation.dice("m")
                     # code.text_display("")
                     command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)

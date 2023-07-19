@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import datetime
 import json
@@ -17,6 +19,8 @@ BLACK = (0, 0, 0)
 GRAY = (155, 155, 155)
 RED = (255, 0, 0)
 GRAY_BG = (191, 191, 191)
+
+CLOCK = pygame.time.Clock()
 
 
 def create_date_file(file):
