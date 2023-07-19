@@ -1,4 +1,5 @@
 import sys
+import time
 
 import pygame
 
@@ -40,13 +41,18 @@ if __name__ == '__main__':
                     player1.selected()
                     gaming_screen.gaming_throw()
                     command_move = operation.dice("m")
+
+                    print(command_move)
+
                     command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
                     player1.pos = person_pos
                     player1.action_move -= 1
-                    player1.occ_buff(map_pos)
-                    ui.ui_gaming_bottom_new(player1, player2)
+
+                    print(player1.occ_buff(map_pos))
+
+                    ui.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count)
                     if player1.action_move > 0:
                         player1.selected()
@@ -55,21 +61,28 @@ if __name__ == '__main__':
                         person_pos = operation.move_click(command)
                         player1.pos = person_pos
                         player1.action_move -= 1
-                        player1.occ_buff(map_pos)
-                        ui.ui_gaming_bottom_new(player1, player2)
+
+                        print(player1.occ_buff(map_pos))
+
+                        ui.ui_gaming_data_new(player1, player2)
                         gaming_screen.flip_screen(player1, player2, count)
                     # move p2
                     player2.selected()
                     gaming_screen.gaming_throw()
                     command_move = operation.dice("m")
+
+                    print(command_move)
+
                     # code.text_display("")
                     command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
                     player2.pos = person_pos
                     player2.action_move -= 1
-                    player2.occ_buff(map_pos)
-                    ui.ui_gaming_bottom_new(player1, player2)
+
+                    print(player2.occ_buff(map_pos))
+
+                    ui.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count)
                     if player2.action_move > 0:
                         player2.selected()
@@ -78,18 +91,25 @@ if __name__ == '__main__':
                         person_pos = operation.move_click(command)
                         player2.pos = person_pos
                         player2.action_move -= 1
-                        player2.occ_buff(map_pos)
-                        ui.ui_gaming_bottom_new(player1, player2)
+
+                        print(player2.occ_buff(map_pos))
+
+                        ui.ui_gaming_data_new(player1, player2)
                         gaming_screen.flip_screen(player1, player2, count)
                     # p1 fight
-                    if not player1.DEF_dice:
+                    if player1.DEF_dice:
                         player1.DEF_dice = 0
-                        ui.ui_gaming_bottom_new(player1, player2)
+                        ui.ui_gaming_data_new(player1, player2)
                     player1.selected()
+                    gaming_screen.gaming_throw()
                     command_fight = operation.dice("f")
+
+                    print(command_fight)
+                    time.sleep(1)
+
                     command = operation.fight_kill_val(player1.pos[0], player2.pos[0], command_fight, map_pos)
                     if command > 0:
-                        command = player2.DEF_prop + player2.DEF_dice - command
+                        command = command - (player2.DEF_prop + player2.DEF_dice)
                         if command > 0:
                             player2.HP -= command
                     elif command == -1:
@@ -98,17 +118,26 @@ if __name__ == '__main__':
                         player1.DEF_dice += 1
                     else:
                         "fight error"
-                    ui.ui_gaming_bottom_new(player1, player2)
+                    ui.ui_gaming_data_new(player1, player2)
                     player1.selected(False)
+                    print("%d %d" % (player2.DEF_dice, player2.DEF_prop))
+
+                    print(command)
+
                     # p2 fight
-                    if not player2.DEF_dice:
+                    if player2.DEF_dice:
                         player2.DEF_dice = 0
-                        ui.ui_gaming_bottom_new(player1, player2)
+                        ui.ui_gaming_data_new(player1, player2)
                     player2.selected()
+                    gaming_screen.gaming_throw()
                     command_fight = operation.dice("f")
+
+                    print(command_fight)
+                    time.sleep(1)
+
                     command = operation.fight_kill_val(player2.pos[0], player1.pos[0], command_fight, map_pos)
                     if command > 0:
-                        command = player1.DEF_prop + player1.DEF_dice - command
+                        command = command - (player1.DEF_prop + player1.DEF_dice)
                         if command > 0:
                             player1.HP -= command
                     elif command == -1:
@@ -117,8 +146,12 @@ if __name__ == '__main__':
                         player2.DEF_dice += 1
                     else:
                         "fight error"
-                    ui.ui_gaming_bottom_new(player1, player2)
+
+                    print(command)
+
+                    ui.ui_gaming_data_new(player1, player2)
                     player2.selected(False)
+                    print("%d %d" % (player1.DEF_dice, player1.DEF_prop))
 
             elif command == "PVE":
                 continue

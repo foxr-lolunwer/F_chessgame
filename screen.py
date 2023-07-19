@@ -135,7 +135,7 @@ class UI:
         pygame.display.flip()
 
 
-    def ui_gaming_bottom_new(self, per1, per2):
+    def ui_gaming_data_new(self, per1, per2):
         code.text_display("%02s" % str(per1.HP), (73, 537), center=False, button_color=code.GRAY_BG, color=code.RED)
         code.text_display("%02s" % str(per2.HP), (184, 537), center=False, button_color=code.GRAY_BG, color=code.RED)
         code.text_display("%02s" % str(per1.DEF_dice + per1.DEF_prop), (78, 557), center=False, button_color=code.GRAY_BG, color=code.RED)
@@ -207,6 +207,13 @@ class Gaming:
                 event.pos = (event.pos[0], event.pos[1])
                 count = code.change_pos(event.pos)
                 if count in (117, 118, 119):
-                    code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.GRAY_BG, center=True)
+                    code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.GRAY_BG,
+                                      center=True)
+                    pygame.display.flip()
+                    break
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    code.text_display("throw!", code.change_pos(118), code.FONT_BIG, button_color=code.GRAY_BG,
+                                      center=True)
                     pygame.display.flip()
                     break

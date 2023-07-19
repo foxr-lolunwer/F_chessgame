@@ -30,7 +30,7 @@ class Person:
         pygame.display.flip()
         
     def occ_buff(self, dict_map_pos):
-        self.DEF_dice = 0
+        self.DEF_prop = 0
         if self.pos[0] not in dict_map_pos["game available"]:
             return None
         # 生命恢复点位
