@@ -102,6 +102,10 @@ def move_click(list_pos, AI=None):
         if down_mouse_move_g_pos in list_pos:
             pos = (down_mouse_move_g_pos, code.change_pos(down_mouse_move_g_pos))  # 新位置坐标
             return pos
+        elif down_mouse_move_g_pos == 1414:
+            return "return"
+        else:
+            continue
 
 
 def find_winner(player1_hp=True, player2_hp=True, occ_dict=None):

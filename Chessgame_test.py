@@ -31,6 +31,7 @@ if __name__ == '__main__':
                 gaming_screen.start_init()
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                 ui.ui_gaming_val(win_dot_occ)
+                ui.ui_gaming_data_new(player1, player2)
                 TURN = True
                 # 开始回合
                 code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
@@ -172,6 +173,7 @@ if __name__ == '__main__':
                 gaming_screen.start_init()
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                 ui.ui_gaming_val(win_dot_occ)
+                ui.ui_gaming_data_new(player1, player2)
                 TURN = True
                 # 开始回合
                 code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
