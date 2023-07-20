@@ -9,7 +9,7 @@ content = f.read()
 Config = json.loads(content)
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("ChessGame Ver0.04")  # 窗口标题显示
+pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示
 SCREEN = pygame.display.set_mode((1060, 636))  # 设置游戏窗口大小：530*636（像素）
 icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
 pygame.display.set_icon(icon)  # 显示窗口坐标
@@ -96,7 +96,6 @@ FONT_MID = pygame.font.SysFont('arial', 16)  # 默认正常字体
 FONT_SMALL = pygame.font.SysFont('arial', 12)  # 默认小号字体
 
 # 通用数据集
-LIST_GAME_DOT_OCC = ["none", "none", "none", "none"]  # 各点位占领状态
 IMG = [pygame.image.load(Config["IMG"]["select box"][0]).convert(),
        pygame.image.load(Config["IMG"]["select box"][1]).convert()]
 
@@ -130,3 +129,7 @@ def game_pause():
         sys.exit()
 
 
+def play_music(music_name):
+    effect = pygame.mixer.Sound(Config["SOUND"][music_name])
+    effect.set_volume(Config["SETTING"]["game volume"])
+    effect.play()

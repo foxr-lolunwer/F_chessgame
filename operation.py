@@ -1,5 +1,7 @@
 import random
 
+import pygame.mixer
+
 import code
 
 LIST_M_DICE = code.Config["SETTING"]["M_dice"]
@@ -57,16 +59,19 @@ def move_person_pos(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
 
 def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
     if dice_val == "single shot":
+        code.play_music("shot")
         if other_per_g_pos in [per_g_pos, per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100, per_g_pos + 2,
                                per_g_pos - 2, per_g_pos + 200, per_g_pos - 200, per_g_pos + 99, per_g_pos - 99,
                                per_g_pos + 101, per_g_pos - 101]:
             return 1
     elif dice_val == "multiple shots":
+        code.play_music("shot")
         if other_per_g_pos in [per_g_pos, per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100, per_g_pos + 2,
                                per_g_pos - 2, per_g_pos + 200, per_g_pos - 200, per_g_pos + 99, per_g_pos - 99,
                                per_g_pos + 101, per_g_pos - 101]:
             return 2
     elif dice_val == "X explosion":
+        code.play_music("X explosion")
         fight_pos_l = []
         for i in range(1, 10):
             if per_g_pos - 101 * i in dict_map_pos["game available"]:
@@ -80,10 +85,13 @@ def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
         if other_per_g_pos in fight_pos_l:
             return 2
     elif dice_val == "bomb":
+        code.play_music("bomb")
         return 1
     elif dice_val == "life recovery":
+        code.play_music("life recovery")
         return -1
     elif dice_val == "shield":
+        code.play_music("shield")
         return -2
     else:
         "fight_kill_val error"

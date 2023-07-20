@@ -54,7 +54,11 @@
     "gaming ui bottom": "resource/img/gaming_bottom.png"
   },
   "SOUND": {
-    "shot": "resource/sound/effect/shot.wav"
+    "shot": "resource/sound/effect/shot.wav",
+    "X explosion": "resource/sound/effect/X_explosion.wav",
+    "bomb": "resource/sound/effect/bomb.wav",
+    "life recovery": "resource/sound/effect/life_recovery.wav",
+    "shield": "resource/sound/effect/shield.wav"
   },
   "MAP": {
     "map 1": {
