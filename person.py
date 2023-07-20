@@ -58,13 +58,8 @@ class Person:
 
 
 class AIPerson(Person):
-    def __init__(self, hp, ai_def, number, pos, AI_Config_difficulty, name="AI"):
+    def __init__(self, number, pos, AI_Config_difficulty=code.Config["SETTING"]["AI Difficulty"][code.Config["SETTING"]["AI Difficulty"]["setting"]]):
         super().__init__(number, pos)
-        self.img = (pygame.image.load(code.Config["IMG"]["person" + number][0]).convert(),
-                    pygame.image.load(code.Config["IMG"]["person" + number][1]).convert())
         self.HP = AI_Config_difficulty["hp init"]
-        self.DEF_prop = 0
-        self.DEF_dice = 0
-        self.DEF_ai = ai_def
-        self.pos = [0, (0, 0)]
-        self.name = name
+        self.DEF_ai = AI_Config_difficulty["def init"]
+

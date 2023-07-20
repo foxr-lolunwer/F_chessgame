@@ -69,6 +69,7 @@ class Menu:
         code.text_display("Game Music Volume:", code.change_pos(506), color=code.WHITE, button_color=code.RED)
         code.text_display("Game AI:", code.change_pos(706), color=code.WHITE, button_color=code.RED)
         code.text_display("EXIT", code.change_pos(202), size=code.FONT_BIG, color=code.WHITE, button_color=code.RED)
+        self.__toget_setting()
         self.__box_set_speeed()
         self.__box_set_volume()
         self.__box_set_difficulty()
@@ -121,17 +122,14 @@ class Menu:
         return
 
     def __set_speed(self, val):
-        self.__toget_setting()
         self.__box_set_speeed()
         code.date_write("setting: game speed " + val, code.DATE_FILE)
 
     def __set_volume(self, val):
-        self.__toget_setting()
         self.__box_set_volume()
         code.date_write("setting: game volume " + val, code.DATE_FILE)
 
     def __set_difficulty(self, val):
-        self.__toget_setting()
         self.__box_set_difficulty()
         code.date_write("setting: AI difficulty " + val, code.DATE_FILE)
 
@@ -228,11 +226,11 @@ class Gaming:
         self.__val_check()
         return
 
-    def change_val(self, num_val=None, type_val=None):
-        if num_val and type_val:
-            code.text_display(num_val, self.__list_gaming_val[type_val][1])
-        else:
-            self.new_val()
+    # def change_val(self, num_val=None, type_val=None):
+    #     if num_val and type_val:
+    #         code.text_display(num_val, self.__list_gaming_val[type_val][1])
+    #     else:
+    #         self.new_val()
 
     def flip_screen(self, person1, person2, count, occ_dict=None):
         code.SCREEN.blit(self.__map_img, (0, 0))

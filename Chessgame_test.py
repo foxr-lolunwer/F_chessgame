@@ -24,9 +24,6 @@ if __name__ == '__main__':
             command = menu.menu_start()
             person_capacity = gaming_screen.map["person capacity"]
             if command == "PVP":
-                # for i in range(0, person_capacity):
-                #     locals()['player' + str(i)] = person.Person(str(i), code.Config["MAP"]["person init pos"][i])
-                #     person_list.append((locals()['player' + str(i)].img, locals()['player' + str(i)].pos[1]))
                 player1 = person.Person("1", (
                     gaming_screen.map["person init pos"][0], code.change_pos(gaming_screen.map["person init pos"][0])))
                 player2 = person.Person("2", (
@@ -51,7 +48,8 @@ if __name__ == '__main__':
                     command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
-                    player1.pos = person_pos
+                    if person_pos:
+                        player1.pos = person_pos
                     player1.action_move -= 1
                     if player1.occ_buff(map_pos):
                         win_dot_occ[str(player1.pos[0])] = "p1"
@@ -64,7 +62,8 @@ if __name__ == '__main__':
                         command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
                         person_pos = operation.move_click(command)
-                        player1.pos = person_pos
+                        if person_pos:
+                            player1.pos = person_pos
                         player1.action_move -= 1
                         if player1.occ_buff(map_pos):
                             win_dot_occ[str(player1.pos[0])] = "p1"
@@ -82,7 +81,8 @@ if __name__ == '__main__':
                     command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
-                    player2.pos = person_pos
+                    if person_pos:
+                        player2.pos = person_pos
                     player2.action_move -= 1
                     if player2.occ_buff(map_pos):
                         win_dot_occ[str(player2.pos[0])] = "p2"
@@ -95,7 +95,8 @@ if __name__ == '__main__':
                         command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
                         person_pos = operation.move_click(command)
-                        player2.pos = person_pos
+                        if person_pos:
+                            player2.pos = person_pos
                         player2.action_move -= 1
                         if player2.occ_buff(map_pos):
                             win_dot_occ[str(player2.pos[0])] = "p2"
@@ -114,7 +115,7 @@ if __name__ == '__main__':
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
                     command = operation.fight_kill_val(player1.pos[0], player2.pos[0], command_fight, map_pos)
-                    if command > 0:
+                    if command >= 0:
                         command = command - (player2.DEF_prop + player2.DEF_dice)
                         if command > 0:
                             player2.HP -= command
@@ -129,7 +130,7 @@ if __name__ == '__main__':
                         gaming_screen.display_statue("DEF + 1", code.SCREEN)
                     else:
                         "fight error"
-                    time.sleep(0.5)
+                    time.sleep(1)
                     if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
                         break
                     ui.ui_gaming_data_new(player1, player2)
@@ -145,7 +146,7 @@ if __name__ == '__main__':
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
                     command = operation.fight_kill_val(player2.pos[0], player1.pos[0], command_fight, map_pos)
-                    if command > 0:
+                    if command >= 0:
                         command = command - (player1.DEF_prop + player1.DEF_dice)
                         if command > 0:
                             player1.HP -= command
@@ -166,7 +167,7 @@ if __name__ == '__main__':
             elif command == "PVE":
                 player1 = person.Person("1", (
                     gaming_screen.map["person init pos"][0], code.change_pos(gaming_screen.map["person init pos"][0])))
-                player2 = person.Person("2", (
+                player2 = person.AIPerson("2", (
                     gaming_screen.map["person init pos"][1], code.change_pos(gaming_screen.map["person init pos"][1])))
                 gaming_screen.start_init()
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
@@ -188,7 +189,8 @@ if __name__ == '__main__':
                     command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
-                    player1.pos = person_pos
+                    if person_pos:
+                        player1.pos = person_pos
                     player1.action_move -= 1
                     if player1.occ_buff(map_pos):
                         win_dot_occ[str(player1.pos[0])] = "p1"
@@ -201,7 +203,8 @@ if __name__ == '__main__':
                         command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
                         person_pos = operation.move_click(command)
-                        player1.pos = person_pos
+                        if person_pos:
+                            player1.pos = person_pos
                         player1.action_move -= 1
                         if player1.occ_buff(map_pos):
                             win_dot_occ[str(player1.pos[0])] = "p1"
@@ -220,7 +223,8 @@ if __name__ == '__main__':
                     command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command, "AI")
-                    player2.pos = person_pos
+                    if person_pos:
+                        player2.pos = person_pos
                     player2.action_move -= 1
                     if player2.occ_buff(map_pos):
                         win_dot_occ[str(player2.pos[0])] = "p2"
@@ -233,8 +237,9 @@ if __name__ == '__main__':
                         player2.selected()
                         command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
-                        person_pos = operation.move_click(command)
-                        player2.pos = person_pos
+                        person_pos = operation.move_click(command, "AI")
+                        if person_pos:
+                            player2.pos = person_pos
                         player2.action_move -= 1
                         if player2.occ_buff(map_pos):
                             win_dot_occ[str(player2.pos[0])] = "p2"
@@ -254,7 +259,7 @@ if __name__ == '__main__':
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
                     command = operation.fight_kill_val(player1.pos[0], player2.pos[0], command_fight, map_pos)
-                    if command > 0:
+                    if command >= 0:
                         command = command - (player2.DEF_prop + player2.DEF_dice)
                         if command > 0:
                             player2.HP -= command
@@ -285,7 +290,7 @@ if __name__ == '__main__':
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
                     command = operation.fight_kill_val(player2.pos[0], player1.pos[0], command_fight, map_pos)
-                    if command > 0:
+                    if command >= 0:
                         command = command - (player1.DEF_prop + player1.DEF_dice)
                         if command > 0:
                             player1.HP -= command

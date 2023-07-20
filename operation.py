@@ -91,12 +91,12 @@ def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
 
 
 def move_click(list_pos, AI=None):
+    if not list_pos:
+        return None
     if AI:
         pos = random.choice(list_pos)
         pos = (pos, code.change_pos(pos))
         return pos
-    if not list_pos:
-        return None
     while True:
         down_mouse_move_g_pos = code.get_mouse_pos()
         if down_mouse_move_g_pos in list_pos:
@@ -118,3 +118,9 @@ def find_winner(player1_hp=True, player2_hp=True, occ_dict=None):
         if len(set(occ_list)) == 1 and occ_list[0] != "":
             return occ_list[0]
     return None
+
+
+def calculate_distance(per1_g_pos0, per2_g_pos0):
+    x = abs(per1_g_pos0 // 100 - per2_g_pos0 // 100)
+    y = abs(per1_g_pos0 % 100 - per2_g_pos0 % 100)
+    return x, y
