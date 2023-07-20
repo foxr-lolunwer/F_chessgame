@@ -102,7 +102,7 @@ def move_click(list_pos, AI=None):
         if down_mouse_move_g_pos in list_pos:
             pos = (down_mouse_move_g_pos, code.change_pos(down_mouse_move_g_pos))  # 新位置坐标
             return pos
-        elif down_mouse_move_g_pos == 1414:
+        elif down_mouse_move_g_pos in [218, 219, 220]:
             return "return"
         else:
             continue

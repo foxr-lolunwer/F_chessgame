@@ -81,38 +81,47 @@ class Menu:
                 return
             elif down_mouse_g_pos == 405:
                 code.Config["SETTING"]["game speed"] = "fast"
+                self.__toget_setting()
                 self.__set_speed("fast")
                 continue
             elif down_mouse_g_pos == 406:
                 code.Config["SETTING"]["game speed"] = "mid"
+                self.__toget_setting()
                 self.__set_speed("mid")
                 continue
             elif down_mouse_g_pos == 407:
                 code.Config["SETTING"]["game speed"] = "slow"
+                self.__toget_setting()
                 self.__set_speed("slow")
                 continue
             elif down_mouse_g_pos == 605:
                 code.Config["SETTING"]["game volume"] = "fast"
+                self.__toget_setting()
                 self.__set_volume("fast")
                 continue
             elif down_mouse_g_pos == 606:
                 code.Config["SETTING"]["game volume"] = "mid"
+                self.__toget_setting()
                 self.__set_volume("mid")
                 continue
             elif down_mouse_g_pos == 607:
                 code.Config["SETTING"]["game volume"] = "slow"
+                self.__toget_setting()
                 self.__set_volume("slow")
                 continue
             elif down_mouse_g_pos == 805:
                 code.Config["SETTING"]["AI Difficulty"]["setting"] = "hard"
+                self.__toget_setting()
                 self.__set_difficulty("fast")
                 continue
             elif down_mouse_g_pos == 806:
                 code.Config["SETTING"]["AI Difficulty"]["setting"] = "normal"
+                self.__toget_setting()
                 self.__set_difficulty("mid")
                 continue
             elif down_mouse_g_pos == 807:
                 code.Config["SETTING"]["AI Difficulty"]["setting"] = "easy"
+                self.__toget_setting()
                 self.__set_difficulty("slow")
                 continue
             else:
@@ -182,7 +191,9 @@ class UI:
         code.text_display("Player 2", (149, 487), code.FONT_BIG, center=False)
         code.text_display("HP:", (149, 537), center=False)
         code.text_display("DEF:", (149, 557), center=False)
-        code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY, center=True)  # 掷骰子按钮
+        code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY)  # 掷骰子按钮
+        code.text_display("Return to menu", code.change_pos(219), code.FONT_BIG, button_color=code.RED,
+                          color=code.WHITE)
         i = 0
         for k in occ_dict.keys():
             code.text_display("%05s : %02s" % (k, occ_dict[k]), code.change_pos(211 + i), code.FONT_MID, color=code.RED,
@@ -226,12 +237,6 @@ class Gaming:
         self.__val_check()
         return
 
-    # def change_val(self, num_val=None, type_val=None):
-    #     if num_val and type_val:
-    #         code.text_display(num_val, self.__list_gaming_val[type_val][1])
-    #     else:
-    #         self.new_val()
-
     def flip_screen(self, person1, person2, count, occ_dict=None):
         code.SCREEN.blit(self.__map_img, (0, 0))
         code.SCREEN.blit(person1.img[0], person1.pos[1])
@@ -271,12 +276,15 @@ class Gaming:
                                       center=True)
                     pygame.display.flip()
                     break
+                if count in (218, 219, 220):
+                    return "return"
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
                     code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
                                       center=True)
                     pygame.display.flip()
                     break
+        return None
 
     def display_statue(self, text, screen):
         pygame.draw.rect(screen, code.WHITE, (535, 456, 530, 108))

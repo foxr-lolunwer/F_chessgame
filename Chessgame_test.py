@@ -1,3 +1,6 @@
+#  Pyinstaller -F -w -i icon.ico Chessgame_test.py
+#  Pyinstaller -F -i icon.ico Chessgame_test.py
+
 import sys
 import time
 
@@ -43,12 +46,15 @@ if __name__ == '__main__':
                     # move p1
                     player1.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw()
+                    if gaming_screen.gaming_throw():
+                        break
                     command_move = operation.dice("m")
                     gaming_screen.display_statue(command_move, code.SCREEN)
                     command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
+                    if person_pos == "return":
+                        break
                     if person_pos:
                         player1.pos = person_pos
                     player1.action_move -= 1
@@ -63,25 +69,30 @@ if __name__ == '__main__':
                         command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
                         person_pos = operation.move_click(command)
-                        if person_pos:
-                            player1.pos = person_pos
-                        player1.action_move -= 1
-                        if player1.occ_buff(map_pos):
-                            win_dot_occ[str(player1.pos[0])] = "p1"
-                        ui.ui_gaming_data_new(player1, player2)
-                        gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                        if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
-                            break
+                    if person_pos == "return":
+                        break
+                    if person_pos:
+                        player1.pos = person_pos
+                    player1.action_move -= 1
+                    if player1.occ_buff(map_pos):
+                        win_dot_occ[str(player1.pos[0])] = "p1"
+                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                    if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                        break
                     # move p2
                     player2.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw()
+                    if gaming_screen.gaming_throw():
+                        break
                     command_move = operation.dice("m")
                     gaming_screen.display_statue(command_move, code.SCREEN)
                     # code.text_display("")
                     command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
+                    if person_pos == "return":
+                        break
                     if person_pos:
                         player2.pos = person_pos
                     player2.action_move -= 1
@@ -96,22 +107,25 @@ if __name__ == '__main__':
                         command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
                         person_pos = operation.move_click(command)
-                        if person_pos:
-                            player2.pos = person_pos
-                        player2.action_move -= 1
-                        if player2.occ_buff(map_pos):
-                            win_dot_occ[str(player2.pos[0])] = "p2"
-                        ui.ui_gaming_data_new(player1, player2)
-                        gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                        if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
-                            break
+                    if person_pos == "return":
+                        break
+                    if person_pos:
+                        player2.pos = person_pos
+                    player2.action_move -= 1
+                    if player2.occ_buff(map_pos):
+                        win_dot_occ[str(player2.pos[0])] = "p2"
+                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                    if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                        break
                     # p1 fight
                     if player1.DEF_dice:
                         player1.DEF_dice = 0
                         ui.ui_gaming_data_new(player1, player2)
                     player1.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw()
+                    if gaming_screen.gaming_throw():
+                        break
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
@@ -142,7 +156,8 @@ if __name__ == '__main__':
                         ui.ui_gaming_data_new(player1, player2)
                     player2.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw()
+                    if gaming_screen.gaming_throw():
+                        break
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
@@ -185,12 +200,15 @@ if __name__ == '__main__':
                     # move p1
                     player1.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw()
+                    if gaming_screen.gaming_throw():
+                        break
                     command_move = operation.dice("m")
                     gaming_screen.display_statue(command_move, code.SCREEN)
                     command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
                     person_pos = operation.move_click(command)
+                    if person_pos == "return":
+                        break
                     if person_pos:
                         player1.pos = person_pos
                     player1.action_move -= 1
@@ -205,15 +223,17 @@ if __name__ == '__main__':
                         command = operation.move_person_pos(player1.pos[0], player2.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
                         person_pos = operation.move_click(command)
-                        if person_pos:
-                            player1.pos = person_pos
-                        player1.action_move -= 1
-                        if player1.occ_buff(map_pos):
-                            win_dot_occ[str(player1.pos[0])] = "p1"
-                        ui.ui_gaming_data_new(player1, player2)
-                        gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                        if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
-                            break
+                    if person_pos == "return":
+                        break
+                    if person_pos:
+                        player1.pos = person_pos
+                    player1.action_move -= 1
+                    if player1.occ_buff(map_pos):
+                        win_dot_occ[str(player1.pos[0])] = "p1"
+                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
+                    if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
+                        break
                     # move p2
                     player2.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
@@ -256,7 +276,8 @@ if __name__ == '__main__':
                         ui.ui_gaming_data_new(player1, player2)
                     player1.selected()
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw()
+                    if gaming_screen.gaming_throw():
+                        break
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep(0.5)
