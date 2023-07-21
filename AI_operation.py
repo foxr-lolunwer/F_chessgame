@@ -51,5 +51,3 @@ def AI_move(ai, player, statue):
                 return random.choice(return_pos_list)
             else:
                 return random.choice(return_pos_list)
-
-
