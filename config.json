@@ -1,12 +1,8 @@
 {
   "SETTING": {
-    "game speed": "mid",
-    "game speed default": {
-      "fast": 1.5,
-      "mid": 1,
-      "slow": 0.5
-    },
-    "game volume": 0.2,
+    "game speed": 50,
+    "game volume": 50,
+    "music": 1,
     "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
     "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"],
     "AI Difficulty": {
@@ -59,7 +55,8 @@
     "X explosion": "resource/sound/effect/X_explosion.wav",
     "bomb": "resource/sound/effect/bomb.wav",
     "life recovery": "resource/sound/effect/life_recovery.wav",
-    "shield": "resource/sound/effect/shield.wav"
+    "shield": "resource/sound/effect/shield.wav",
+    "move": "resource/sound/effect/move.wav"
   },
   "MAP": {
     "map 1": {

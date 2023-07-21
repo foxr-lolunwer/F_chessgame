@@ -1,7 +1,5 @@
 import random
 
-import pygame.mixer
-
 import code
 
 LIST_M_DICE = code.Config["SETTING"]["M_dice"]
@@ -109,6 +107,7 @@ def move_click(list_pos, AI=None):
         down_mouse_move_g_pos = code.get_mouse_pos()
         if down_mouse_move_g_pos in list_pos:
             pos = (down_mouse_move_g_pos, code.change_pos(down_mouse_move_g_pos))  # 新位置坐标
+            code.play_effect("move")
             return pos
         elif down_mouse_move_g_pos in [218, 219, 220]:
             return "return"
@@ -136,3 +135,7 @@ def calculate_distance(per1_g_pos0, per2_g_pos0):
     x = abs(per1_g_pos0 // 100 - per2_g_pos0 // 100)
     y = abs(per1_g_pos0 % 100 - per2_g_pos0 % 100)
     return x, y
+
+
+def save_setting():
+    return

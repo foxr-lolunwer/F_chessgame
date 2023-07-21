@@ -129,7 +129,7 @@ if __name__ == '__main__':
                         break
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     command = operation.fight_kill_val(player1.pos[0], player2.pos[0], command_fight, map_pos)
                     if command >= 0:
                         command = command - (player2.DEF_prop + player2.DEF_dice)
@@ -146,7 +146,7 @@ if __name__ == '__main__':
                         gaming_screen.display_statue("DEF + 1", code.SCREEN)
                     else:
                         "fight error"
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
                         break
                     ui.ui_gaming_data_new(player1, player2)
@@ -161,7 +161,7 @@ if __name__ == '__main__':
                         break
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     command = operation.fight_kill_val(player2.pos[0], player1.pos[0], command_fight, map_pos)
                     if command >= 0:
                         command = command - (player1.DEF_prop + player1.DEF_dice)
@@ -178,7 +178,7 @@ if __name__ == '__main__':
                         gaming_screen.display_statue("DEF + 1", code.SCREEN)
                     else:
                         "fight error"
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     ui.ui_gaming_data_new(player1, player2)
                     player2.selected(False)
             elif command == "PVE":
@@ -240,11 +240,12 @@ if __name__ == '__main__':
                     gaming_screen.display_statue("Please throw!", code.SCREEN)
                     gaming_screen.gaming_throw("AI")
                     command_move = operation.dice("m")
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                     gaming_screen.display_statue(command_move, code.SCREEN)
                     # code.text_display("")
                     command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                     gaming_screen.display_move_red_dot(command)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                     person_pos = operation.move_click(command, "AI")
                     if person_pos:
                         player2.pos = person_pos
@@ -253,13 +254,14 @@ if __name__ == '__main__':
                         win_dot_occ[str(player2.pos[0])] = "p2"
                     ui.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
                     if player2.action_move > 0:
                         player2.selected()
                         command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
                         gaming_screen.display_move_red_dot(command)
+                        time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                         person_pos = operation.move_click(command, "AI")
                         if person_pos:
                             player2.pos = person_pos
@@ -268,7 +270,7 @@ if __name__ == '__main__':
                             win_dot_occ[str(player2.pos[0])] = "p2"
                         ui.ui_gaming_data_new(player1, player2)
                         gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                        time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                        time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                         if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                             break
                     # p1 fight
@@ -281,7 +283,7 @@ if __name__ == '__main__':
                         break
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     command = operation.fight_kill_val(player1.pos[0], player2.pos[0], command_fight, map_pos)
                     if command >= 0:
                         command = command - (player2.DEF_prop + player2.DEF_dice)
@@ -298,7 +300,7 @@ if __name__ == '__main__':
                         gaming_screen.display_statue("DEF + 1", code.SCREEN)
                     else:
                         "fight error"
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
                         break
                     ui.ui_gaming_data_new(player1, player2)
@@ -312,7 +314,7 @@ if __name__ == '__main__':
                     gaming_screen.gaming_throw("AI")
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     command = operation.fight_kill_val(player2.pos[0], player1.pos[0], command_fight, map_pos)
                     if command >= 0:
                         command = command - (player1.DEF_prop + player1.DEF_dice)
@@ -329,7 +331,7 @@ if __name__ == '__main__':
                         gaming_screen.display_statue("DEF + 1", code.SCREEN)
                     else:
                         "fight error"
-                    time.sleep(code.SETTING["game speed default"][code.SETTING["game speed"]] * 0.5)
+                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     ui.ui_gaming_data_new(player1, player2)
                     player2.selected(False)
             else:

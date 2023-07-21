@@ -4,11 +4,11 @@ import pygame
 import datetime
 import json
 
+import code
+
 f = open("config.json", mode="r")
 content = f.read()
 Config = json.loads(content)
-SETTING = Config["SETTING"]
-MAP = Config["MAP"]
 pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示
@@ -66,21 +66,15 @@ def change_pos(pos, center_pos=False):
 
 
 # 获取鼠标位置的方框坐标
-def get_mouse_pos(key="none"):
-    if key == "none":
-        while True:
-            event_move = pygame.event.wait()
-            if event_move.type == pygame.MOUSEBUTTONDOWN:
-                event_move.pos = (event_move.pos[0], event_move.pos[1])
-                return change_pos(event_move.pos)
-            if event_move.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-    if key == "once":
+def get_mouse_pos(g_pos=True):
+     while True:
         event_move = pygame.event.wait()
         if event_move.type == pygame.MOUSEBUTTONDOWN:
             event_move.pos = (event_move.pos[0], event_move.pos[1])
-            return change_pos(event_move.pos)
+            if g_pos:
+                return change_pos(event_move.pos)
+            else:
+                return event_move.pos
         if event_move.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -133,11 +127,77 @@ def game_pause():
 
 def play_effect(music_name, count=0):
     effect = pygame.mixer.Sound(Config["SOUND"][music_name])
-    effect.set_volume(Config["SETTING"]["game volume"])
+    effect.set_volume(Config["SETTING"]["game volume"] * 0.004)
     effect.play(loops=count)
 
 
 def play_music():
     pygame.mixer.music.load("resource/sound/music/Sunburst - Itro _ Tobu.ogg")
-    pygame.mixer.music.set_volume(0.1)
-    pygame.mixer.music.play()
+    pygame.mixer.music.set_volume(Config["SETTING"]["game volume"] * 0.001)
+    if not code.Config["SETTING"]["music"]:
+        pygame.mixer.music.stop()
+        return
+    pygame.mixer.music.play(-1)
+
+
+def music_volume_change():
+    if not pygame.mixer.music.get_busy():
+        pygame.mixer.music.play(-1)
+    pygame.mixer.music.pause()
+    if Config["SETTING"]["game volume"] * 0.004 == 0:
+        return
+    if not code.Config["SETTING"]["music"]:
+        pygame.mixer.music.stop()
+        return
+    pygame.mixer.music.set_volume(Config["SETTING"]["game volume"] * 0.001)
+    pygame.mixer.music.unpause()
+
+
+class ProgressBar:
+    def __init__(self, pos=None, val=None, length=100, width=20, color1=RED, color2=GRAY, num_display=None, background_color=WHITE, val_display_multiplier=1):
+        self.length = length
+        self.color1 = color1
+        self.color2 = color2
+        self.bg_color = background_color
+        self.width = width
+        self.pos = pos
+        self.val = val
+        self.val_display_mul = val_display_multiplier
+        self.num_statue = num_display
+        self.text_rect = None
+
+    def display(self, val=None):
+        for i in range(0, self.length):
+            pygame.draw.rect(SCREEN, color=self.color2, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
+        if val:
+            self.val = val
+        for i in range(0, self.val):
+            pygame.draw.rect(SCREEN, color=self.color1, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
+        if self.num_statue[0]:
+            if self.text_rect:
+                pygame.draw.rect(SCREEN, rect=self.text_rect, color=self.bg_color)
+            if self.num_statue[0] == "r":
+                self.text_rect = text_display("%03s" % str(round(self.val * self.val_display_mul, 1)),
+                                              (self.pos[0] + self.length + 10, self.pos[1] + self.width // 2),
+                                              color=self.num_statue[1], size=FONT_SMALL)
+            if self.num_statue[0] == "c":
+                self.text_rect = text_display("%03s" % str(round(self.val * self.val_display_mul, 1)),
+                                              (self.pos[0] + self.length // 2, self.pos[1] + self.width // 2),
+                                              color=self.num_statue[1], size=FONT_SMALL)
+        pygame.display.flip()
+
+    def mouse_get_val(self, mouse_pos):
+        if mouse_pos[1] in range(self.pos[1], self.pos[1] + self.width + 1):
+            if mouse_pos[0] in range(self.pos[0], self.pos[0] + self.length + 1):
+                self.val = mouse_pos[0] - self.pos[0]
+                if self.val <= 5:
+                    self.val = 0
+                elif self.length - self.val <= 5:
+                    self.val = self.length
+                return True
+        return False
+
+
+
+
+

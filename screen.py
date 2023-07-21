@@ -7,7 +7,6 @@ import code
 
 LOAD_IMG = pygame.image.load(code.Config["IMG"]["load"]).convert()
 
-
 def load():
     code.SCREEN.fill(code.WHITE)
     code.SCREEN.blit(LOAD_IMG, (130, 100))
@@ -21,6 +20,9 @@ class Menu:
         self.__setting_list = {"game speed": (0, 0, 0), "game volume": (0, 0, 0), "AI difficulty": (0, 0, 0)}
         self.__main_bg = pygame.image.load(code.Config["IMG"]["main menu"]).convert()
         self.__toget_setting()
+        self.bar_speed = code.ProgressBar(val=code.Config["SETTING"]["game speed"], num_display=("r", code.BLACK),
+                                          val_display_multiplier=0.02)
+        self.bar_volume = code.ProgressBar(val=code.Config["SETTING"]["game volume"], num_display=("r", code.BLACK))
 
     def menu_main(self):
         code.SCREEN.blit(self.__main_bg, (0, 0))
@@ -32,7 +34,7 @@ class Menu:
         pygame.display.flip()
         while True:
             # 鼠标点击相应按钮并执行相应程序
-            down_mouse_move_g_pos = code.get_mouse_pos("once")
+            down_mouse_move_g_pos = code.get_mouse_pos()
             # 开始游戏
             if down_mouse_move_g_pos in [407, 408, 409]:
                 return "start"
@@ -70,44 +72,37 @@ class Menu:
         code.text_display("Game AI:", code.change_pos(706), color=code.WHITE, button_color=code.RED)
         code.text_display("EXIT", code.change_pos(202), size=code.FONT_BIG, color=code.WHITE, button_color=code.RED)
         self.__toget_setting()
-        self.__box_set_speeed()
-        self.__box_set_volume()
         self.__box_set_difficulty()
+        self.bar_speed.pos = code.change_pos(405)
+        self.bar_volume.pos = code.change_pos(605)
+        self.bar_speed.display()
+        self.bar_volume.display()
+        code.SCREEN.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
+        code.text_display("music", (411, 276), size=code.FONT_SMALL)
         pygame.display.flip()
 
         while True:
-            down_mouse_g_pos = code.get_mouse_pos("once")
+            down_mouse_pos = code.get_mouse_pos(g_pos=False)
+            down_mouse_g_pos = code.change_pos(down_mouse_pos)
             if down_mouse_g_pos == 202:
                 return
-            elif down_mouse_g_pos == 405:
-                code.Config["SETTING"]["game speed"] = "fast"
-                self.__toget_setting()
-                self.__set_speed("fast")
+            elif self.bar_speed.mouse_get_val(down_mouse_pos):
+                if self.bar_speed.val > 90:
+                    self.bar_speed.val = 90
+                self.bar_speed.display()
+                code.Config["SETTING"]["game speed"] = self.bar_speed.val
                 continue
-            elif down_mouse_g_pos == 406:
-                code.Config["SETTING"]["game speed"] = "mid"
-                self.__toget_setting()
-                self.__set_speed("mid")
+            elif self.bar_volume.mouse_get_val(down_mouse_pos):
+                self.bar_volume.display()
+                code.Config["SETTING"]["game volume"] = self.bar_volume.val
+                code.music_volume_change()
                 continue
-            elif down_mouse_g_pos == 407:
-                code.Config["SETTING"]["game speed"] = "slow"
-                self.__toget_setting()
-                self.__set_speed("slow")
-                continue
-            elif down_mouse_g_pos == 605:
-                code.Config["SETTING"]["game volume"] = "fast"
-                self.__toget_setting()
-                self.__set_volume("fast")
-                continue
-            elif down_mouse_g_pos == 606:
-                code.Config["SETTING"]["game volume"] = "mid"
-                self.__toget_setting()
-                self.__set_volume("mid")
-                continue
-            elif down_mouse_g_pos == 607:
-                code.Config["SETTING"]["game volume"] = "slow"
-                self.__toget_setting()
-                self.__set_volume("slow")
+            elif down_mouse_g_pos == 608:
+                code.Config["SETTING"]["music"] = not code.Config["SETTING"]["music"]
+                print(code.Config["SETTING"]["music"])
+                code.SCREEN.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
+                code.music_volume_change()
+                pygame.display.flip()
                 continue
             elif down_mouse_g_pos == 805:
                 code.Config["SETTING"]["AI Difficulty"]["setting"] = "hard"
@@ -130,29 +125,9 @@ class Menu:
     def menu_course(self):
         return
 
-    def __set_speed(self, val):
-        self.__box_set_speeed()
-        code.date_write("setting: game speed " + val, code.DATE_FILE)
-
-    def __set_volume(self, val):
-        self.__box_set_volume()
-        code.date_write("setting: game volume " + val, code.DATE_FILE)
-
     def __set_difficulty(self, val):
         self.__box_set_difficulty()
         code.date_write("setting: AI difficulty " + val, code.DATE_FILE)
-
-    def __box_set_speeed(self):
-        code.SCREEN.blit(code.IMG[self.__setting_list["game speed"][0]], code.change_pos(405))
-        code.SCREEN.blit(code.IMG[self.__setting_list["game speed"][1]], code.change_pos(406))
-        code.SCREEN.blit(code.IMG[self.__setting_list["game speed"][2]], code.change_pos(407))
-        pygame.display.flip()
-
-    def __box_set_volume(self):
-        code.SCREEN.blit(code.IMG[self.__setting_list["game volume"][0]], code.change_pos(605))
-        code.SCREEN.blit(code.IMG[self.__setting_list["game volume"][1]], code.change_pos(606))
-        code.SCREEN.blit(code.IMG[self.__setting_list["game volume"][2]], code.change_pos(607))
-        pygame.display.flip()
 
     def __box_set_difficulty(self):
         code.SCREEN.blit(code.IMG[self.__setting_list["AI difficulty"][0]], code.change_pos(805))
@@ -161,16 +136,6 @@ class Menu:
         pygame.display.flip()
 
     def __toget_setting(self):
-        if code.Config["SETTING"]["game speed"] == "mid":
-            self.__setting_list["game speed"] = (0, 1, 0)
-        elif code.Config["SETTING"]["game speed"] == "fast":
-            self.__setting_list["game speed"] = (1, 0, 0)
-        elif code.Config["SETTING"]["game speed"] == "slow":
-            self.__setting_list["game speed"] = (0, 0, 1)
-        else:  # error
-            self.__setting_list["game speed"] = (0, 1, 0)
-        if code.Config["SETTING"]["game volume"] == 0.2:
-            self.__setting_list["game volume"] = (0, 1, 0)
         if code.Config["SETTING"]["AI Difficulty"]["setting"] == "normal":
             self.__setting_list["AI difficulty"] = (0, 1, 0)
         elif code.Config["SETTING"]["AI Difficulty"]["setting"] == "hard":
