@@ -1,6 +1,7 @@
 {
   "SETTING": {
-    "game speed": {
+    "game speed": "mid",
+    "game speed default": {
       "fast": 1.5,
       "mid": 1,
       "slow": 0.5

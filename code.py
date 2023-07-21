@@ -7,6 +7,8 @@ import json
 f = open("config.json", mode="r")
 content = f.read()
 Config = json.loads(content)
+SETTING = Config["SETTING"]
+MAP = Config["MAP"]
 pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示
@@ -129,7 +131,13 @@ def game_pause():
         sys.exit()
 
 
-def play_music(music_name):
+def play_effect(music_name, count=0):
     effect = pygame.mixer.Sound(Config["SOUND"][music_name])
     effect.set_volume(Config["SETTING"]["game volume"])
-    effect.play()
+    effect.play(loops=count)
+
+
+def play_music():
+    pygame.mixer.music.load("resource/sound/music/Sunburst - Itro _ Tobu.ogg")
+    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.play()
