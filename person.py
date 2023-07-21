@@ -63,3 +63,4 @@ class AIPerson(Person):
         self.HP = AI_Config_difficulty["hp init"]
         self.DEF_ai = AI_Config_difficulty["def init"]
 
+

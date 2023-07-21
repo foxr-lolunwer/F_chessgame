@@ -1,5 +1,4 @@
 import random
-
 import code
 
 LIST_M_DICE = code.Config["SETTING"]["M_dice"]
