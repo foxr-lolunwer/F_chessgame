@@ -2,7 +2,7 @@
   "SETTING": {
     "game speed": 50,
     "game volume": 50,
-    "music": 1,
+    "music": 0,
     "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
     "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"],
     "AI Difficulty": {

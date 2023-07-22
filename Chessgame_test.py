@@ -10,6 +10,7 @@ import code
 import operation
 import person
 import screen
+import AI_operation
 
 if __name__ == '__main__':
     code.game_init()
@@ -237,19 +238,10 @@ if __name__ == '__main__':
                         break
                     # move p2
                     player2.selected()
-                    gaming_screen.display_statue("Please throw!", code.SCREEN)
-                    gaming_screen.gaming_throw("AI")
-                    command_move = operation.dice("m")
-                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
-                    gaming_screen.display_statue(command_move, code.SCREEN)
-                    # code.text_display("")
-                    command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
-                    gaming_screen.display_move_red_dot(command)
-                    time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
-                    person_pos = operation.move_click(command, "AI")
-                    if person_pos:
-                        player2.pos = person_pos
+                    person_pos, again = AI_operation.AI_move(player2, player1)
                     player2.action_move -= 1
+                    if person_pos:
+                        player2.pos = (person_pos, code.change_pos(person_pos))
                     if player2.occ_buff(map_pos):
                         win_dot_occ[str(player2.pos[0])] = "p2"
                     ui.ui_gaming_data_new(player1, player2)
@@ -259,13 +251,10 @@ if __name__ == '__main__':
                         break
                     if player2.action_move > 0:
                         player2.selected()
-                        command = operation.move_person_pos(player2.pos[0], player1.pos[0], command_move, map_pos)
-                        gaming_screen.display_move_red_dot(command)
-                        time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
-                        person_pos = operation.move_click(command, "AI")
-                        if person_pos:
-                            player2.pos = person_pos
+                        person_pos, again = AI_operation.AI_move(player2, player1)
                         player2.action_move -= 1
+                        if person_pos:
+                            player2.pos = (person_pos, code.change_pos(person_pos))
                         if player2.occ_buff(map_pos):
                             win_dot_occ[str(player2.pos[0])] = "p2"
                         ui.ui_gaming_data_new(player1, player2)
