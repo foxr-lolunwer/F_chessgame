@@ -273,6 +273,8 @@ if __name__ == '__main__':
                     command_fight = operation.dice("f")
                     gaming_screen.display_statue(command_fight, code.SCREEN)
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
+                    if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
+                        break
                     command = operation.fight_kill_val(player1.pos[0], player2.pos[0], command_fight, map_pos)
                     if command >= 0:
                         command = command - (player2.DEF_prop + player2.DEF_dice)
@@ -321,6 +323,8 @@ if __name__ == '__main__':
                     else:
                         "fight error"
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
+                    if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
+                        break
                     ui.ui_gaming_data_new(player1, player2)
                     player2.selected(False)
             else:
