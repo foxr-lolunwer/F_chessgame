@@ -1,10 +1,11 @@
+import os
+import random
 import sys
 
 import pygame
 import datetime
 import json
 
-import code
 
 f = open("config.json", mode="r")
 content = f.read()
@@ -67,7 +68,7 @@ def change_pos(pos, center_pos=False):
 
 # 获取鼠标位置的方框坐标
 def get_mouse_pos(g_pos=True):
-     while True:
+    while True:
         event_move = pygame.event.wait()
         if event_move.type == pygame.MOUSEBUTTONDOWN:
             event_move.pos = (event_move.pos[0], event_move.pos[1])
@@ -118,39 +119,45 @@ def text_display(text, pos, size=FONT_MID, anti=True, center=True, button_color=
     return text_rect
 
 
-def game_pause():
-    event = pygame.event.wait()
-    if event.type == pygame.QUIT:
-        pygame.quit()
-        sys.exit()
-
-
 def play_effect(music_name, count=0):
     effect = pygame.mixer.Sound(Config["SOUND"][music_name])
     effect.set_volume(Config["SETTING"]["game volume"] * 0.004)
     effect.play(loops=count)
 
 
+path = "resource/sound/music"
+root, dirs, music_files = list(os.walk(path))[0]
+
+
 def play_music():
-    pygame.mixer.music.load("resource/sound/music/Sunburst - Itro _ Tobu.ogg")
+    pygame.mixer.music.load("resource/sound/music/" + random.choice(music_files))
     pygame.mixer.music.set_volume(Config["SETTING"]["game volume"] * 0.001)
-    if not code.Config["SETTING"]["music"]:
+    if not Config["SETTING"]["music"]:
         pygame.mixer.music.stop()
         return
-    pygame.mixer.music.play(-1)
+    pygame.mixer.music.play()
 
 
 def music_volume_change():
+    # 如果音乐停止，随机播放下一首
     if not pygame.mixer.music.get_busy():
-        pygame.mixer.music.play(-1)
+        pygame.mixer.music.load("resource/sound/music/" + random.choice(music_files))
+        pygame.mixer.music.play()
     pygame.mixer.music.pause()
     if Config["SETTING"]["game volume"] * 0.004 == 0:
         return
-    if not code.Config["SETTING"]["music"]:
+    if not Config["SETTING"]["music"]:
         pygame.mixer.music.stop()
         return
     pygame.mixer.music.set_volume(Config["SETTING"]["game volume"] * 0.001)
     pygame.mixer.music.unpause()
+
+
+def music_continue():
+    # 如果音乐停止并且音量不为零，并开启了音乐，随机播放下一首
+    if not pygame.mixer.music.get_busy() and Config["SETTING"]["game volume"] * 0.004 != 0 and Config["SETTING"]["music"]:
+        pygame.mixer.music.load("resource/sound/music/" + random.choice(music_files))
+        pygame.mixer.music.play()
 
 
 class ProgressBar:
@@ -196,8 +203,3 @@ class ProgressBar:
                     self.val = self.length
                 return True
         return False
-
-
-
-
-

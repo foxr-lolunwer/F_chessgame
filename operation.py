@@ -103,6 +103,7 @@ def move_click(list_pos, AI=None):
         pos = (pos, code.change_pos(pos))
         return pos
     while True:
+        code.music_continue()
         down_mouse_move_g_pos = code.get_mouse_pos()
         if down_mouse_move_g_pos in list_pos:
             pos = (down_mouse_move_g_pos, code.change_pos(down_mouse_move_g_pos))  # 新位置坐标

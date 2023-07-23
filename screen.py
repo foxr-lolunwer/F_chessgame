@@ -33,6 +33,7 @@ class Menu:
         code.text_display("Exit Game", (424, 503.5), color=code.WHITE)
         pygame.display.flip()
         while True:
+            code.music_continue()
             # 鼠标点击相应按钮并执行相应程序
             down_mouse_move_g_pos = code.get_mouse_pos()
             # 开始游戏
@@ -57,6 +58,7 @@ class Menu:
         code.text_display("PVE", code.change_pos(506), color=code.WHITE, button_color=code.RED)
         pygame.display.flip()
         while True:
+            code.music_continue()
             down_mouse_g_pos = code.get_mouse_pos()
             if down_mouse_g_pos == 306:
                 return "PVP"
@@ -82,6 +84,7 @@ class Menu:
         pygame.display.flip()
 
         while True:
+            code.music_continue()
             down_mouse_pos = code.get_mouse_pos(g_pos=False)
             down_mouse_g_pos = code.change_pos(down_mouse_pos)
             if down_mouse_g_pos == 202:
@@ -228,6 +231,7 @@ class Gaming:
         code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.RED, center=True)
         pygame.display.flip()
         while True:
+            code.music_continue()
             code.CLOCK.tick(10)
             event = pygame.event.wait()
             if event.type == pygame.WINDOWCLOSE:
