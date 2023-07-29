@@ -1,40 +1,118 @@
 {
-    "game speed": 50,
-    "game volume": 50,
-    "music": 0,
-    "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
-    "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"],
+    "game speed": 53,
+    "game volume": 52,
+    "music": false,
+    "M_dice": [
+        "cross",
+        "cross",
+        "diagonal",
+        "diagonal",
+        "tp",
+        "free"
+    ],
+    "F_dice": [
+        "single shot",
+        "multiple shots",
+        "X explosion",
+        "bomb",
+        "life recovery",
+        "shield"
+    ],
     "AI Difficulty": {
-      "crazy": {
-        "M_dice": ["cross", "diagonal", "tp", "tp", "tp","free", "free", "free"],
-        "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield", "bomb",
-          "life recovery", "multiple shots"],
-        "hp init": 9,
-        "def init": 1,
-        "judge": "clever"
-      },
-      "hard": {
-        "M_dice": ["cross", "diagonal", "tp", "tp","free", "free"],
-        "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield", "bomb",
-          "life recovery", "multiple shots"],
-        "hp init": 7,
-        "def init": 0,
-        "judge": "clever"
-      },
-      "normal": {
-        "M_dice": ["cross", "cross", "diagonal", "diagonal", "tp", "free"],
-        "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"],
-        "hp init": 5,
-        "def init": 0,
-        "judge": "normal"
-      },
-      "easy": {
-        "M_dice": ["cross", "cross", "cross","diagonal", "diagonal","diagonal", "tp", "free"],
-        "F_dice": ["single shot", "multiple shots", "X explosion", "bomb", "life recovery", "shield"],
-        "hp init": 4,
-        "def init": 0,
-        "judge": "simple"
-      },
-      "setting": "normal"
+        "crazy": {
+            "M_dice": [
+                "cross",
+                "diagonal",
+                "tp",
+                "tp",
+                "tp",
+                "free",
+                "free",
+                "free"
+            ],
+            "F_dice": [
+                "single shot",
+                "multiple shots",
+                "X explosion",
+                "bomb",
+                "life recovery",
+                "shield",
+                "bomb",
+                "life recovery",
+                "multiple shots"
+            ],
+            "hp init": 9,
+            "def init": 1,
+            "judge": "clever"
+        },
+        "hard": {
+            "M_dice": [
+                "cross",
+                "diagonal",
+                "tp",
+                "tp",
+                "free",
+                "free"
+            ],
+            "F_dice": [
+                "single shot",
+                "multiple shots",
+                "X explosion",
+                "bomb",
+                "life recovery",
+                "shield",
+                "bomb",
+                "life recovery",
+                "multiple shots"
+            ],
+            "hp init": 7,
+            "def init": 0,
+            "judge": "clever"
+        },
+        "normal": {
+            "M_dice": [
+                "cross",
+                "cross",
+                "diagonal",
+                "diagonal",
+                "tp",
+                "free"
+            ],
+            "F_dice": [
+                "single shot",
+                "multiple shots",
+                "X explosion",
+                "bomb",
+                "life recovery",
+                "shield"
+            ],
+            "hp init": 5,
+            "def init": 0,
+            "judge": "normal"
+        },
+        "easy": {
+            "M_dice": [
+                "cross",
+                "cross",
+                "cross",
+                "diagonal",
+                "diagonal",
+                "diagonal",
+                "tp",
+                "free"
+            ],
+            "F_dice": [
+                "single shot",
+                "multiple shots",
+                "X explosion",
+                "bomb",
+                "life recovery",
+                "shield"
+            ],
+            "hp init": 4,
+            "def init": 0,
+            "judge": "simple"
+        },
+        "setting": "normal"
     }
 }

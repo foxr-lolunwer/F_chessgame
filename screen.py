@@ -1,3 +1,4 @@
+import json
 import sys
 import time
 
@@ -6,6 +7,7 @@ import pygame
 import code
 
 LOAD_IMG = pygame.image.load(code.Config["IMG"]["load"]).convert()
+
 
 def load():
     code.SCREEN.fill(code.WHITE)
@@ -72,6 +74,7 @@ class Menu:
         code.text_display("Game Speed:", code.change_pos(306), color=code.WHITE, button_color=code.RED)
         code.text_display("Game Music Volume:", code.change_pos(506), color=code.WHITE, button_color=code.RED)
         code.text_display("Game AI:", code.change_pos(706), color=code.WHITE, button_color=code.RED)
+        code.text_display("SAVE&EXIT:", code.change_pos(908), color=code.WHITE, button_color=code.RED)
         code.text_display("EXIT", code.change_pos(202), size=code.FONT_BIG, color=code.WHITE, button_color=code.RED)
         self.__toget_setting()
         self.__box_set_difficulty()
@@ -122,6 +125,14 @@ class Menu:
                 self.__toget_setting()
                 self.__set_difficulty("slow")
                 continue
+            elif down_mouse_g_pos in (907, 908, 909):
+                save = json.dumps(code.Config["SETTING"], indent=4)
+                with open("config/set.json", "w+") as file:
+                    file.write(save)
+                code.text_display("Saved", code.change_pos(1108))
+                pygame.display.flip()
+                time.sleep(0.5)
+                return
             else:
                 continue
 
