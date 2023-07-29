@@ -7,9 +7,15 @@ import datetime
 import json
 
 
-f = open("config.json", mode="r")
-content = f.read()
-Config = json.loads(content)
+f1 = open("config/set.json", mode="r")
+f2 = open("config/img.json", mode="r")
+f3 = open("config/sound.json", mode="r")
+f4 = open("config/map.json", mode="r")
+content1 = f1.read()
+content2 = f2.read()
+content3 = f3.read()
+content4 = f4.read()
+Config = {"SETTING": json.loads(content1), "IMG": json.loads(content2), "SOUND": json.loads(content3), "MAP": json.loads(content4)}
 pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示
@@ -66,7 +72,7 @@ def change_pos(pos, center_pos=False):
         return "error!"
 
 
-# 获取鼠标位置的方框坐标
+# 获取鼠标位置的坐标(默认返回g坐标)
 def get_mouse_pos(g_pos=True):
     while True:
         event_move = pygame.event.wait()
@@ -91,15 +97,6 @@ def game_init():
 FONT_BIG = pygame.font.SysFont('arial', 30)  # 默认大号字体
 FONT_MID = pygame.font.SysFont('arial', 16)  # 默认正常字体
 FONT_SMALL = pygame.font.SysFont('arial', 12)  # 默认小号字体
-
-# 通用数据集
-IMG = [pygame.image.load(Config["IMG"]["select box"][0]).convert(),
-       pygame.image.load(Config["IMG"]["select box"][1]).convert()]
-
-# 游戏速度
-SPEED_FAST = {"time1": 0.1, "time2": 0.3, "time3": 0.5, "time4": 0.7, "time5": 3}  # 预设速度-快速
-SPEED_MID = {"time1": 0.3, "time2": 0.5, "time3": 0.7, "time4": 1, "time5": 5}  # 预设速度-中速
-SPEED_SLOW = {"time1": 0.5, "time2": 0.7, "time3": 1, "time4": 1.5, "time5": 8}  # 预设速度-慢速
 
 
 # 文本显示函数（文本内容，显示位置，字体大小，是否抗锯齿，传入坐标意义-默认为中心点坐标，按钮颜色，字体颜色）
