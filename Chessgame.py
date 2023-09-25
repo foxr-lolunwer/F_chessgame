@@ -1,5 +1,5 @@
-#  Pyinstaller -F -w -i icon.ico Chessgame_test.py
-#  Pyinstaller -F -i icon.ico Chessgame_test.py
+#  Pyinstaller -F -w -i icon.ico Chessgame.py
+#  Pyinstaller -F -i icon.ico Chessgame.py
 
 import sys
 import time
@@ -17,8 +17,8 @@ if __name__ == '__main__':
     menu = screen.Menu()
     ui = screen.UI()
     gaming_screen = screen.Gaming()
-    map_pos = gaming_screen.map["list pos"]
-    win_dot_occ = code.Config["MAP"]["map 2"]["win dot occ list"]
+    map_pos = code.load_map["list pos"]
+    win_dot_occ = code.load_map["win dot occ list"]
     count = 0
     code.play_music()
     code.date_write("-GAME INIT DONE-", code.DATE_FILE)

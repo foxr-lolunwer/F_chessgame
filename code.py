@@ -157,6 +157,15 @@ def music_volume_change():
     pygame.mixer.music.unpause()
 
 
+# 加载地图
+def load_map(load_map_name=Config["MAP"]["default map"]):
+    map_load = Config["MAP"][load_map_name]
+    return map_load
+
+
+load_map = load_map()
+
+
 def music_continue():
     # 如果音乐停止并且音量不为零，并开启了音乐，随机播放下一首
     if not pygame.mixer.music.get_busy() and Config["SETTING"]["game volume"] * 0.004 != 0 and Config["SETTING"]["music"]:
@@ -164,6 +173,7 @@ def music_continue():
         pygame.mixer.music.play()
 
 
+# 进度条
 class ProgressBar:
     def __init__(self, pos=None, val=None, length=100, width=20, color1=RED, color2=GRAY, num_display=None, background_color=WHITE, val_display_multiplier=1):
         self.length = length

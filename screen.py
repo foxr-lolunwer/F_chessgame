@@ -197,7 +197,7 @@ class Gaming:
     def __init__(self):
         self.__list_gaming_val = {"p1 HP": [5, (75, 546)], "p2 HP": [5, (181, 546)],
                                   "p1 DEF": [0, (82, 557)], "p2 DEF": [0, (188, 557)]}
-        self.map = code.Config["MAP"]["map 2"]
+        self.map = code.load_map
         self.__map_img = pygame.image.load(self.map["img"]).convert()
         self.red_dot_mark = pygame.image.load(code.Config["IMG"]["select mark"]).convert()
         self.red_dot_mark.set_colorkey(code.WHITE)

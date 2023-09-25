@@ -1,5 +1,6 @@
 {
-    "map 1": {
+    "default map": "map 2",
+    "default": {
       "img": "resource/img/map1.png",
       "list pos": {
         "tp available": [304, 305, 306, 403, 405, 407, 503, 504, 506, 507, 603, 605, 607, 704, 705, 706],
@@ -37,10 +38,10 @@
         "spurt dot": [404, 606]
       },
       "win dot occ list": {
-          "313": "",
-          "307": "",
-          "703": "",
-          "707": ""
+          "A": "",
+          "B": "",
+          "C": "",
+          "D": ""
         },
       "person capacity": 2,
       "person init pos": [109, 901]
