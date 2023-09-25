@@ -197,13 +197,16 @@ class Gaming:
     def __init__(self):
         self.__list_gaming_val = {"p1 HP": [5, (75, 546)], "p2 HP": [5, (181, 546)],
                                   "p1 DEF": [0, (82, 557)], "p2 DEF": [0, (188, 557)]}
-        self.map = code.Config["MAP"]["map 1"]
+        self.map = code.Config["MAP"]["map 2"]
         self.__map_img = pygame.image.load(self.map["img"]).convert()
         self.red_dot_mark = pygame.image.load(code.Config["IMG"]["select mark"]).convert()
         self.red_dot_mark.set_colorkey(code.WHITE)
 
-    def start_init(self):
+    def start_init(self, occ_dict=None):
         code.SCREEN.blit(self.__map_img, (0, 0))
+        if occ_dict:
+            for i in occ_dict.keys():
+                occ_dict[i] = ""
         pygame.display.flip()
 
     def __val_check(self):

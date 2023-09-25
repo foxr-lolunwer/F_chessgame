@@ -18,7 +18,7 @@ if __name__ == '__main__':
     ui = screen.UI()
     gaming_screen = screen.Gaming()
     map_pos = gaming_screen.map["list pos"]
-    win_dot_occ = code.Config["MAP"]["map 1"]["win dot occ list"]
+    win_dot_occ = code.Config["MAP"]["map 2"]["win dot occ list"]
     count = 0
     code.play_music()
     code.date_write("-GAME INIT DONE-", code.DATE_FILE)
@@ -33,7 +33,7 @@ if __name__ == '__main__':
                     gaming_screen.map["person init pos"][0], code.change_pos(gaming_screen.map["person init pos"][0])))
                 player2 = person.Person("2", (
                     gaming_screen.map["person init pos"][1], code.change_pos(gaming_screen.map["person init pos"][1])))
-                gaming_screen.start_init()
+                gaming_screen.start_init(occ_dict=win_dot_occ)
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                 ui.ui_gaming_val(win_dot_occ)
                 ui.ui_gaming_data_new(player1, player2)
@@ -187,7 +187,7 @@ if __name__ == '__main__':
                     gaming_screen.map["person init pos"][0], code.change_pos(gaming_screen.map["person init pos"][0])))
                 player2 = person.AIPerson("2", (
                     gaming_screen.map["person init pos"][1], code.change_pos(gaming_screen.map["person init pos"][1])))
-                gaming_screen.start_init()
+                gaming_screen.start_init(occ_dict=win_dot_occ)
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                 ui.ui_gaming_val(win_dot_occ)
                 ui.ui_gaming_data_new(player1, player2)
