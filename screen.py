@@ -12,7 +12,7 @@ LOAD_IMG = pygame.image.load(code.Config["IMG"]["load"]).convert()
 def load():
     code.SCREEN.fill(code.WHITE)
     code.SCREEN.blit(LOAD_IMG, (130, 100))
-    code.text_display("LOADING", (400, 600))
+    code.text_display(code.T["LOADING"], (400, 600))
     pygame.display.flip()
     time.sleep(0.5)
 
@@ -28,11 +28,11 @@ class Menu:
 
     def menu_main(self):
         code.SCREEN.blit(self.__main_bg, (0, 0))
-        code.text_display("Game Ver: 0.05", (477, 26.5), color=code.RED)
-        code.text_display("Start Game", (424, 183.5), color=code.WHITE)
-        code.text_display("Course", (424, 291.5), color=code.WHITE)
-        code.text_display("Setting", (424, 397.5), color=code.WHITE)
-        code.text_display("Exit Game", (424, 503.5), color=code.WHITE)
+        code.text_display(code.T["Game Ver: 0.08"], (477, 26.5), size=code.FONT_SMALL,color=code.RED)
+        code.text_display(code.T["Start Game"], (424, 183.5), color=code.WHITE)
+        code.text_display(code.T["Course"], (424, 291.5), color=code.WHITE)
+        code.text_display(code.T["Setting"], (424, 397.5), color=code.WHITE)
+        code.text_display(code.T["Exit Game"], (424, 503.5), color=code.WHITE)
         pygame.display.flip()
         while True:
             code.music_continue()
@@ -56,8 +56,8 @@ class Menu:
     @staticmethod
     def menu_start():
         code.SCREEN.fill(code.WHITE)
-        code.text_display("PVP", code.change_pos(306), color=code.WHITE, button_color=code.RED)
-        code.text_display("PVE", code.change_pos(506), color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["PVP"], code.change_pos(306), color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["PVE"], code.change_pos(506), color=code.WHITE, button_color=code.RED)
         pygame.display.flip()
         while True:
             code.music_continue()
@@ -71,11 +71,11 @@ class Menu:
 
     def menu_setting(self):
         code.SCREEN.fill(code.WHITE)
-        code.text_display("Game Speed:", code.change_pos(306), color=code.WHITE, button_color=code.RED)
-        code.text_display("Game Music Volume:", code.change_pos(506), color=code.WHITE, button_color=code.RED)
-        code.text_display("Game AI:", code.change_pos(706), color=code.WHITE, button_color=code.RED)
-        code.text_display("SAVE&EXIT:", code.change_pos(908), color=code.WHITE, button_color=code.RED)
-        code.text_display("EXIT", code.change_pos(202), size=code.FONT_BIG, color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["Game Speed:"], code.change_pos(306), color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["Game Music Volume:"], code.change_pos(506), color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["Game AI:"], code.change_pos(706), color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["SAVE&EXIT:"], code.change_pos(908), color=code.WHITE, button_color=code.RED)
+        code.text_display(code.T["EXIT"], code.change_pos(202), size=code.FONT_BIG, color=code.WHITE, button_color=code.RED)
         self.__toget_setting()
         self.__box_set_difficulty()
         self.bar_speed.pos = code.change_pos(405)
@@ -83,7 +83,7 @@ class Menu:
         self.bar_speed.display()
         self.bar_volume.display()
         code.SCREEN.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
-        code.text_display("music", (411, 276), size=code.FONT_SMALL)
+        code.text_display(code.T["music"], (411, 276), size=code.FONT_SMALL)
         pygame.display.flip()
 
         while True:
@@ -129,7 +129,7 @@ class Menu:
                 save = json.dumps(code.Config["SETTING"], indent=4)
                 with open("config/set.json", "w+") as file:
                     file.write(save)
-                code.text_display("Saved", code.change_pos(1108))
+                code.text_display(code.T["Saved"], code.change_pos(1108))
                 pygame.display.flip()
                 time.sleep(0.5)
                 return
@@ -164,14 +164,14 @@ class UI:
 
     def ui_gaming_val(self, occ_dict):
         code.SCREEN.blit(self.__gaming_bottom, (0, 477))
-        code.text_display("Player 1", (43, 487), code.FONT_BIG, center=False)
-        code.text_display("HP:", (43, 537), center=False)
-        code.text_display("DEF:", (43, 557), center=False)
-        code.text_display("Player 2", (149, 487), code.FONT_BIG, center=False)
-        code.text_display("HP:", (149, 537), center=False)
-        code.text_display("DEF:", (149, 557), center=False)
-        code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY)  # 掷骰子按钮
-        code.text_display("Return to menu", code.change_pos(219), code.FONT_BIG, button_color=code.RED,
+        code.text_display(code.T["Player 1"], (43, 487), code.FONT_BIG, center=False)
+        code.text_display(code.T["HP:"], (43, 537), center=False)
+        code.text_display(code.T["DEF:"], (43, 557), center=False)
+        code.text_display(code.T["Player 2"], (149, 487), code.FONT_BIG, center=False)
+        code.text_display(code.T["HP:"], (149, 537), center=False)
+        code.text_display(code.T["DEF:"], (149, 557), center=False)
+        code.text_display(code.T["throw!"], code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY)  # 掷骰子按钮
+        code.text_display(code.T["Return to menu"], code.change_pos(219), code.FONT_BIG, button_color=code.RED,
                           color=code.WHITE)
         i = 0
         for k in occ_dict.keys():
@@ -189,7 +189,7 @@ class UI:
 
 
 def ui_gaming_turn(count):
-    code.text_display("Turn %03d" % count, (50, 30), button_color=code.WHITE)
+    code.text_display(code.T["Turn"] + "%03d" % count, (50, 30), button_color=code.WHITE)
     pygame.display.flip()
 
 
@@ -242,8 +242,9 @@ class Gaming:
         if AI:
             time.sleep(0.5)
             return
-        code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.RED, center=True)
+        code.text_display(code.T["throw!"], code.change_pos(1108), code.FONT_BIG, button_color=code.RED, center=True)
         pygame.display.flip()
+        pygame.event.clear()
         while True:
             code.music_continue()
             code.CLOCK.tick(10)
@@ -255,7 +256,7 @@ class Gaming:
                 event.pos = (event.pos[0], event.pos[1])
                 count = code.change_pos(event.pos)
                 if count in (1107, 1108, 1109):
-                    code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
+                    code.text_display(code.T["throw!"], code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
                                       center=True)
                     pygame.display.flip()
                     break
@@ -263,7 +264,7 @@ class Gaming:
                     return "return"
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
-                    code.text_display("throw!", code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
+                    code.text_display(code.T["throw!"], code.change_pos(1108), code.FONT_BIG, button_color=code.GRAY,
                                       center=True)
                     pygame.display.flip()
                     break
@@ -276,7 +277,7 @@ class Gaming:
 
     def screen_win(self, winner):
         if winner:
-            code.text_display(winner + "win this game!", code.change_pos(515), code.FONT_BIG, button_color=code.RED,
+            code.text_display(winner + code.T["win this game!"], code.change_pos(515), code.FONT_BIG, button_color=code.RED,
                               color=code.WHITE)
             pygame.display.flip()
             time.sleep(2)

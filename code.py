@@ -15,13 +15,23 @@ content1 = f1.read()
 content2 = f2.read()
 content3 = f3.read()
 content4 = f4.read()
+f1.close()
 f2.close()
 f3.close()
 f4.close()
+# f5 = open("localization/zh-cn.json", mode="r", encoding="utf-8")
+# print(f5.read())
+with open("localization/en.json", 'r', encoding='utf-8') as f5:
+    content = f5.read()
+
 Config = {"SETTING": json.loads(content1), "IMG": json.loads(content2), "SOUND": json.loads(content3), "MAP": json.loads(content4)}
+T = json.loads(content)
+# f5.close()
+del content4, content3, content2, content1
+
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示
+pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示10
 SCREEN = pygame.display.set_mode((1060, 636))  # 设置游戏窗口大小：530*636（像素）
 icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
 pygame.display.set_icon(icon)  # 显示窗口坐标
@@ -77,17 +87,18 @@ def change_pos(pos, center_pos=False):
 
 # 获取鼠标位置的方框坐标
 def get_mouse_pos(g_pos=True):
+    pygame.event.clear()
     while True:
-        event_move = pygame.event.wait()
-        if event_move.type == pygame.MOUSEBUTTONDOWN:
-            event_move.pos = (event_move.pos[0], event_move.pos[1])
-            if g_pos:
-                return change_pos(event_move.pos)
-            else:
-                return event_move.pos
-        if event_move.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+        for event_move in pygame.event.get():
+            if event_move.type == pygame.MOUSEBUTTONDOWN:
+                event_move.pos = (event_move.pos[0], event_move.pos[1])
+                if g_pos:
+                    return change_pos(event_move.pos)
+                else:
+                    return event_move.pos
+            if event_move.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
 
 # 游戏初始化
@@ -97,9 +108,9 @@ def game_init():
 
 
 # 字体
-FONT_BIG = pygame.font.SysFont('arial', 30)  # 默认大号字体
-FONT_MID = pygame.font.SysFont('arial', 16)  # 默认正常字体
-FONT_SMALL = pygame.font.SysFont('arial', 12)  # 默认小号字体
+FONT_BIG = pygame.font.SysFont('SimHei', 30)  # 默认大号字体
+FONT_MID = pygame.font.SysFont('SimHei', 16)  # 默认正常字体
+FONT_SMALL = pygame.font.SysFont('SimHei', 12)  # 默认小号字体
 
 # 通用数据集
 IMG = [pygame.image.load(Config["IMG"]["select box"][0]).convert(),
@@ -153,7 +164,7 @@ def music_volume_change():
     if not Config["SETTING"]["music"]:
         pygame.mixer.music.stop()
         return
-    pygame.mixer.music.set_volume(Config["SETTING"]["game volume"] * 0.001)
+    pygame.mixer.music.set_volume(Config["SETTING"]["game volume"] * 0.01)
     pygame.mixer.music.unpause()
 
 
@@ -217,3 +228,12 @@ class ProgressBar:
                     self.val = self.length
                 return True
         return False
+
+
+# 字典返回键值映射，根据键值返回键
+def map_dict_key_rel(val, map_dict_rel=load_map["win dot occ list rel"]):
+    dict_keys = map_dict_rel.keys()
+    for i in dict_keys:
+        if val == map_dict_rel[i]:
+            return i
+    return None
