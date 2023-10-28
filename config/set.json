@@ -1,7 +1,8 @@
 {
-    "game speed": 51,
-    "game volume": 100,
-    "music": false,
+    "game speed": 90,
+    "game volume": 79,
+    "music": true,
+    "language": "zh-cn",
     "M_dice": [
         "cross",
         "cross",
@@ -113,6 +114,6 @@
             "def init": 0,
             "judge": "simple"
         },
-        "setting": "normal"
+        "setting": "easy"
     }
 }

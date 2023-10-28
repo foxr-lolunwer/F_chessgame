@@ -15,7 +15,6 @@ import AI_operation
 if __name__ == '__main__':
     code.game_init()
     menu = screen.Menu()
-    ui = screen.UI()
     gaming_screen = screen.Gaming()
     map_pos = code.load_map["list pos"]
     win_dot_occ = code.load_map["win dot occ list"]
@@ -35,8 +34,8 @@ if __name__ == '__main__':
                     gaming_screen.map["person init pos"][1], code.change_pos(gaming_screen.map["person init pos"][1])))
                 gaming_screen.start_init(occ_dict=win_dot_occ)
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                ui.ui_gaming_val(win_dot_occ)
-                ui.ui_gaming_data_new(player1, player2)
+                gaming_screen.ui_gaming_val(win_dot_occ)
+                gaming_screen.ui_gaming_data_new(player1, player2)
                 TURN = True
                 # 开始回合
                 code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
@@ -47,7 +46,7 @@ if __name__ == '__main__':
                     screen.ui_gaming_turn(count)
                     # move p1
                     player1.selected()
-                    gaming_screen.display_statue(code.T[code.T["Please throw!"]], code.SCREEN)
+                    gaming_screen.display_statue(code.T["Please throw!"], code.SCREEN)
                     if gaming_screen.gaming_throw():
                         break
                     command_move = operation.dice("m")
@@ -62,7 +61,7 @@ if __name__ == '__main__':
                     player1.action_move -= 1
                     if player1.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player1.pos[0])] = "p1"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
@@ -78,7 +77,7 @@ if __name__ == '__main__':
                     player1.action_move -= 1
                     if player1.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player1.pos[0])] = "p1"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
@@ -98,10 +97,9 @@ if __name__ == '__main__':
                     if person_pos:
                         player2.pos = person_pos
                     player2.action_move -= 1
-                    print("pos-------", player2.pos[1])
                     if player2.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player2.pos[0])] = "p2"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
@@ -117,14 +115,14 @@ if __name__ == '__main__':
                     player2.action_move -= 1
                     if player2.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player2.pos[0])] = "p2"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
                     # p1 fight
                     if player1.DEF_dice:
                         player1.DEF_dice = 0
-                        ui.ui_gaming_data_new(player1, player2)
+                        gaming_screen.ui_gaming_data_new(player1, player2)
                     player1.selected()
                     gaming_screen.display_statue(code.T["Please throw!"], code.SCREEN)
                     if gaming_screen.gaming_throw():
@@ -151,12 +149,12 @@ if __name__ == '__main__':
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
                         break
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     player1.selected(False)
                     # p2 fight
                     if player2.DEF_dice:
                         player2.DEF_dice = 0
-                        ui.ui_gaming_data_new(player1, player2)
+                        gaming_screen.ui_gaming_data_new(player1, player2)
                     player2.selected()
                     gaming_screen.display_statue(code.T["Please throw!"], code.SCREEN)
                     if gaming_screen.gaming_throw():
@@ -181,7 +179,7 @@ if __name__ == '__main__':
                     else:
                         "fight error"
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     player2.selected(False)
             elif command == "PVE":
                 player1 = person.Person("1", (
@@ -190,8 +188,8 @@ if __name__ == '__main__':
                     gaming_screen.map["person init pos"][1], code.change_pos(gaming_screen.map["person init pos"][1])))
                 gaming_screen.start_init(occ_dict=win_dot_occ)
                 gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
-                ui.ui_gaming_val(win_dot_occ)
-                ui.ui_gaming_data_new(player1, player2)
+                gaming_screen.ui_gaming_val(win_dot_occ)
+                gaming_screen.ui_gaming_data_new(player1, player2)
                 TURN = True
                 # 开始回合
                 code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
@@ -217,7 +215,7 @@ if __name__ == '__main__':
                     player1.action_move -= 1
                     if player1.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player1.pos[0])] = "p1"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
@@ -233,7 +231,7 @@ if __name__ == '__main__':
                     player1.action_move -= 1
                     if player1.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player1.pos[0])] = "p1"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
                         break
@@ -245,7 +243,7 @@ if __name__ == '__main__':
                         player2.pos = (person_pos, code.change_pos(person_pos))
                     if player2.occ_buff(map_pos):
                         win_dot_occ[code.map_dict_key_rel(player2.pos[0])] = "p2"
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                     if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
@@ -258,7 +256,7 @@ if __name__ == '__main__':
                             player2.pos = (person_pos, code.change_pos(person_pos))
                         if player2.occ_buff(map_pos):
                             win_dot_occ[code.map_dict_key_rel(player2.pos[0])] = "p2"
-                        ui.ui_gaming_data_new(player1, player2)
+                        gaming_screen.ui_gaming_data_new(player1, player2)
                         gaming_screen.flip_screen(player1, player2, count, win_dot_occ)
                         time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 0.5)
                         if gaming_screen.screen_win(operation.find_winner(occ_dict=win_dot_occ)):
@@ -266,7 +264,7 @@ if __name__ == '__main__':
                     # p1 fight
                     if player1.DEF_dice:
                         player1.DEF_dice = 0
-                        ui.ui_gaming_data_new(player1, player2)
+                        gaming_screen.ui_gaming_data_new(player1, player2)
                     player1.selected()
                     gaming_screen.display_statue(code.T["Please throw!"], code.SCREEN)
                     if gaming_screen.gaming_throw():
@@ -295,12 +293,12 @@ if __name__ == '__main__':
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
                         break
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     player1.selected(False)
                     # p2 fight
                     if player2.DEF_dice:
                         player2.DEF_dice = 0
-                        ui.ui_gaming_data_new(player1, player2)
+                        gaming_screen.ui_gaming_data_new(player1, player2)
                     player2.selected()
                     gaming_screen.display_statue(code.T["Please throw!"], code.SCREEN)
                     gaming_screen.gaming_throw("AI")
@@ -326,7 +324,7 @@ if __name__ == '__main__':
                     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
                     if gaming_screen.screen_win(operation.find_winner(player1.HP, player2.HP)):
                         break
-                    ui.ui_gaming_data_new(player1, player2)
+                    gaming_screen.ui_gaming_data_new(player1, player2)
                     player2.selected(False)
             else:
                 continue  # error

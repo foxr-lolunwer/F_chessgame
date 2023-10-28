@@ -19,12 +19,10 @@ f1.close()
 f2.close()
 f3.close()
 f4.close()
-# f5 = open("localization/zh-cn.json", mode="r", encoding="utf-8")
-# print(f5.read())
-with open("localization/en.json", 'r', encoding='utf-8') as f5:
+Config = {"SETTING": json.loads(content1), "IMG": json.loads(content2), "SOUND": json.loads(content3), "MAP": json.loads(content4)}
+with open("localization/" + Config["SETTING"]["language"] + ".json", 'r', encoding='utf-8') as f5:
     content = f5.read()
 
-Config = {"SETTING": json.loads(content1), "IMG": json.loads(content2), "SOUND": json.loads(content3), "MAP": json.loads(content4)}
 T = json.loads(content)
 # f5.close()
 del content4, content3, content2, content1
@@ -131,8 +129,28 @@ def text_display(text, pos, size=FONT_MID, anti=True, center=True, button_color=
     if not button_color and color != WHITE:
         text_show.set_colorkey(WHITE)
     SCREEN.blit(text_show, text_rect)
+    if button_color:
+        button = ButtonText((change_pos(pos), pos), text_rect, color, button_color)
+        return button
     return text_rect
 
+
+class ButtonText:
+    def __init__(self, pos=None, rect=None, color=None, tip_color=None):
+        self.pos = pos
+        self.rect = rect
+        self.color = color
+        self.tip_color = tip_color
+
+    def is_click(self, mouse_pos):
+        if mouse_pos[0] in range(self.rect[0], self.rect[0] + self.rect[2] + 1) and mouse_pos[1] in range(self.rect[1], self.rect[1] + self.rect[3] + 1):
+            self._tip_color()
+            return True
+        else:
+            return False
+
+    def _tip_color(self):
+        return
 
 def play_effect(music_name, count=0):
     effect = pygame.mixer.Sound(Config["SOUND"][music_name])
