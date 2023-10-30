@@ -20,7 +20,7 @@ def occ_leave():
 
 
 def AI_move(ai, player, again=None):
-    GAMING.display_statue(code.T["Please throw!"], code.SCREEN)
+    screen.gaming_screen.display_statue(code.T["Player 2"] + code.T["Please throw!"], code.SCREEN)
     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
     difficulty = code.Config["SETTING"]["AI Difficulty"]["setting"]
     dice_list = code.Config["SETTING"]["AI Difficulty"][difficulty]["M_dice"]
@@ -30,9 +30,9 @@ def AI_move(ai, player, again=None):
         dice = again
     else:
         dice = random.choice(dice_list)
-    GAMING.display_statue(code.T[dice], code.SCREEN)
+    screen.gaming_screen.display_statue(code.T["Player 2"] + code.T[dice], code.SCREEN)
     pos_list = operation.move_person_pos(ai.pos[0], player.pos[0], dice, code.load_map["list pos"])
-    GAMING.display_move_red_dot(pos_list)
+    screen.gaming_screen.display_move_red_dot(pos_list)
     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
     return_pos_list = []
     print(pos_list)

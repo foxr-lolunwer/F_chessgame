@@ -19,7 +19,7 @@ def load():
 
 class Menu:
     def __init__(self):
-        self.__setting_list = {"game speed": (0, 0, 0), "game volume": (0, 0, 0), "AI difficulty": (0, 0, 0)}
+        self.__setting_list = {"AI difficulty": (0, 0, 0)}
         self.__main_bg = pygame.image.load(code.Config["IMG"]["main menu"]).convert()
         self.__toget_setting()
         self.bar_speed = code.ProgressBar(val=code.Config["SETTING"]["game speed"], num_display=("r", code.BLACK),
@@ -28,7 +28,7 @@ class Menu:
 
     def menu_main(self):
         code.SCREEN.blit(self.__main_bg, (0, 0))
-        code.text_display(code.T["Game Ver: 0.08"], (477, 26.5), size=code.FONT_SMALL, color=code.RED)
+        code.text_display(code.T["Game Ver"], (477, 26.5), size=code.FONT_SMALL, color=code.RED)
         code.text_display(code.T["Start Game"], (424, 183.5), color=code.WHITE)
         code.text_display(code.T["Course"], (424, 291.5), color=code.WHITE)
         code.text_display(code.T["Setting"], (424, 397.5), color=code.WHITE)
@@ -71,13 +71,15 @@ class Menu:
 
     def menu_setting(self):
         code.SCREEN.fill(code.WHITE)
-        button_set = code.text_display(code.T["Game Speed:"], code.change_pos(306), color=code.WHITE,
+        button_set = code.text_display(code.T["Game Speed"], code.change_pos(306), color=code.WHITE,
                                        button_color=code.RED)
-        button_vol = code.text_display(code.T["Game Music Volume:"], code.change_pos(506), color=code.WHITE,
+        button_vol = code.text_display(code.T["Game Music Volume"], code.change_pos(506), color=code.WHITE,
                                        button_color=code.RED)
-        button_ai = code.text_display(code.T["Game AI:"], code.change_pos(706), color=code.WHITE, button_color=code.RED)
-        button_se = code.text_display(code.T["SAVE&EXIT:"], code.change_pos(908), color=code.WHITE,
+        button_ai = code.text_display(code.T["Game AI"], code.change_pos(706), color=code.WHITE, button_color=code.RED)
+        button_en = code.text_display(code.T["Game Language"], code.change_pos(906), color=code.WHITE, button_color=code.RED)
+        button_se = code.text_display(code.T["SAVE&EXIT"], code.change_pos(1108), color=code.WHITE,
                                       button_color=code.RED)
+
         button_ex = code.text_display(code.T["EXIT"], code.change_pos(202), size=code.FONT_BIG, color=code.WHITE,
                                       button_color=code.RED)
         self.__toget_setting()
@@ -129,6 +131,21 @@ class Menu:
                 self.__toget_setting()
                 self.__set_difficulty("slow")
                 continue
+            # elif down_mouse_g_pos == 1005:
+            #     code.Config["SETTING"]["AI Difficulty"]["setting"] = "hard"
+            #     self.__toget_setting()
+            #     self.__set_difficulty("fast")
+            #     continue
+            # elif down_mouse_g_pos == 1006:
+            #     code.Config["SETTING"]["AI Difficulty"]["setting"] = "normal"
+            #     self.__toget_setting()
+            #     self.__set_difficulty("mid")
+            #     continue
+            # elif down_mouse_g_pos == 1007:
+            #     code.Config["SETTING"]["AI Difficulty"]["setting"] = "easy"
+            #     self.__toget_setting()
+            #     self.__set_difficulty("slow")
+            #     continue
             elif button_se.is_click(down_mouse_pos):
                 save = json.dumps(code.Config["SETTING"], indent=4)
                 with open("config/set.json", "w+") as file:
@@ -176,6 +193,20 @@ def ui_gaming_turn(count):
     pygame.display.flip()
 
 
+class MessageList:
+    def __init__(self):
+        self.list_message = []
+        self.list_len = 16
+        self.list_message_rect = []
+        for i in range(self.list_len):
+            self.list_message.append("")
+
+    def append_list(self, text):
+        self.list_message.append(text)
+        code.date_write(text, code.DATE_FILE)
+        del self.list_message[0]
+
+
 class Gaming:
     def __init__(self):
         self.__list_gaming_val = {"p1 HP": [5, (75, 546)], "p2 HP": [5, (181, 546)],
@@ -186,6 +217,8 @@ class Gaming:
         self.red_dot_mark.set_colorkey(code.WHITE)
         self.__gaming_bottom = pygame.image.load(code.Config["IMG"]["gaming ui bottom"]).convert()
         self.button_rtm = code.ButtonText()
+        self.message_list = MessageList()
+        self.display_statue_count = 0
 
     def ui_gaming_val(self, occ_dict):
         code.SCREEN.blit(self.__gaming_bottom, (0, 477))
@@ -283,8 +316,19 @@ class Gaming:
         return None
 
     def display_statue(self, text, screen):
-        pygame.draw.rect(screen, code.WHITE, (535, 456, 530, 108))
-        code.text_display(text, code.change_pos(1115), code.FONT_BIG, color=code.GRAY)
+        self.display_statue_count += 1
+        print("count:", self.display_statue_count)
+        self.message_list.append_list(text)
+        print("message:", self.message_list.list_message)
+        for i in range(1, self.message_list.list_len + 1):
+            if self.display_statue_count > 1:
+                pygame.draw.rect(screen, code.WHITE, self.message_list.list_message_rect[i - 1])
+        for i in range(1, self.message_list.list_len + 1):
+            text_rect = code.text_display(self.message_list.list_message[-i], (747, 535 - 20 * i), code.FONT_MID, color=code.GRAY)
+            self.message_list.list_message_rect.append(text_rect)
+            if self.display_statue_count > 1:
+                del self.message_list.list_message_rect[0]
+            print(self.message_list.list_message_rect)
         pygame.display.flip()
 
     def screen_win(self, winner):
@@ -296,3 +340,7 @@ class Gaming:
             time.sleep(2)
             return "over"
         return None
+
+
+gaming_screen = Gaming()
+menu = Menu()

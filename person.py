@@ -12,7 +12,7 @@ class Person:
         self.HP = 5
         self.DEF_prop = 0
         self.DEF_dice = 0
-        self.pos = pos
+        self.pos = pos  # (g_pos, (p_pos))
         self.name = None
         self.damage_mul = 1
         self.action_move = 1

@@ -22,14 +22,14 @@ f4.close()
 Config = {"SETTING": json.loads(content1), "IMG": json.loads(content2), "SOUND": json.loads(content3), "MAP": json.loads(content4)}
 with open("localization/" + Config["SETTING"]["language"] + ".json", 'r', encoding='utf-8') as f5:
     content = f5.read()
-
+f5.close()
 T = json.loads(content)
-# f5.close()
 del content4, content3, content2, content1
 
 pygame.init()
 pygame.mixer.init()
-pygame.display.set_caption("ChessGame Ver0.05")  # 窗口标题显示10
+game_ver = 0.09
+pygame.display.set_caption("Game ver " + str(game_ver))  # 窗口标题显示10
 SCREEN = pygame.display.set_mode((1060, 636))  # 设置游戏窗口大小：530*636（像素）
 icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
 pygame.display.set_icon(icon)  # 显示窗口坐标
@@ -110,40 +110,40 @@ FONT_BIG = pygame.font.SysFont('SimHei', 30)  # 默认大号字体
 FONT_MID = pygame.font.SysFont('SimHei', 16)  # 默认正常字体
 FONT_SMALL = pygame.font.SysFont('SimHei', 12)  # 默认小号字体
 
-# 通用数据集
-IMG = [pygame.image.load(Config["IMG"]["select box"][0]).convert(),
-       pygame.image.load(Config["IMG"]["select box"][1]).convert()]
-
 
 # 文本显示函数（文本内容，显示位置，字体大小，是否抗锯齿，传入坐标意义-默认为中心点坐标，按钮颜色，字体颜色）
-def text_display(text, pos, size=FONT_MID, anti=True, center=True, button_color=None, color=BLACK):
+def text_display(text, p_pos, size=FONT_MID, anti=True, center=True, button_color=None, color=BLACK, get_rect=False):
     if button_color:
         text_show = size.render(text, anti, color, button_color)
     else:
         text_show = size.render(text, anti, color)
     text_rect = text_show.get_rect()
     if center:
-        text_rect.center = pos
+        text_rect.center = p_pos
     else:
-        text_rect.topleft = pos
+        text_rect.topleft = p_pos
     if not button_color and color != WHITE:
         text_show.set_colorkey(WHITE)
     SCREEN.blit(text_show, text_rect)
-    if button_color:
-        button = ButtonText((change_pos(pos), pos), text_rect, color, button_color)
+    if button_color or get_rect:
+        button = ButtonText((change_pos(p_pos), p_pos), text_rect, button_color)
         return button
     return text_rect
 
 
 class ButtonText:
-    def __init__(self, pos=None, rect=None, color=None, tip_color=None):
+    def __init__(self, pos=((0, 0), 0), rect=None, tip_color=None):
         self.pos = pos
         self.rect = rect
-        self.color = color
+        self.color = tip_color
         self.tip_color = tip_color
 
-    def is_click(self, mouse_pos):
-        if mouse_pos[0] in range(self.rect[0], self.rect[0] + self.rect[2] + 1) and mouse_pos[1] in range(self.rect[1], self.rect[1] + self.rect[3] + 1):
+    def change_pos(self, p_pos):
+        self.pos = (change_pos(p_pos), p_pos)
+        self.rect = (p_pos[0], p_pos[1], self.rect[2], self.rect[3])
+
+    def is_click(self, mouse_p_pos):
+        if mouse_p_pos[0] in range(self.rect[0], self.rect[0] + self.rect[2] + 1) and mouse_p_pos[1] in range(self.rect[1], self.rect[1] + self.rect[3] + 1):
             self._tip_color()
             return True
         else:
@@ -151,6 +151,14 @@ class ButtonText:
 
     def _tip_color(self):
         return
+
+
+# 通用数据集
+IMG = [pygame.image.load(Config["IMG"]["select box"][0]).convert(),
+       pygame.image.load(Config["IMG"]["select box"][1]).convert()]
+button_box = ButtonText(rect=IMG[0].get_rect())
+print(button_box.rect)
+
 
 def play_effect(music_name, count=0):
     effect = pygame.mixer.Sound(Config["SOUND"][music_name])
