@@ -6,19 +6,10 @@ import pygame
 
 import code
 
-LOAD_IMG = pygame.image.load(code.Config["IMG"]["load"]).convert()
-
-
-def load():
-    code.SCREEN.fill(code.WHITE)
-    code.SCREEN.blit(LOAD_IMG, (130, 100))
-    code.text_display(code.T["LOADING"], (400, 600))
-    pygame.display.flip()
-    time.sleep(0.5)
-
 
 class Menu:
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
         self.__setting_list = {"AI difficulty": (0, 0, 0)}
         self.__main_bg = pygame.image.load(code.Config["IMG"]["main menu"]).convert()
         self.__toget_setting()
@@ -27,7 +18,7 @@ class Menu:
         self.bar_volume = code.ProgressBar(val=code.Config["SETTING"]["game volume"], num_display=("r", code.BLACK))
 
     def menu_main(self):
-        code.SCREEN.blit(self.__main_bg, (0, 0))
+        self.screen.blit(self.__main_bg, (0, 0))
         code.text_display(code.T["Game Ver"], (477, 26.5), size=code.FONT_SMALL, color=code.RED)
         code.text_display(code.T["Start Game"], (424, 183.5), color=code.WHITE)
         code.text_display(code.T["Course"], (424, 291.5), color=code.WHITE)
@@ -53,9 +44,8 @@ class Menu:
             else:
                 continue
 
-    @staticmethod
-    def menu_start():
-        code.SCREEN.fill(code.WHITE)
+    def menu_start(self):
+        self.screen.fill(code.WHITE)
         button_pvp = code.text_display(code.T["PVP"], code.change_pos(306), color=code.WHITE, button_color=code.RED)
         button_pve = code.text_display(code.T["PVE"], code.change_pos(506), color=code.WHITE, button_color=code.RED)
         pygame.display.flip()
@@ -70,7 +60,7 @@ class Menu:
                 continue
 
     def menu_setting(self):
-        code.SCREEN.fill(code.WHITE)
+        self.screen.fill(code.WHITE)
         button_set = code.text_display(code.T["Game Speed"], code.change_pos(306), color=code.WHITE,
                                        button_color=code.RED)
         button_vol = code.text_display(code.T["Game Music Volume"], code.change_pos(506), color=code.WHITE,
@@ -88,7 +78,7 @@ class Menu:
         self.bar_volume.pos = code.change_pos(605)
         self.bar_speed.display()
         self.bar_volume.display()
-        button_mus = code.SCREEN.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
+        button_mus = self.screen.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
         code.text_display(code.T["music"], (411, 276), size=code.FONT_SMALL)
         pygame.display.flip()
 
@@ -112,7 +102,7 @@ class Menu:
             elif down_mouse_g_pos == 608:
                 code.Config["SETTING"]["music"] = not code.Config["SETTING"]["music"]
                 print(code.Config["SETTING"]["music"])
-                code.SCREEN.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
+                self.screen.blit(code.IMG[code.Config["SETTING"]["music"]], code.change_pos(608))
                 code.music_volume_change()
                 pygame.display.flip()
                 continue
@@ -165,9 +155,9 @@ class Menu:
         code.date_write("setting: AI difficulty " + val, code.DATE_FILE)
 
     def __box_set_difficulty(self):
-        code.SCREEN.blit(code.IMG[self.__setting_list["AI difficulty"][0]], code.change_pos(805))
-        code.SCREEN.blit(code.IMG[self.__setting_list["AI difficulty"][1]], code.change_pos(806))
-        code.SCREEN.blit(code.IMG[self.__setting_list["AI difficulty"][2]], code.change_pos(807))
+        self.screen.blit(code.IMG[self.__setting_list["AI difficulty"][0]], code.change_pos(805))
+        self.screen.blit(code.IMG[self.__setting_list["AI difficulty"][1]], code.change_pos(806))
+        self.screen.blit(code.IMG[self.__setting_list["AI difficulty"][2]], code.change_pos(807))
         pygame.display.flip()
 
     def __toget_setting(self):
@@ -208,7 +198,8 @@ class MessageList:
 
 
 class Gaming:
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
         self.__list_gaming_val = {"p1 HP": [5, (75, 546)], "p2 HP": [5, (181, 546)],
                                   "p1 DEF": [0, (82, 557)], "p2 DEF": [0, (188, 557)]}
         self.map = code.load_map
@@ -221,7 +212,7 @@ class Gaming:
         self.display_statue_count = 0
 
     def ui_gaming_val(self, occ_dict):
-        code.SCREEN.blit(self.__gaming_bottom, (0, 477))
+        self.screen.blit(self.__gaming_bottom, (0, 477))
         code.text_display(code.T["Player 1"], (43, 487), code.FONT_BIG, center=False)
         code.text_display(code.T["HP:"], (43, 537), center=False)
         code.text_display(code.T["DEF:"], (43, 557), center=False)
@@ -248,7 +239,7 @@ class Gaming:
         pygame.display.flip()
 
     def start_init(self, occ_dict=None):
-        code.SCREEN.blit(self.__map_img, (0, 0))
+        self.screen.blit(self.__map_img, (0, 0))
         if occ_dict:
             for i in occ_dict.keys():
                 occ_dict[i] = ""
@@ -265,9 +256,9 @@ class Gaming:
         return
 
     def flip_screen(self, person1, person2, count, occ_dict=None):
-        code.SCREEN.blit(self.__map_img, (0, 0))
-        code.SCREEN.blit(person1.img[0], person1.pos[1])
-        code.SCREEN.blit(person2.img[0], person2.pos[1])
+        self.screen.blit(self.__map_img, (0, 0))
+        self.screen.blit(person1.img[0], person1.pos[1])
+        self.screen.blit(person2.img[0], person2.pos[1])
         ui_gaming_turn(count)
         if occ_dict:
             i = 0
@@ -280,7 +271,7 @@ class Gaming:
     def display_move_red_dot(self, g_pos):
         if g_pos:
             for i in g_pos:
-                code.SCREEN.blit(self.red_dot_mark, code.change_pos(i))
+                self.screen.blit(self.red_dot_mark, code.change_pos(i))
         pygame.display.flip()
 
     def gaming_throw(self, AI=None):
@@ -315,14 +306,14 @@ class Gaming:
                     break
         return None
 
-    def display_statue(self, text, screen):
+    def display_statue(self, text):
         self.display_statue_count += 1
         print("count:", self.display_statue_count)
         self.message_list.append_list(text)
         print("message:", self.message_list.list_message)
         for i in range(1, self.message_list.list_len + 1):
             if self.display_statue_count > 1:
-                pygame.draw.rect(screen, code.WHITE, self.message_list.list_message_rect[i - 1])
+                pygame.draw.rect(self.screen, code.WHITE, self.message_list.list_message_rect[i - 1])
         for i in range(1, self.message_list.list_len + 1):
             text_rect = code.text_display(self.message_list.list_message[-i], (747, 535 - 20 * i), code.FONT_MID, color=code.GRAY)
             self.message_list.list_message_rect.append(text_rect)

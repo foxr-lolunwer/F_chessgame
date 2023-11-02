@@ -26,13 +26,13 @@ f5.close()
 T = json.loads(content)
 del content4, content3, content2, content1
 
-pygame.init()
-pygame.mixer.init()
-game_ver = 0.09
-pygame.display.set_caption("Game ver " + str(game_ver))  # 窗口标题显示10
-SCREEN = pygame.display.set_mode((1060, 636))  # 设置游戏窗口大小：530*636（像素）
-icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
-pygame.display.set_icon(icon)  # 显示窗口坐标
+# pygame.init()
+# pygame.mixer.init()
+# game_ver = 0.09
+# pygame.display.set_caption("Game ver " + str(game_ver))  # 窗口标题显示10
+# display_screen = pygame.display.set_mode((1060, 636))  # 设置游戏窗口大小：530*636（像素）
+# icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
+# pygame.display.set_icon(icon)  # 显示窗口坐标
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -100,9 +100,9 @@ def get_mouse_pos(g_pos=True):
 
 
 # 游戏初始化
-def game_init():
-    date_write("-DATE FILE CREATE-", DATE_FILE)
-    SCREEN.fill(WHITE)
+# def game_init():
+#     date_write("-DATE FILE CREATE-", DATE_FILE)
+#     display_screen.fill(WHITE)
 
 
 # 字体
@@ -112,7 +112,7 @@ FONT_SMALL = pygame.font.SysFont('SimHei', 12)  # 默认小号字体
 
 
 # 文本显示函数（文本内容，显示位置，字体大小，是否抗锯齿，传入坐标意义-默认为中心点坐标，按钮颜色，字体颜色）
-def text_display(text, p_pos, size=FONT_MID, anti=True, center=True, button_color=None, color=BLACK, get_rect=False):
+def text_display(screen, text, p_pos, size=FONT_MID, anti=True, center=True, button_color=None, color=BLACK, get_rect=False):
     if button_color:
         text_show = size.render(text, anti, color, button_color)
     else:
@@ -124,7 +124,7 @@ def text_display(text, p_pos, size=FONT_MID, anti=True, center=True, button_colo
         text_rect.topleft = p_pos
     if not button_color and color != WHITE:
         text_show.set_colorkey(WHITE)
-    SCREEN.blit(text_show, text_rect)
+    screen.blit(text_show, text_rect)
     if button_color or get_rect:
         button = ButtonText((change_pos(p_pos), p_pos), text_rect, button_color)
         return button
@@ -212,7 +212,8 @@ def music_continue():
 
 # 进度条
 class ProgressBar:
-    def __init__(self, pos=None, val=None, length=100, width=20, color1=RED, color2=GRAY, num_display=None, background_color=WHITE, val_display_multiplier=1):
+    def __init__(self, pos=None, val=None, length=100, width=20, color1=RED, color2=GRAY, num_display=None, background_color=WHITE, val_display_multiplier=1, screen=None):
+        self.screen = screen
         self.length = length
         self.color1 = color1
         self.color2 = color2
@@ -224,22 +225,26 @@ class ProgressBar:
         self.num_statue = num_display
         self.text_rect = None
 
-    def display(self, val=None):
+    def display(self, screen=None, val=None):
+        if screen:
+            display_screen = screen
+        else:
+            display_screen = self.screen
         for i in range(0, self.length):
-            pygame.draw.rect(SCREEN, color=self.color2, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
+            pygame.draw.rect(display_screen, color=self.color2, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
         if val:
             self.val = val
         for i in range(0, self.val):
-            pygame.draw.rect(SCREEN, color=self.color1, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
+            pygame.draw.rect(display_screen, color=self.color1, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
         if self.num_statue[0]:
             if self.text_rect:
-                pygame.draw.rect(SCREEN, rect=self.text_rect, color=self.bg_color)
+                pygame.draw.rect(display_screen, rect=self.text_rect, color=self.bg_color)
             if self.num_statue[0] == "r":
-                self.text_rect = text_display("%03s" % str(round(self.val * self.val_display_mul, 1)),
+                self.text_rect = text_display(display_screen, "%03s" % str(round(self.val * self.val_display_mul, 1)),
                                               (self.pos[0] + self.length + 10, self.pos[1] + self.width // 2),
                                               color=self.num_statue[1], size=FONT_SMALL)
             if self.num_statue[0] == "c":
-                self.text_rect = text_display("%03s" % str(round(self.val * self.val_display_mul, 1)),
+                self.text_rect = text_display(display_screen, "%03s" % str(round(self.val * self.val_display_mul, 1)),
                                               (self.pos[0] + self.length // 2, self.pos[1] + self.width // 2),
                                               color=self.num_statue[1], size=FONT_SMALL)
         pygame.display.flip()

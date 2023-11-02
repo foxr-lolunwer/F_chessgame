@@ -4,7 +4,8 @@ import code
 
 
 class Person:
-    def __init__(self, number, pos, name):
+    def __init__(self, screen, number, pos, name=None):
+        self.screen = screen
         self.img = (pygame.image.load(code.Config["IMG"]["person " + number][0]).convert(),
                     pygame.image.load(code.Config["IMG"]["person " + number][1]).convert())
         self.img[0].set_colorkey(code.WHITE)
@@ -21,13 +22,13 @@ class Person:
 
     def selected(self, statue=True):
         if statue:
-            code.SCREEN.blit(self.img[1], self.pos[1])
+            self.screen.blit(self.img[1], self.pos[1])
         else:
-            code.SCREEN.blit(self.img[0], self.pos[1])
+            self.screen.blit(self.img[0], self.pos[1])
         pygame.display.flip()
 
     def flip_person_pos(self, i):
-        code.SCREEN.blit(self.img[i], self.pos[1])
+        self.screen.blit(self.img[i], self.pos[1])
         pygame.display.flip()
         
     def occ_buff(self, dict_map_pos):
