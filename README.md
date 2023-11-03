@@ -1,6 +1,6 @@
 # F'Chessgame UPDATA LOG - EN
 ---
-## Bate0.10 UPDATA - early beta version
+## Bata0.10 UPDATA - early beta version
 - The code has been completely rewritten, striving to get rid of the limitations of 1v1
 - Language switching settings are expected to be added after the rewrite is completed
 - It is expected that custom map functions will be implemented after the rewriting is completed
@@ -35,7 +35,7 @@
 --- 
 # F'Chessgame UPDATA LOG - CN
 ---
-## Bate0.10 UPDATA - early beta version
+## Bata0.10 UPDATA - early beta version
 - 代码全面重写，力求摆脱1v1的限制
 - 预计重写完成后添加语言切换设置
 - 预计重写完成后可实现自定义地图功能
