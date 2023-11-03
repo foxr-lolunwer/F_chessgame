@@ -7,7 +7,7 @@ import map_load
 import person
 import screen
 import smallmodel
-from operation import O_OPERATE, change_pos, get_mouse_pos
+from operation import change_pos
 
 
 class Turn:
@@ -29,8 +29,12 @@ class Turn:
         screen.GAMING.ui_gaming_val(map_load.MAP.list_pos_win_occ)
         screen.GAMING.ui_gaming_data_new(self.players)
         while self.turn:
-            for i in range(self.n):
-                self.__turn_move(self.players[i], self.players)
+            for player in self.players:
+                player.action_move = 1
+                other_players = self.players.copy()
+                other_players.remove(player)
+                if self.__turn_move(player, other_players):
+                    return True
             # for i in range(self.n):
             #     other_players = self.players
             #     del other_players[i]
@@ -45,45 +49,31 @@ class Turn:
 
         return False
 
+    # 返回值为true时返回主菜单
     def __turn_move(self, player, other_players):
-        other_players_pos0 = [p.pos[0] for p in other_players]
+        other_players_g_pos0 = [p.pos[0] for p in other_players]
         player.selected()
         screen.GAMING.display_statue(player.name + init.T["Please throw!"])
         if screen.GAMING.gaming_throw():
-            return
+            return True
         t_command_move = random.choice(init.Config["SETTING"]["M_dice"])
         screen.GAMING.display_statue(player.name + init.T[t_command_move])
-        t_command = self.__move_person_pos(player.pos[0], other_players_pos0, t_command_move)
-        screen.GAMING.display_move_red_dot(t_command)
-        t_person_pos = self.__move_click(t_command)
-        if t_person_pos == "return":
-            return
-        if t_person_pos:
-            player.pos = t_person_pos
-        player.action_move -= 1
-        # if player.occ_buff():
-        #     map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel(player.pos[0])] = "p" + str(player.number)
-        screen.GAMING.ui_gaming_data_new(self.players)
-        screen.GAMING.flip_screen(self.players, self.count)
-        if screen.GAMING.screen_win(self.__find_winner()):
-            return
-        if player.action_move > 0:
-            player.selected()
-            t_command = self.__move_person_pos(player.pos[0], other_players_pos0, t_command_move)
+        while player.action_move:
+            t_command = self.__move_person_pos(player.pos[0], other_players_g_pos0, t_command_move)
             screen.GAMING.display_move_red_dot(t_command)
-            t_person_pos = self.__move_click(t_command)
+            t_person_pos = screen.GAMING.move_click(t_command)
             if t_person_pos == "return":
-                return
+                return True
             if t_person_pos:
                 player.pos = t_person_pos
             player.action_move -= 1
             # if player.occ_buff():
             #     map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel(player.pos[0])] = "p" + str(player.number)
-            screen.GAMING.ui_gaming_data_new(player, other_players)
+            screen.GAMING.ui_gaming_data_new(self.players)
             screen.GAMING.flip_screen(self.players, self.count)
             if screen.GAMING.screen_win(self.__find_winner()):
-                return
-        return
+                return False
+        return False
 
     # def __turn_fight(self, player, other_players):
     #     other_players_pos0 = [p.pos[0] for p in other_players]
@@ -121,39 +111,41 @@ class Turn:
     #     player.selected(False)
     #     return
 
-    def __move_person_pos(self, per_g_pos, other_per_g_pos, dice_val):
-        player_g_pos_list = (per_g_pos, other_per_g_pos)
+    # 获取可以移动的所有位置
+    def __move_person_pos(self, player_g_pos, other_players_g_pos, dice_val):
+        players_g_pos = other_players_g_pos.copy()
+        players_g_pos.append(player_g_pos)
         move_available_pos = []
         while True:
             # 十字移动
             if dice_val == "cross":
-                move_available_pos_l = [per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100]
+                move_available_pos_l = [player_g_pos + 1, player_g_pos - 1, player_g_pos + 100, player_g_pos - 100]
                 move_available_pos = []
                 for i in move_available_pos_l:
-                    if i in map_load.MAP.pos_available and i not in player_g_pos_list:
+                    if i in map_load.MAP.pos_available and i not in players_g_pos:
                         move_available_pos.append(i)
             # 斜线移动
             elif dice_val == "diagonal":
-                move_available_pos_l = [per_g_pos + 99, per_g_pos - 99, per_g_pos + 101, per_g_pos - 101]
+                move_available_pos_l = [player_g_pos + 99, player_g_pos - 99, player_g_pos + 101, player_g_pos - 101]
                 move_available_pos = []
                 for i in move_available_pos_l:
-                    if i in map_load.MAP.pos_available and i not in player_g_pos_list:
+                    if i in map_load.MAP.pos_available and i not in players_g_pos:
                         move_available_pos.append(i)
             # 传送 ！未完成预定功能
             elif dice_val == "tp":
                 move_available_pos_l = map_load.MAP.pos_tp
                 move_available_pos = [0]
                 for i in move_available_pos_l:
-                    if i not in player_g_pos_list:
+                    if i not in other_players_g_pos:
                         move_available_pos.append(i)
             # 自由移动（十字移动两次）
             elif dice_val == "free":
-                move_available_pos_l = [per_g_pos, per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100,
-                                        per_g_pos + 2, per_g_pos - 2, per_g_pos + 200, per_g_pos - 200,
-                                        per_g_pos + 99, per_g_pos - 99, per_g_pos + 101, per_g_pos - 101]
+                move_available_pos_l = [player_g_pos, player_g_pos + 1, player_g_pos - 1, player_g_pos + 100, player_g_pos - 100,
+                                        player_g_pos + 2, player_g_pos - 2, player_g_pos + 200, player_g_pos - 200,
+                                        player_g_pos + 99, player_g_pos - 99, player_g_pos + 101, player_g_pos - 101]
                 move_available_pos = [0]
                 for i in move_available_pos_l:
-                    if i in map_load.MAP.pos_available and i != other_per_g_pos:
+                    if i in map_load.MAP.pos_available and i != other_players_g_pos:
                         move_available_pos.append(i)
             if move_available_pos:
                 return move_available_pos
@@ -201,25 +193,6 @@ class Turn:
         else:
             "fight_kill_val error"
         return 0
-
-    def __move_click(self, list_pos, AI=None):
-        if not list_pos:
-            return None
-        if AI:
-            pos = random.choice(list_pos)
-            pos = (pos, O_OPERATE.change_pos(pos))
-            return pos
-        while True:
-            smallmodel.MUSIC.music_continue()
-            down_mouse_move_g_pos = get_mouse_pos()
-            if down_mouse_move_g_pos in list_pos:
-                pos = (down_mouse_move_g_pos, change_pos(down_mouse_move_g_pos))  # 新位置坐标
-                smallmodel.MUSIC.play_effect("move")
-                return pos
-            elif down_mouse_move_g_pos in [218, 219, 220]:
-                return "return"
-            else:
-                continue
 
     def __find_winner(self, player1_hp=None, other_players_hp=None):
         # # 如果player1生命为零

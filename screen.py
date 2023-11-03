@@ -1,4 +1,5 @@
 import json
+import random
 import sys
 import time
 
@@ -240,9 +241,9 @@ class Gaming:
 
     def ui_gaming_data_new(self, players):
         for player in players:
-            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73, 537), center=False, button_color=init.GRAY_BG,
+            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * player.number, 537), center=False, button_color=init.GRAY_BG,
                                              color=init.RED)
-            operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop), (78, 557), center=False,
+            operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop), (78 + 111 * player.number, 557), center=False,
                                              button_color=init.GRAY_BG, color=init.RED)
         pygame.display.flip()
 
@@ -288,8 +289,7 @@ class Gaming:
             time.sleep(0.5)
             return
         button_thr = operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1108), init.FONT_BIG,
-                                                      button_color=init.RED,
-                                                      center=True)
+                                                      button_color=init.RED, center=True)
         pygame.display.flip()
         pygame.event.clear()
         while True:
@@ -318,11 +318,28 @@ class Gaming:
                     break
         return None
 
+    def move_click(self, list_pos, AI=None):
+        if not list_pos:
+            return None
+        if AI:
+            pos = random.choice(list_pos)
+            pos = (pos, operation.change_pos(pos))
+            return pos
+        while True:
+            smallmodel.MUSIC.music_continue()
+            down_mouse_move_g_pos = operation.get_mouse_pos()
+            if down_mouse_move_g_pos in list_pos:
+                pos = (down_mouse_move_g_pos, operation.change_pos(down_mouse_move_g_pos))  # 新位置坐标
+                smallmodel.MUSIC.play_effect("move")
+                return pos
+            elif self.button_rtm.is_click(operation.change_pos(down_mouse_move_g_pos)):
+                return "return"
+            else:
+                continue
+
     def display_statue(self, text):
         self.display_statue_count += 1
-        print("count:", self.display_statue_count)
         operation.MESSAGE_LIST.append_list(text)
-        print("message:", operation.MESSAGE_LIST.list_message)
         for i in range(1, operation.MESSAGE_LIST.list_len + 1):
             if self.display_statue_count > 1:
                 pygame.draw.rect(init.screen, init.WHITE, operation.MESSAGE_LIST.list_message_rect[i - 1])
@@ -333,7 +350,6 @@ class Gaming:
             operation.MESSAGE_LIST.list_message_rect.append(text_rect)
             if self.display_statue_count > 1:
                 del operation.MESSAGE_LIST.list_message_rect[0]
-            print(operation.MESSAGE_LIST.list_message_rect)
         pygame.display.flip()
 
     def screen_win(self, winner):
