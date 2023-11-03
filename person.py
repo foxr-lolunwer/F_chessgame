@@ -1,15 +1,15 @@
 import pygame
 
-import code
+import init
 
 
 class Person:
     def __init__(self, screen, number, pos, name=None):
         self.screen = screen
-        self.img = (pygame.image.load(code.Config["IMG"]["person " + number][0]).convert(),
-                    pygame.image.load(code.Config["IMG"]["person " + number][1]).convert())
-        self.img[0].set_colorkey(code.WHITE)
-        self.img[1].set_colorkey(code.WHITE)
+        self.img = (pygame.image.load(init.Config["IMG"]["person " + str(number + 1)][0]).convert(),
+                    pygame.image.load(init.Config["IMG"]["person " + str(number + 1)][1]).convert())
+        self.img[0].set_colorkey(init.WHITE)
+        self.img[1].set_colorkey(init.WHITE)
         self.number = number
         self.HP = 5
         self.DEF_prop = 0
@@ -60,7 +60,7 @@ class Person:
 
 
 class AIPerson(Person):
-    def __init__(self, number, pos, name, AI_Config_difficulty=code.Config["SETTING"]["AI Difficulty"][code.Config["SETTING"]["AI Difficulty"]["setting"]]):
+    def __init__(self, number, pos, name, AI_Config_difficulty=init.Config["SETTING"]["AI Difficulty"][init.Config["SETTING"]["AI Difficulty"]["setting"]]):
         super().__init__(number, pos, name)
         self.HP = AI_Config_difficulty["hp init"]
         self.DEF_ai = AI_Config_difficulty["def init"]

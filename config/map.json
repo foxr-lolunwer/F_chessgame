@@ -1,5 +1,5 @@
 {
-    "default map": "map 2",
+    "default map": "default",
     "default": {
       "img": "resource/img/map1.png",
       "list pos": {
@@ -15,11 +15,17 @@
         "spurt": [404, 606]
       },
       "win dot occ list": {
-          "303": "",
-          "307": "",
-          "703": "",
-          "707": ""
+          "A": "",
+          "B": "",
+          "C": "",
+          "D": ""
         },
+      "win dot occ list rel": {
+        "A": 303,
+        "B": 307,
+        "C": 703,
+        "D": 707
+      },
       "person capacity": 2,
       "person init pos": [109, 901]
     },

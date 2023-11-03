@@ -1,245 +1,162 @@
-import random
+import sys
 
+import pygame
+
+import init
 import code
-import person
 
 
-class Turn:
-    def __init__(self, screen, gaming_screen, game_map):
-        self.players = []
-        self.screen = screen
-        self.gaming_screen = gaming_screen
-        self.game_map = game_map
-        self.n = self.game_map.person_capacity
-        # 创建角色
-        for i in range(self.n):
-            self.players.append(person.Person(self.screen, i, self.game_map.person_pos_init[i]))
-        self.turn = True
-        self.count = 1
-        # 开始回合
-        code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
+def change_pos(pos, center_pos=False):
+    if type(pos) is int:
+        x_init = -48 + 53 * (pos % 100)
+        y_init = -48 + 53 * (pos // 100)
+        pos = (x_init, y_init)
+        return pos
+    elif type(pos) is tuple:
+        x_init = (pos[0] + 52) // 53
+        y_init = (pos[1] + 52) // 53
+        pos = x_init + 100 * y_init
+        if center_pos:
+            return change_pos(pos)
+        return pos
+    else:
+        return "error!"
 
-    def turn_pvp(self):
-        self.gaming_screen.start_init(occ_dict=self.game_map.list_pos_win_occ)
-        self.gaming_screen.flip_screen(self.players, self.count, self.game_map.list_pos_win_occ)
-        self.gaming_screen.ui_gaming_val(self.game_map.list_pos_win_occ)
-        self.gaming_screen.ui_gaming_data_new(self.players)
-        while self.turn:
-            for i in range(self.n):
-                other_players = self.players
-                del other_players[i]
-                self.__turn_move(self.players[i], other_players)
-            # for i in range(self.n):
-            #     other_players = self.players
-            #     del other_players[i]
-            #     self.__turn_fight(self.players[i], other_players)
-        return False
 
-    def turn_pve(self):
-        self.gaming_screen.start_init(occ_dict=self.game_map.list_pos_win_occ)
-        self.gaming_screen.flip_screen(self.players, self.count, self.game_map.list_pos_win_occ)
-        self.gaming_screen.ui_gaming_val(self.game_map.list_pos_win_occ)
-        self.gaming_screen.ui_gaming_data_new(self.players)
+def get_mouse_pos(g_pos=True):
+    pygame.event.clear()
+    while True:
+        for event_move in pygame.event.get():
+            if event_move.type == pygame.MOUSEBUTTONDOWN:
+                event_move.pos = (event_move.pos[0], event_move.pos[1])
+                if g_pos:
+                    return change_pos(event_move.pos)
+                else:
+                    return event_move.pos
+            if event_move.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-        return False
 
-    def __turn_move(self, player, other_players):
-        other_players_pos0 = [p.pos[0] for p in other_players]
-        player.selected()
-        self.gaming_screen.display_statue(player.name + code.T["Please throw!"], self.screen)
-        if self.gaming_screen.gaming_throw():
-            return
-        t_command_move = random.choice(code.Config["SETTING"]["M_dice"])
-        self.gaming_screen.display_statue(player.name + code.T[t_command_move], self.screen)
-        t_command = move_person_pos(player.pos[0], other_players_pos0, t_command_move, self.game_map.pos)
-        self.gaming_screen.display_move_red_dot(t_command)
-        t_person_pos = move_click(t_command)
-        if t_person_pos == "return":
-            return
-        if t_person_pos:
-            player.pos = t_person_pos
-        player.action_move -= 1
-        if player.occ_buff(self.game_map.pos):
-            self.game_map.list_pos_win_occ[code.map_dict_key_rel(player.pos[0])] = "p" + player.number
-        self.gaming_screen.ui_gaming_data_new(player, other_players)
-        self.gaming_screen.flip_screen(player, other_players, self.count, self.game_map.list_pos_win_occ)
-        if self.gaming_screen.screen_win(find_winner(occ_dict=self.game_map.list_pos_win_occ)):
-            return
-        if player.action_move > 0:
-            player.selected()
-            t_command = move_person_pos(player.pos[0], other_players_pos0, t_command_move, self.game_map.pos)
-            self.gaming_screen.display_move_red_dot(t_command)
-            t_person_pos = move_click(t_command)
-        if t_person_pos == "return":
-            return
-        if t_person_pos:
-            player.pos = t_person_pos
-        player.action_move -= 1
-        if player.occ_buff(self.game_map.pos):
-            self.game_map.list_pos_win_occ[code.map_dict_key_rel(player.pos[0])] = "p" + player.number
-        self.gaming_screen.ui_gaming_data_new(player, other_players)
-        self.gaming_screen.flip_screen(player, other_players, self.count, self.game_map.list_pos_win_occ)
-        if self.gaming_screen.screen_win(find_winner(occ_dict=self.game_map.list_pos_win_occ)):
-            return
+class Operation:
+    def __init__(self):
         return
 
-    # def __turn_fight(self, player, other_players):
-    #     other_players_pos0 = [p.pos[0] for p in other_players]
-    #     other_players_hp = [p.HP for p in other_players]
-    #     if player.DEF_dice:
-    #         player.DEF_dice = 0
-    #         self.gaming_screen.ui_gaming_data_new(player, other_players)
-    #     player.selected()
-    #     self.gaming_screen.display_statue(code.T["Player 1"] + code.T["Please throw!"], self.screen)
-    #     if self.gaming_screen.gaming_throw():
-    #         return
-    #     t_command_fight = random.choice(code.Config["SETTING"]["F_dice"])
-    #     self.gaming_screen.display_statue(code.T["Player 1"] + code.T[t_command_fight], self.screen)
-    #     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
-    #     t_command = fight_kill_val(player.pos[0], other_players_pos0, t_command_fight, self.game_map.pos)
-    #     if t_command >= 0:
-    #         t_command = t_command - (other_players.DEF_prop + other_players.DEF_dice)
-    #         if t_command > 0:
-    #             other_players.HP -= t_command
-    #             self.gaming_screen.display_statue(code.T["Player 1"] + code.T["Kill Val is "] + str(t_command),
-    #                                               self.screen)
-    #         else:
-    #             self.gaming_screen.display_statue(code.T["Player 1"] + code.T["MISS"], self.screen)
-    #     elif t_command == -1:
-    #         player.HP += 1
-    #         self.gaming_screen.display_statue(code.T["Player 1"] + code.T["HP Recovery"], self.screen)
-    #     elif t_command == -2:
-    #         player.DEF_dice += 1
-    #         self.gaming_screen.display_statue(code.T["Player 1"] + code.T["DEF + 1"], self.screen)
-    #     else:
-    #         "fight error"
-    #     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
-    #     if self.gaming_screen.screen_win(find_winner(player.HP, other_players_hp)):
-    #         return
-    #     self.gaming_screen.ui_gaming_data_new(player, other_players)
-    #     player.selected(False)
-    #     return
-
-
-def move_person_pos(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
-    player_g_pos_list = (per_g_pos, other_per_g_pos)
-    move_available_pos = []
-    while True:
-        # 十字移动
-        if dice_val == "cross":
-            move_available_pos_l = [per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100]
-            move_available_pos = []
-            for i in move_available_pos_l:
-                if i in dict_map_pos["game available"] and i not in player_g_pos_list:
-                    move_available_pos.append(i)
-        # 斜线移动
-        elif dice_val == "diagonal":
-            move_available_pos_l = [per_g_pos + 99, per_g_pos - 99, per_g_pos + 101, per_g_pos - 101]
-            move_available_pos = []
-            for i in move_available_pos_l:
-                if i in dict_map_pos["game available"] and i not in player_g_pos_list:
-                    move_available_pos.append(i)
-        # 传送 ！未完成预定功能
-        elif dice_val == "tp":
-            move_available_pos_l = dict_map_pos["tp available"]
-            move_available_pos = [0]
-            for i in move_available_pos_l:
-                if i not in player_g_pos_list:
-                    move_available_pos.append(i)
-        # 自由移动（十字移动两次）
-        elif dice_val == "free":
-            move_available_pos_l = [per_g_pos, per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100,
-                                    per_g_pos + 2, per_g_pos - 2, per_g_pos + 200, per_g_pos - 200,
-                                    per_g_pos + 99, per_g_pos - 99, per_g_pos + 101, per_g_pos - 101]
-            move_available_pos = [0]
-            for i in move_available_pos_l:
-                if i in dict_map_pos["game available"] and i != other_per_g_pos:
-                    move_available_pos.append(i)
-        if move_available_pos:
-            return move_available_pos
+    # 文本显示函数（文本内容，显示位置，字体大小，是否抗锯齿，传入坐标意义-默认为中心点坐标，按钮颜色，字体颜色）
+    def text_display(
+            self, text, p_pos, size=init.FONT_MID, anti=True, center=True, button_color=None, color=init.BLACK, get_rect=False):
+        if button_color:
+            text_show = size.render(text, anti, color, button_color)
         else:
-            return None
-
-
-def fight_kill_val(per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
-    if dice_val == "single shot":
-        code.play_effect("shot")
-        if other_per_g_pos in [per_g_pos, per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100, per_g_pos + 2,
-                               per_g_pos - 2, per_g_pos + 200, per_g_pos - 200, per_g_pos + 99, per_g_pos - 99,
-                               per_g_pos + 101, per_g_pos - 101]:
-            return 1
-    elif dice_val == "multiple shots":
-        code.play_effect("shot", 1)
-        if other_per_g_pos in [per_g_pos, per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100, per_g_pos + 2,
-                               per_g_pos - 2, per_g_pos + 200, per_g_pos - 200, per_g_pos + 99, per_g_pos - 99,
-                               per_g_pos + 101, per_g_pos - 101]:
-            return 2
-    elif dice_val == "X explosion":
-        code.play_effect("X explosion")
-        fight_pos_l = []
-        for i in range(1, 10):
-            if per_g_pos - 101 * i in dict_map_pos["game available"]:
-                fight_pos_l.append(per_g_pos - 101 * i)
-            if per_g_pos - 99 * i in dict_map_pos["game available"]:
-                fight_pos_l.append(per_g_pos - 99 * i)
-            if per_g_pos + 99 * i in dict_map_pos["game available"]:
-                fight_pos_l.append(per_g_pos + 99 * i)
-            if per_g_pos + 101 * i in dict_map_pos["game available"]:
-                fight_pos_l.append(per_g_pos + 101 * i)
-        if other_per_g_pos in fight_pos_l:
-            return 2
-    elif dice_val == "bomb":
-        code.play_effect("bomb")
-        return 1
-    elif dice_val == "life recovery":
-        code.play_effect("life recovery")
-        return -1
-    elif dice_val == "shield":
-        code.play_effect("shield")
-        return -2
-    else:
-        "fight_kill_val error"
-    return 0
-
-
-def move_click(list_pos, AI=None):
-    if not list_pos:
-        return None
-    if AI:
-        pos = random.choice(list_pos)
-        pos = (pos, code.change_pos(pos))
-        return pos
-    while True:
-        code.music_continue()
-        down_mouse_move_g_pos = code.get_mouse_pos()
-        if down_mouse_move_g_pos in list_pos:
-            pos = (down_mouse_move_g_pos, code.change_pos(down_mouse_move_g_pos))  # 新位置坐标
-            code.play_effect("move")
-            return pos
-        elif down_mouse_move_g_pos in [218, 219, 220]:
-            return "return"
+            text_show = size.render(text, anti, color)
+        text_rect = text_show.get_rect()
+        if center:
+            text_rect.center = p_pos
         else:
-            continue
+            text_rect.topleft = p_pos
+        if not button_color and color != init.WHITE:
+            text_show.set_colorkey(init.WHITE)
+        init.screen.blit(text_show, text_rect)
+        if button_color or get_rect:
+            button = ButtonText((change_pos(p_pos), p_pos), text_rect, button_color)
+            return button
+        return text_rect
 
 
-def find_winner(player1_hp=None, other_players_hp=None, occ_dict=None, all_player=None):
-    # 如果player1生命为零
-    if player1_hp <= 0:
-        return "p2"
-    # 如果player2生命为零
-    for other_player_hp in other_players_hp:
-        if other_player_hp <= 0:
-            return "p1"
-    if occ_dict:
-        occ_list = []
-        for k in occ_dict.keys():
-            occ_list.append(occ_dict[k])
-        if len(set(occ_list)) == 1 and occ_list[0] != "":
-            return occ_list[0]
-    return None
+O_OPERATE = Operation()
 
 
-def calculate_distance(per1_g_pos0, per2_g_pos0):
-    x = abs(per1_g_pos0 // 100 - per2_g_pos0 // 100)
-    y = abs(per1_g_pos0 % 100 - per2_g_pos0 % 100)
-    return x, y
+# 进度条
+class ProgressBar:
+    def __init__(
+            self, pos=None, val=None, length=100, width=20, color1=init.RED, color2=init.GRAY, num_display=None,
+            background_color=init.WHITE, val_display_multiplier=1):
+        self.length = length
+        self.color1 = color1
+        self.color2 = color2
+        self.bg_color = background_color
+        self.width = width
+        self.pos = pos
+        self.val = val
+        self.val_display_mul = val_display_multiplier
+        self.num_statue = num_display
+        self.text_rect = None
+        self.operate = Operation()
+
+    def display(self, screen=None, val=None):
+        if screen:
+            display_screen = screen
+        else:
+            display_screen = init.screen
+        for i in range(0, self.length):
+            pygame.draw.rect(display_screen, color=self.color2, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
+        if val:
+            self.val = val
+        for i in range(0, self.val):
+            pygame.draw.rect(display_screen, color=self.color1, rect=(self.pos[0] + i, self.pos[1], 1, self.width))
+        if self.num_statue[0]:
+            if self.text_rect:
+                pygame.draw.rect(display_screen, rect=self.text_rect, color=self.bg_color)
+            if self.num_statue[0] == "r":
+                self.text_rect = self.operate.text_display("%03s" % str(round(self.val * self.val_display_mul, 1)), (
+                    self.pos[0] + self.length + 10, self.pos[1] + self.width // 2), color=self.num_statue[1],
+                                                           size=init.FONT_SMALL)
+            if self.num_statue[0] == "c":
+                self.text_rect = screen.operate.text_display("%03s" % str(round(self.val * self.val_display_mul, 1)), (
+                    self.pos[0] + self.length // 2, self.pos[1] + self.width // 2), color=self.num_statue[1],
+                                                             size=init.FONT_SMALL)
+        pygame.display.flip()
+
+    def mouse_get_val(self, mouse_pos):
+        if mouse_pos[1] in range(self.pos[1], self.pos[1] + self.width + 1):
+            if mouse_pos[0] in range(self.pos[0], self.pos[0] + self.length + 1):
+                self.val = mouse_pos[0] - self.pos[0]
+                if self.val <= 5:
+                    self.val = 0
+                elif self.length - self.val <= 5:
+                    self.val = self.length
+                return True
+        return False
+
+
+class ButtonText:
+    def __init__(self, pos=((0, 0), 0), rect=None, tip_color=None):
+        self.pos = pos
+        self.rect = rect
+        self.color = tip_color
+        self.tip_color = tip_color
+
+    def change_pos(self, p_pos):
+        self.pos = (change_pos(p_pos), p_pos)
+        self.rect = (p_pos[0], p_pos[1], self.rect[2], self.rect[3])
+
+    def is_click(self, mouse_p_pos):
+        if mouse_p_pos[0] in range(self.rect[0], self.rect[0] + self.rect[2] + 1) and mouse_p_pos[1] in range(
+                self.rect[1], self.rect[1] + self.rect[3] + 1):
+            self._tip_color()
+            return True
+        else:
+            return False
+
+    def _tip_color(self):
+        return
+
+
+button_box = ButtonText(rect=init.IMG[0].get_rect())
+
+
+class MessageList:
+    def __init__(self):
+        self.list_message = []
+        self.list_len = 16
+        self.list_message_rect = []
+        for i in range(self.list_len):
+            self.list_message.append("")
+
+    def append_list(self, text):
+        self.list_message.append(text)
+        code.date_write(text, code.DATE_FILE)
+        del self.list_message[0]
+
+
+MESSAGE_LIST = MessageList()
