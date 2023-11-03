@@ -1,6 +1,7 @@
 import pygame
 
 import init
+import map_load
 
 
 class Person:
@@ -15,7 +16,10 @@ class Person:
         self.DEF_prop = 0
         self.DEF_dice = 0
         self.pos = pos  # (g_pos, (p_pos))
-        self.name = name
+        if name:
+            self.name = name
+        else:
+            self.name = "player " + str(self.number)
         self.damage_mul = 1
         self.action_move = 1
         self.action_damage = 1
@@ -31,9 +35,9 @@ class Person:
         self.screen.blit(self.img[i], self.pos[1])
         pygame.display.flip()
         
-    def occ_buff(self, dict_map_pos):
+    def occ_buff(self):
         self.DEF_prop = 0
-        if self.pos[0] not in dict_map_pos["game available"]:
+        if self.pos[0] not in map_load.MAP.pos_available:
             return None
         # 生命恢复点位
         if self.pos[0] in [208, 802]:
@@ -53,7 +57,7 @@ class Person:
             self.action_move += 1
             return None
         # 占领点位
-        elif self.pos[0] in dict_map_pos["win dot"]:
+        elif self.pos[0] in map_load.MAP.pos_win:
             return self.pos[0]
         else:
             return None

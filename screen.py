@@ -238,16 +238,12 @@ class Gaming:
             i += 100
         pygame.display.flip()
 
-    def ui_gaming_data_new(self, per1, per2):
-        operation.O_OPERATE.text_display("%02s" % str(per1.HP), (73, 537), center=False, button_color=init.GRAY_BG,
-                                         color=init.RED)
-        operation.O_OPERATE.text_display("%02s" % str(per2.HP), (184, 537), center=False,
-                                         button_color=init.GRAY_BG,
-                                         color=init.RED)
-        operation.O_OPERATE.text_display("%02s" % str(per1.DEF_dice + per1.DEF_prop), (78, 557), center=False,
-                                         button_color=init.GRAY_BG, color=init.RED)
-        operation.O_OPERATE.text_display("%02s" % str(per2.DEF_dice + per2.DEF_prop), (189, 557), center=False,
-                                         button_color=init.GRAY_BG, color=init.RED)
+    def ui_gaming_data_new(self, players):
+        for player in players:
+            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73, 537), center=False, button_color=init.GRAY_BG,
+                                             color=init.RED)
+            operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop), (78, 557), center=False,
+                                             button_color=init.GRAY_BG, color=init.RED)
         pygame.display.flip()
 
     def start_init(self, occ_dict=None):
@@ -267,18 +263,17 @@ class Gaming:
         self.__val_check()
         return
 
-    def flip_screen(self, person1, person2, count, occ_dict=None):
+    def flip_screen(self, players, count, occ_dict=None):
         init.screen.blit(map_load.MAP.map_img, (0, 0))
-        init.screen.blit(person1.img[0], person1.pos[1])
-        init.screen.blit(person2.img[0], person2.pos[1])
+        for player in players:
+            init.screen.blit(player.img[0], player.pos[1])
         operation.O_OPERATE.text_display(init.T["Turn"] + "%03d" % count, (50, 30), button_color=init.WHITE)
         pygame.display.flip()
         if occ_dict:
             i = 0
             for k in occ_dict.keys():
                 operation.O_OPERATE.text_display("%05s : %02s" % (k, occ_dict[k]), operation.change_pos(211 + i),
-                                                 init.FONT_MID,
-                                                 color=init.RED, button_color=init.WHITE, center=False)
+                                                 init.FONT_MID, color=init.RED, button_color=init.WHITE, center=False)
                 i += 100
         pygame.display.flip()
 

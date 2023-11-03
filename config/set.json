@@ -1,7 +1,7 @@
 {
-    "game speed": 36,
+    "game speed": 86,
     "game volume": 77,
-    "music": false,
+    "music": true,
     "language": "zh-cn",
     "M_dice": [
         "cross",

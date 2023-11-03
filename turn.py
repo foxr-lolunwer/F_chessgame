@@ -7,7 +7,7 @@ import map_load
 import person
 import screen
 import smallmodel
-from operation import O_OPERATE
+from operation import O_OPERATE, change_pos, get_mouse_pos
 
 
 class Turn:
@@ -16,7 +16,8 @@ class Turn:
         self.n = map_load.MAP.person_capacity
         # 创建角色
         for i in range(self.n):
-            self.players.append(person.Person(init.screen, i, map_load.MAP.person_pos_init[i]))
+            g_pos = map_load.MAP.person_pos_init[i]
+            self.players.append(person.Person(init.screen, i, (g_pos, change_pos(g_pos))))
         self.turn = True
         self.count = 1
         # 开始回合
@@ -29,9 +30,7 @@ class Turn:
         screen.GAMING.ui_gaming_data_new(self.players)
         while self.turn:
             for i in range(self.n):
-                other_players = self.players
-                del other_players[i]
-                self.__turn_move(self.players[i], other_players)
+                self.__turn_move(self.players[i], self.players)
             # for i in range(self.n):
             #     other_players = self.players
             #     del other_players[i]
@@ -49,12 +48,12 @@ class Turn:
     def __turn_move(self, player, other_players):
         other_players_pos0 = [p.pos[0] for p in other_players]
         player.selected()
-        screen.GAMING.display_statue(player.name + init.T["Please throw!"], init.screen)
+        screen.GAMING.display_statue(player.name + init.T["Please throw!"])
         if screen.GAMING.gaming_throw():
             return
         t_command_move = random.choice(init.Config["SETTING"]["M_dice"])
-        screen.GAMING.display_statue(player.name + init.T[t_command_move], init.screen)
-        t_command = self.__move_person_pos(player.pos[0], other_players_pos0, t_command_move, map_load.MAP.pos)
+        screen.GAMING.display_statue(player.name + init.T[t_command_move])
+        t_command = self.__move_person_pos(player.pos[0], other_players_pos0, t_command_move)
         screen.GAMING.display_move_red_dot(t_command)
         t_person_pos = self.__move_click(t_command)
         if t_person_pos == "return":
@@ -62,28 +61,28 @@ class Turn:
         if t_person_pos:
             player.pos = t_person_pos
         player.action_move -= 1
-        if player.occ_buff(map_load.MAP.pos):
-            map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel(player.pos[0])] = "p" + player.number
-        screen.GAMING.ui_gaming_data_new(player, other_players)
-        screen.GAMING.flip_screen(player, other_players, self.count, map_load.MAP.list_pos_win_occ)
-        if screen.GAMING.screen_win(self.__find_winner(occ_dict=map_load.MAP.list_pos_win_occ)):
+        # if player.occ_buff():
+        #     map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel(player.pos[0])] = "p" + str(player.number)
+        screen.GAMING.ui_gaming_data_new(self.players)
+        screen.GAMING.flip_screen(self.players, self.count)
+        if screen.GAMING.screen_win(self.__find_winner()):
             return
         if player.action_move > 0:
             player.selected()
-            t_command = self.__move_person_pos(player.pos[0], other_players_pos0, t_command_move, map_load.MAP.pos)
+            t_command = self.__move_person_pos(player.pos[0], other_players_pos0, t_command_move)
             screen.GAMING.display_move_red_dot(t_command)
             t_person_pos = self.__move_click(t_command)
-        if t_person_pos == "return":
-            return
-        if t_person_pos:
-            player.pos = t_person_pos
-        player.action_move -= 1
-        if player.occ_buff(map_load.MAP.pos):
-            map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel(player.pos[0])] = "p" + player.number
-        screen.GAMING.ui_gaming_data_new(player, other_players)
-        screen.GAMING.flip_screen(player, other_players, self.count, map_load.MAP.list_pos_win_occ)
-        if screen.GAMING.screen_win(self.__find_winner(occ_dict=map_load.MAP.list_pos_win_occ)):
-            return
+            if t_person_pos == "return":
+                return
+            if t_person_pos:
+                player.pos = t_person_pos
+            player.action_move -= 1
+            # if player.occ_buff():
+            #     map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel(player.pos[0])] = "p" + str(player.number)
+            screen.GAMING.ui_gaming_data_new(player, other_players)
+            screen.GAMING.flip_screen(self.players, self.count)
+            if screen.GAMING.screen_win(self.__find_winner()):
+                return
         return
 
     # def __turn_fight(self, player, other_players):
@@ -93,27 +92,26 @@ class Turn:
     #         player.DEF_dice = 0
     #         screen.GAMING.ui_gaming_data_new(player, other_players)
     #     player.selected()
-    #     screen.GAMING.display_statue(code.T["Player 1"] + code.T["Please throw!"], init.screen)
+    #     screen.GAMING.display_statue(code.T["Player 1"] + code.T["Please throw!"])
     #     if screen.GAMING.gaming_throw():
     #         return
     #     t_command_fight = random.choice(code.Config["SETTING"]["F_dice"])
-    #     screen.GAMING.display_statue(code.T["Player 1"] + code.T[t_command_fight], init.screen)
+    #     screen.GAMING.display_statue(code.T["Player 1"] + code.T[t_command_fight])
     #     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
     #     t_command = fight_kill_val(player.pos[0], other_players_pos0, t_command_fight, map_load.MAP.pos)
     #     if t_command >= 0:
     #         t_command = t_command - (other_players.DEF_prop + other_players.DEF_dice)
     #         if t_command > 0:
     #             other_players.HP -= t_command
-    #             screen.GAMING.display_statue(code.T["Player 1"] + code.T["Kill Val is "] + str(t_command),
-    #                                               init.screen)
+    #             screen.GAMING.display_statue(code.T["Player 1"] + code.T["Kill Val is "] + str(t_command))
     #         else:
-    #             screen.GAMING.display_statue(code.T["Player 1"] + code.T["MISS"], init.screen)
+    #             screen.GAMING.display_statue(code.T["Player 1"] + code.T["MISS"])
     #     elif t_command == -1:
     #         player.HP += 1
-    #         screen.GAMING.display_statue(code.T["Player 1"] + code.T["HP Recovery"], init.screen)
+    #         screen.GAMING.display_statue(code.T["Player 1"] + code.T["HP Recovery"])
     #     elif t_command == -2:
     #         player.DEF_dice += 1
-    #         screen.GAMING.display_statue(code.T["Player 1"] + code.T["DEF + 1"], init.screen)
+    #         screen.GAMING.display_statue(code.T["Player 1"] + code.T["DEF + 1"])
     #     else:
     #         "fight error"
     #     time.sleep((100 - code.Config["SETTING"]["game speed"]) * 0.02 * 1)
@@ -123,7 +121,7 @@ class Turn:
     #     player.selected(False)
     #     return
 
-    def __move_person_pos(self, per_g_pos, other_per_g_pos, dice_val, dict_map_pos):
+    def __move_person_pos(self, per_g_pos, other_per_g_pos, dice_val):
         player_g_pos_list = (per_g_pos, other_per_g_pos)
         move_available_pos = []
         while True:
@@ -132,18 +130,18 @@ class Turn:
                 move_available_pos_l = [per_g_pos + 1, per_g_pos - 1, per_g_pos + 100, per_g_pos - 100]
                 move_available_pos = []
                 for i in move_available_pos_l:
-                    if i in dict_map_pos["game available"] and i not in player_g_pos_list:
+                    if i in map_load.MAP.pos_available and i not in player_g_pos_list:
                         move_available_pos.append(i)
             # 斜线移动
             elif dice_val == "diagonal":
                 move_available_pos_l = [per_g_pos + 99, per_g_pos - 99, per_g_pos + 101, per_g_pos - 101]
                 move_available_pos = []
                 for i in move_available_pos_l:
-                    if i in dict_map_pos["game available"] and i not in player_g_pos_list:
+                    if i in map_load.MAP.pos_available and i not in player_g_pos_list:
                         move_available_pos.append(i)
             # 传送 ！未完成预定功能
             elif dice_val == "tp":
-                move_available_pos_l = dict_map_pos["tp available"]
+                move_available_pos_l = map_load.MAP.pos_tp
                 move_available_pos = [0]
                 for i in move_available_pos_l:
                     if i not in player_g_pos_list:
@@ -155,7 +153,7 @@ class Turn:
                                         per_g_pos + 99, per_g_pos - 99, per_g_pos + 101, per_g_pos - 101]
                 move_available_pos = [0]
                 for i in move_available_pos_l:
-                    if i in dict_map_pos["game available"] and i != other_per_g_pos:
+                    if i in map_load.MAP.pos_available and i != other_per_g_pos:
                         move_available_pos.append(i)
             if move_available_pos:
                 return move_available_pos
@@ -213,9 +211,9 @@ class Turn:
             return pos
         while True:
             smallmodel.MUSIC.music_continue()
-            down_mouse_move_g_pos = O_OPERATE.get_mouse_pos()
+            down_mouse_move_g_pos = get_mouse_pos()
             if down_mouse_move_g_pos in list_pos:
-                pos = (down_mouse_move_g_pos, O_OPERATE.change_pos(down_mouse_move_g_pos))  # 新位置坐标
+                pos = (down_mouse_move_g_pos, change_pos(down_mouse_move_g_pos))  # 新位置坐标
                 smallmodel.MUSIC.play_effect("move")
                 return pos
             elif down_mouse_move_g_pos in [218, 219, 220]:
@@ -223,18 +221,18 @@ class Turn:
             else:
                 continue
 
-    def __find_winner(self, player1_hp=None, other_players_hp=None, occ_dict=None):
-        # 如果player1生命为零
-        if player1_hp <= 0:
-            return "p2"
-        # 如果player2生命为零
-        for other_player_hp in other_players_hp:
-            if other_player_hp <= 0:
-                return "p1"
-        if occ_dict:
+    def __find_winner(self, player1_hp=None, other_players_hp=None):
+        # # 如果player1生命为零
+        # if player1_hp <= 0:
+        #     return "p2"
+        # # 如果player2生命为零
+        # for other_player_hp in other_players_hp:
+        #     if other_player_hp <= 0:
+        #         return "p1"
+        if map_load.MAP.list_pos_win_occ:
             occ_list = []
-            for k in occ_dict.keys():
-                occ_list.append(occ_dict[k])
+            for k in map_load.MAP.list_pos_win_occ.keys():
+                occ_list.append(map_load.MAP.list_pos_win_occ[k])
             if len(set(occ_list)) == 1 and occ_list[0] != "":
                 return occ_list[0]
         return None
