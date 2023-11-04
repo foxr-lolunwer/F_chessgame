@@ -2,6 +2,7 @@
 ---
 ## Dev0.10 UPDATE regularly 2023.11.4 - development test version
 - Most of the code has been completely rewritten
+- Reworked the start interface
 - Supports games with any number of people (at least 2 people), but the relevant art resources have not been updated yet
 - Human-machine battle is not available yet
 ## Beta0.10 UPDATE - early beta version
@@ -41,6 +42,7 @@
 ---
 ## Dev0.10 UPDATE regularly 2023.11.4 - development test version
 - 代码全面重写完成大半
+- 重做了开始界面
 - 支持任意人数（至少2人）游戏，但相关美术资源还未更新
 - 暂时未开放人机对战
 ## Beta0.10 UPDATE - early beta version
