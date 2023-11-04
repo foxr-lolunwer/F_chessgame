@@ -30,6 +30,8 @@
 ## Dev0.04 - Ver0.01 UPDATA - development test version
 - NONE
 ---
+# F'Chessgame UPDATA LOG - CN
+---
 ## Dev0.10 UPDATA regularly - development test version
 - 代码全面重写完成大半
 - 临时过渡版本
