@@ -45,12 +45,12 @@ class Turn:
         return False
 
     def turn_pve(self):
-        screen.GAMING.start_init(occ_dict=map_load.MAP.list_pos_win_occ)
-        screen.GAMING.flip_screen(self.alive_players, self.count)
-        screen.GAMING.ui_gaming_val(map_load.MAP.list_pos_win_occ)
-        screen.GAMING.ui_gaming_data_new(self.alive_players)
+        # screen.GAMING.start_init(occ_dict=map_load.MAP.list_pos_win_occ)
+        # screen.GAMING.flip_screen(self.alive_players, self.count)
+        # screen.GAMING.ui_gaming_val(map_load.MAP.list_pos_win_occ)
+        # screen.GAMING.ui_gaming_data_new(self.alive_players)
 
-        return False
+        return True
 
     # 返回值为true时返回主菜单
     def __turn_move(self, player, other_players):
@@ -104,15 +104,15 @@ class Turn:
                 kill_val = kill_val - (hit_player.DEF_prop + hit_player.DEF_dice)
                 if kill_val > 0:
                     hit_player.HP -= kill_val
-                    screen.GAMING.display_statue(init.T["Player 1"] + init.T["Kill Val is "] + str(kill_val))
+                    screen.GAMING.display_statue(player.name + init.T["Kill Val is "] + str(kill_val))
                 else:
-                    screen.GAMING.display_statue(init.T["Player 1"] + init.T["MISS"])
+                    screen.GAMING.display_statue(player.name + init.T["MISS"])
             elif kill_val == -1:
                 player.HP += 1
-                screen.GAMING.display_statue(init.T["Player 1"] + init.T["HP Recovery"])
+                screen.GAMING.display_statue(player.name + init.T["HP Recovery"])
             elif kill_val == -2:
                 player.DEF_dice += 1
-                screen.GAMING.display_statue(init.T["Player 1"] + init.T["DEF + 1"])
+                screen.GAMING.display_statue(player.name + init.T["DEF + 1"])
             else:
                 "fight error"
             time.sleep((100 - init.Config["SETTING"]["game speed"]) * 0.02 * 1)

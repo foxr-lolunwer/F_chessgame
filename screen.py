@@ -24,7 +24,7 @@ class Menu:
 
     def menu_main(self):
         init.screen.blit(self.__main_bg, (0, 0))
-        operation.O_OPERATE.text_display(init.T["Game Ver"], (477, 26.5), size=init.FONT_SMALL, color=init.RED)
+        operation.O_OPERATE.text_display(init.T["Game Ver"] + init.game_ver, (477, 26.5), size=init.FONT_SMALL, color=init.RED)
         operation.O_OPERATE.text_display(init.T["Start Game"], (424, 183.5), color=init.WHITE)
         operation.O_OPERATE.text_display(init.T["Course"], (424, 291.5), color=init.WHITE)
         operation.O_OPERATE.text_display(init.T["Setting"], (424, 397.5), color=init.WHITE)
@@ -225,7 +225,7 @@ class Gaming:
             operation.O_OPERATE.text_display(player.name, (43 + 106 * (player.number - 1), 487), center=False)
             operation.O_OPERATE.text_display(init.T["HP:"], (43 + 106 * (player.number - 1), 537), center=False)
             operation.O_OPERATE.text_display(init.T["DEF:"], (43 + 106 * (player.number - 1), 557), center=False)
-        operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1111), init.FONT_BIG,
+        operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
                                          button_color=init.GRAY)  # 掷骰子按钮
         self.button_rtm = operation.O_OPERATE.text_display(init.T["Return to menu"], operation.change_pos(219),
                                                            init.FONT_BIG, button_color=init.RED, color=init.WHITE)
@@ -276,7 +276,7 @@ class Gaming:
         if AI:
             time.sleep(0.5)
             return
-        button_thr = operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1111), init.FONT_BIG,
+        button_thr = operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
                                                       button_color=init.RED, center=True)
         pygame.display.flip()
         pygame.event.clear()
@@ -290,7 +290,7 @@ class Gaming:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 event.pos = (event.pos[0], event.pos[1])
                 if button_thr.is_click(event.pos):
-                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1111), init.FONT_BIG,
+                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
                                                      button_color=init.GRAY,
                                                      center=True)
                     pygame.display.flip()
@@ -299,7 +299,7 @@ class Gaming:
                     return "return"
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
-                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1108), init.FONT_BIG,
+                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
                                                      button_color=init.GRAY,
                                                      center=True)
                     pygame.display.flip()
