@@ -26,19 +26,13 @@ class FChessGame:
             command = screen.MENU.menu_main()
             if command == "start":
                 command = screen.MENU.menu_start()
-                if command == "PVP":
+                if command:
                     command = turn.O_TURN.turn_pvp()
-                    if command:
-                        turn.O_TURN.clear()
-                        continue
-                elif command == "PVE":
-                    command = turn.O_TURN.turn_pve()
-                    if command:
-                        turn.O_TURN.clear()
-                        continue
+                if command:
+                    turn.O_TURN.clear()
+                    continue
                 else:
                     continue  # error
-                continue
             elif command == "course":
                 screen.MENU.menu_course()
                 continue

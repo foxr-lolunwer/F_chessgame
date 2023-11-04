@@ -64,7 +64,6 @@ class Person:
         else:
             return None
 
-
 class AIPerson(Person):
     def __init__(self, number, pos, name, AI_Config_difficulty=init.Config["SETTING"]["AI Difficulty"][init.Config["SETTING"]["AI Difficulty"]["setting"]]):
         super().__init__(number, pos, name)

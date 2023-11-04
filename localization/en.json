@@ -6,8 +6,6 @@
   "Setting": "Setting",
   "Exit Game": "Exit Game",
   "b": "###",
-  "PVP": "PVP",
-  "PVE": "PVE",
   "c": "###",
   "Game Speed":"Game Speed:",
   "Game Music Volume": "Game Music Volume:",
@@ -42,5 +40,12 @@
   "X explosion": "X explosion",
   "bomb": "bomb",
   "life recovery": "life recovery",
-  "shield": "shield"
+  "shield": "shield",
+  "f": "###",
+  "Play": "Play",
+  "Exit": "Exit",
+  "default": "default",
+  "capacity:": "player capacity:",
+  "number of occ:": "number of occ:",
+  "This is a default map\nAuthor:foxr lolunwer": "This is a default map\nAuthor:foxrlolunwer"
 }

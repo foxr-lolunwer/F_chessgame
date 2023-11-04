@@ -1,6 +1,8 @@
 {
     "default map": "default",
     "default": {
+      "description": "This is a default map\nAuthor:foxr lolunwer",
+      "T": "True",
       "img": "resource/img/map1.png",
       "list pos": {
         "tp": [304, 305, 306, 403, 405, 407, 503, 504, 506, 507, 603, 605, 607, 704, 705, 706],

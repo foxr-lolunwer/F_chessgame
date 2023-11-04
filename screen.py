@@ -24,7 +24,8 @@ class Menu:
 
     def menu_main(self):
         init.screen.blit(self.__main_bg, (0, 0))
-        operation.O_OPERATE.text_display(init.T["Game Ver"] + init.game_ver, (477, 26.5), size=init.FONT_SMALL, color=init.RED)
+        operation.O_OPERATE.text_display(init.T["Game Ver"] + init.game_ver, (477, 26.5), size=init.FONT_SMALL,
+                                         color=init.RED)
         operation.O_OPERATE.text_display(init.T["Start Game"], (424, 183.5), color=init.WHITE)
         operation.O_OPERATE.text_display(init.T["Course"], (424, 291.5), color=init.WHITE)
         operation.O_OPERATE.text_display(init.T["Setting"], (424, 397.5), color=init.WHITE)
@@ -51,18 +52,32 @@ class Menu:
 
     def menu_start(self):
         init.screen.fill(init.WHITE)
-        button_pvp = operation.O_OPERATE.text_display(init.T["PVP"], operation.change_pos(306), color=init.WHITE,
-                                                      button_color=init.RED)
-        button_pve = operation.O_OPERATE.text_display(init.T["PVE"], operation.change_pos(506), color=init.WHITE,
-                                                      button_color=init.RED)
+        map_img = map_load.MAP.map_img.copy()
+        for i in range(1, len(map_load.MAP.person_pos_init) + 1):
+            img_person = pygame.image.load(init.Config["IMG"]["person " + str(i % 2 + 1)][0]).convert()
+            img_person.set_colorkey(init.WHITE)
+            map_img.blit(img_person, operation.change_pos(map_load.MAP.person_pos_init[i - 1]))
+        init.screen.blit(map_img, (50, 50))
+        button_play = operation.O_OPERATE.text_display(init.T["Play"], operation.change_pos(913), color=init.WHITE,
+                                                       button_color=init.RED)
+        button_exit = operation.O_OPERATE.text_display(init.T["Exit"], operation.change_pos(1013), color=init.WHITE,
+                                                       button_color=init.RED)
+        operation.O_OPERATE.text_display(map_load.MAP.name, operation.change_pos(314), center=True)
+        operation.O_OPERATE.text_display(init.T["capacity:"] + str(map_load.MAP.person_capacity),
+                                         operation.change_pos(413), center=False)
+        operation.O_OPERATE.text_display(init.T["number of occ:"] + str(len(map_load.MAP.pos_win)),
+                                         operation.change_pos(416), center=False)
+        for i in range(len(map_load.MAP.description)):
+            operation.O_OPERATE.text_display(map_load.MAP.description[i], (641, 217 + i * 30), center=False)
         pygame.display.flip()
         while True:
             smallmodel.MUSIC.music_continue()
             down_mouse_pos = operation.get_mouse_pos(False)
-            if button_pvp.is_click(down_mouse_pos):
-                return "PVP"
-            elif button_pve.is_click(down_mouse_pos):
-                return "PVE"
+            if button_play.is_click(down_mouse_pos):
+                init.screen.fill(init.WHITE)
+                return True
+            elif button_exit.is_click(down_mouse_pos):
+                return False
             else:
                 continue
 
@@ -231,14 +246,16 @@ class Gaming:
                                                            init.FONT_BIG, button_color=init.RED, color=init.WHITE)
         i = 0
         for k in map_load.MAP.list_pos_win_occ.keys():
-            operation.O_OPERATE.text_display("%05s : %02s" % (k, map_load.MAP.list_pos_win_occ[k]), operation.change_pos(211 + i),
+            operation.O_OPERATE.text_display("%05s : %02s" % (k, map_load.MAP.list_pos_win_occ[k]),
+                                             operation.change_pos(211 + i),
                                              color=init.RED, button_color=init.WHITE, center=False)
             i += 100
         pygame.display.flip()
 
     def ui_gaming_data_new(self, players):
         for player in players:
-            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * (player.number - 1), 537), center=False,
+            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * (player.number - 1), 537),
+                                             center=False,
                                              button_color=init.GRAY_BG,
                                              color=init.RED)
             operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop),
@@ -261,7 +278,8 @@ class Gaming:
         pygame.display.flip()
         i = 0
         for k in map_load.MAP.list_pos_win_occ.keys():
-            operation.O_OPERATE.text_display("%05s : %08s" % (k, map_load.MAP.list_pos_win_occ[k]), operation.change_pos(211 + i),
+            operation.O_OPERATE.text_display("%05s : %08s" % (k, map_load.MAP.list_pos_win_occ[k]),
+                                             operation.change_pos(211 + i),
                                              init.FONT_MID, color=init.RED, button_color=init.WHITE, center=False)
             i += 100
         pygame.display.flip()

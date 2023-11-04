@@ -6,8 +6,6 @@
   "Setting": "设置",
   "Exit Game": "退出游戏",
   "b": "###",
-  "PVP": "玩家对战",
-  "PVE": "人机对战",
   "c": "###",
   "Game Speed":"游戏速度",
   "Game Music Volume": "游戏音量",
@@ -18,7 +16,6 @@
   "music": "音乐",
   "Saved": "保存",
   "d": "###",
-
   "HP:": "血量",
   "DEF:": "防御",
   "throw!": "投色子",
@@ -41,5 +38,12 @@
   "X explosion": "X射线",
   "bomb": "炸弹",
   "life recovery": "生命恢复",
-  "shield": "盾牌"
+  "shield": "盾牌",
+  "f": "###",
+  "Play": "开始游戏",
+  "Exit": "返回",
+  "default": "默认",
+  "capacity:": "玩家容量：",
+  "number of occ:":"点位数量：",
+  "This is a default map\nAuthor:foxr lolunwer": "这是一张默认地图\n作者：foxr lolunwer"
 }
