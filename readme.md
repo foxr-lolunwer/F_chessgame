@@ -4,7 +4,6 @@
 - Most of the code has been completely rewritten
 - Supports games with any number of people (at least 2 people), but the relevant art resources have not been updated yet
 - Human-machine battle is not available yet
-- Temporary transitional version
 ## Beta0.10 UPDATE - early beta version
 - The code has been completely rewritten, striving to get rid of the limitations of 1v1
 - Language switching settings are expected to be added after the rewrite is completed
