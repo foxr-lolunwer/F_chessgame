@@ -213,40 +213,36 @@ MENU = Menu()
 #
 class Gaming:
     def __init__(self):
-        self.__list_gaming_val = {"p1 HP": [5, (75, 546)], "p2 HP": [5, (181, 546)],
-                                  "p1 DEF": [0, (82, 557)], "p2 DEF": [0, (188, 557)]}
         self.red_dot_mark = pygame.image.load(init.Config["IMG"]["select mark"]).convert()
         self.red_dot_mark.set_colorkey(init.WHITE)
         self.__gaming_bottom = pygame.image.load(init.Config["IMG"]["gaming ui bottom"]).convert()
         self.button_rtm = operation.ButtonText()
         self.display_statue_count = 0
 
-    def ui_gaming_val(self, occ_dict):
+    def ui_gaming_val(self, players):
         init.screen.blit(self.__gaming_bottom, (0, 477))
-        operation.O_OPERATE.text_display(init.T["Player 1"], (43, 487), init.FONT_BIG, center=False)
-        operation.O_OPERATE.text_display(init.T["HP:"], (43, 537), center=False)
-        operation.O_OPERATE.text_display(init.T["DEF:"], (43, 557), center=False)
-        operation.O_OPERATE.text_display(init.T["Player 2"], (149, 487), init.FONT_BIG, center=False)
-        operation.O_OPERATE.text_display(init.T["HP:"], (149, 537), center=False)
-        operation.O_OPERATE.text_display(init.T["DEF:"], (149, 557), center=False)
-        operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1108), init.FONT_BIG,
+        for player in players:
+            operation.O_OPERATE.text_display(player.name, (43 + 106 * (player.number - 1), 487), center=False)
+            operation.O_OPERATE.text_display(init.T["HP:"], (43 + 106 * (player.number - 1), 537), center=False)
+            operation.O_OPERATE.text_display(init.T["DEF:"], (43 + 106 * (player.number - 1), 557), center=False)
+        operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1111), init.FONT_BIG,
                                          button_color=init.GRAY)  # 掷骰子按钮
         self.button_rtm = operation.O_OPERATE.text_display(init.T["Return to menu"], operation.change_pos(219),
                                                            init.FONT_BIG, button_color=init.RED, color=init.WHITE)
         i = 0
-        for k in occ_dict.keys():
-            operation.O_OPERATE.text_display("%05s : %02s" % (k, occ_dict[k]), operation.change_pos(211 + i),
+        for k in map_load.MAP.list_pos_win_occ.keys():
+            operation.O_OPERATE.text_display("%05s : %02s" % (k, map_load.MAP.list_pos_win_occ[k]), operation.change_pos(211 + i),
                                              color=init.RED, button_color=init.WHITE, center=False)
             i += 100
         pygame.display.flip()
 
     def ui_gaming_data_new(self, players):
         for player in players:
-            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * player.number, 537), center=False,
+            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * (player.number - 1), 537), center=False,
                                              button_color=init.GRAY_BG,
                                              color=init.RED)
             operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop),
-                                             (78 + 111 * player.number, 557), center=False,
+                                             (78 + 111 * (player.number - 1), 557), center=False,
                                              button_color=init.GRAY_BG, color=init.RED)
         pygame.display.flip()
 
@@ -257,31 +253,20 @@ class Gaming:
                 occ_dict[i] = ""
         pygame.display.flip()
 
-    def __val_check(self):
-        if self.__list_gaming_val["p1 HP"][0] not in range(0, 10):
-            self.__list_gaming_val["p1 HP"][0] = 9
-        if self.__list_gaming_val["p2 HP"][0] not in range(0, 10):
-            self.__list_gaming_val["p2 HP"][0] = 9
-
-    def new_val(self):
-        self.__val_check()
-        return
-
-    def flip_screen(self, players, count, occ_dict=None):
+    def flip_screen(self, players, count):
         init.screen.blit(map_load.MAP.map_img, (0, 0))
         for player in players:
             init.screen.blit(player.img[0], player.pos[1])
         operation.O_OPERATE.text_display(init.T["Turn"] + "%03d" % count, (50, 30), button_color=init.WHITE)
         pygame.display.flip()
-        if occ_dict:
-            i = 0
-            for k in occ_dict.keys():
-                operation.O_OPERATE.text_display("%05s : %02s" % (k, occ_dict[k]), operation.change_pos(211 + i),
-                                                 init.FONT_MID, color=init.RED, button_color=init.WHITE, center=False)
-                i += 100
+        i = 0
+        for k in map_load.MAP.list_pos_win_occ.keys():
+            operation.O_OPERATE.text_display("%05s : %08s" % (k, map_load.MAP.list_pos_win_occ[k]), operation.change_pos(211 + i),
+                                             init.FONT_MID, color=init.RED, button_color=init.WHITE, center=False)
+            i += 100
         pygame.display.flip()
 
-    def display_move_red_dot(self, g_pos):
+    def display_red_dot(self, g_pos):
         if g_pos:
             for i in g_pos:
                 init.screen.blit(self.red_dot_mark, operation.change_pos(i))
@@ -291,7 +276,7 @@ class Gaming:
         if AI:
             time.sleep(0.5)
             return
-        button_thr = operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1108), init.FONT_BIG,
+        button_thr = operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1111), init.FONT_BIG,
                                                       button_color=init.RED, center=True)
         pygame.display.flip()
         pygame.event.clear()
@@ -305,7 +290,7 @@ class Gaming:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 event.pos = (event.pos[0], event.pos[1])
                 if button_thr.is_click(event.pos):
-                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1108), init.FONT_BIG,
+                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1111), init.FONT_BIG,
                                                      button_color=init.GRAY,
                                                      center=True)
                     pygame.display.flip()

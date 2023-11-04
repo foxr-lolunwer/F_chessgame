@@ -8,7 +8,7 @@ import map_load
 import person
 import screen
 import smallmodel
-from operation import change_pos
+from operation import change_pos, MESSAGE_LIST
 
 
 class Turn:
@@ -16,9 +16,10 @@ class Turn:
         self.players = []
         self.n = map_load.MAP.person_capacity
         # 创建角色
-        for i in range(self.n):
-            g_pos = map_load.MAP.person_pos_init[i]
+        for i in range(1, self.n + 1):
+            g_pos = map_load.MAP.person_pos_init[i - 1]
             self.players.append(person.Person(init.screen, i, (g_pos, change_pos(g_pos))))
+        self.alive_players = [player for player in self.players if player.alive]
         self.turn = True
         self.count = 1
         # 开始回合
@@ -26,28 +27,28 @@ class Turn:
 
     def turn_pvp(self):
         screen.GAMING.start_init(occ_dict=map_load.MAP.list_pos_win_occ)
-        screen.GAMING.flip_screen(self.players, self.count, map_load.MAP.list_pos_win_occ)
-        screen.GAMING.ui_gaming_val(map_load.MAP.list_pos_win_occ)
-        screen.GAMING.ui_gaming_data_new(self.players)
+        screen.GAMING.flip_screen(self.alive_players, self.count)
+        screen.GAMING.ui_gaming_val(self.players)
+        screen.GAMING.ui_gaming_data_new(self.alive_players)
         while self.turn:
-            for player in self.players:
+            for player in self.alive_players:
                 player.action_move = 1
-                other_players = self.players.copy()
+                other_players = self.alive_players.copy()
                 other_players.remove(player)
                 if self.__turn_move(player, other_players):
                     return True
-            for i in range(self.n):
-                other_players = self.players
-                del other_players[i]
-                if self.__turn_fight(self.players[i], other_players):
+            for player in self.alive_players:
+                other_players = self.alive_players.copy()
+                other_players.remove(player)
+                if self.__turn_fight(player, other_players):
                     return True
         return False
 
     def turn_pve(self):
         screen.GAMING.start_init(occ_dict=map_load.MAP.list_pos_win_occ)
-        screen.GAMING.flip_screen(self.players, self.count, map_load.MAP.list_pos_win_occ)
+        screen.GAMING.flip_screen(self.alive_players, self.count)
         screen.GAMING.ui_gaming_val(map_load.MAP.list_pos_win_occ)
-        screen.GAMING.ui_gaming_data_new(self.players)
+        screen.GAMING.ui_gaming_data_new(self.alive_players)
 
         return False
 
@@ -61,20 +62,19 @@ class Turn:
         t_command_move = random.choice(init.Config["SETTING"]["M_dice"])
         screen.GAMING.display_statue(player.name + init.T[t_command_move])
         while player.action_move:
+            player.selected()
             s_command = self.__move_person_pos(player.pos[0], other_players_g_pos0, t_command_move)
-            screen.GAMING.display_move_red_dot(s_command)
+            screen.GAMING.display_red_dot(s_command)
             t_person_pos = screen.GAMING.move_click(s_command)
             if t_person_pos == "return":
                 return True
             if t_person_pos:
                 player.pos = t_person_pos
             player.action_move -= 1
-            if player.occ_buff():
-                map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel[str(player.pos[0])]] = "p" + str(
-                    player.number)
-            screen.GAMING.ui_gaming_data_new(self.players)
-            screen.GAMING.flip_screen(self.players, self.count)
-            if screen.GAMING.screen_win(self.__find_winner(self.players)):
+            player.occ_buff()
+            screen.GAMING.ui_gaming_data_new(self.alive_players)
+            screen.GAMING.flip_screen(self.alive_players, self.count)
+            if screen.GAMING.screen_win(self.__find_winner()):
                 return True
         return False
 
@@ -83,18 +83,18 @@ class Turn:
             player.DEF_dice = 0
             screen.GAMING.ui_gaming_data_new(player, other_players)
         player.selected()
-        screen.GAMING.display_statue(init.T["Player 1"] + init.T["Please throw!"])
+        screen.GAMING.display_statue(player.name + init.T["Please throw!"])
         if screen.GAMING.gaming_throw():
             return True
         t_command_fight = random.choice(init.Config["SETTING"]["F_dice"])
-        screen.GAMING.display_statue(init.T["Player 1"] + init.T[t_command_fight])
+        screen.GAMING.display_statue(player.name + init.T[t_command_fight])
         time.sleep((100 - init.Config["SETTING"]["game speed"]) * 0.02 * 1)
         t_command = self.__fight_kill_val(player, other_players, t_command_fight)
         if t_command[1]:
             self.__hit_player(player, t_command[0], t_command[1])
-        if screen.GAMING.screen_win(self.__find_winner(self.players)):
+        screen.GAMING.ui_gaming_data_new(self.alive_players)
+        if screen.GAMING.screen_win(self.__find_winner()):
             return True
-        screen.GAMING.ui_gaming_data_new(player, other_players)
         player.selected(False)
         return False
 
@@ -171,7 +171,7 @@ class Turn:
                                      fight_player.pos[0] + 101, fight_player.pos[0] - 101]:
                     hit_players_list.append(player)
             hit_players_g_pos_list = [player.pos[0] for player in hit_players_list]
-            screen.GAMING.display_move_red_dot(hit_players_g_pos_list)
+            screen.GAMING.display_red_dot(hit_players_g_pos_list)
             hit_player_list = screen.GAMING.fight_click(hit_players_list)
             return [1, hit_player_list]
         elif dice_val == "multiple shots":
@@ -184,7 +184,7 @@ class Turn:
                                      fight_player.pos[0] - 101]:
                     hit_players_list.append(player)
             hit_players_g_pos_list = [player.pos[0] for player in hit_players_list]
-            screen.GAMING.display_move_red_dot(hit_players_g_pos_list)
+            screen.GAMING.display_red_dot(hit_players_g_pos_list)
             hit_player_list = screen.GAMING.fight_click(hit_players_list)
             return [2, hit_player_list]
         elif dice_val == "X explosion":
@@ -215,25 +215,34 @@ class Turn:
         else:
             return [None, None]  # error
 
-    def __find_winner(self, players):
-        alive_players = [player for player in players if player.alive]
-        if players:
-            # 战斗胜利
-            for alive_player in alive_players:
-                if alive_player.HP <= 0:
-                    alive_player.alive = False
-            if len(alive_players) == 1:
-                return alive_players[0]
+    def __find_winner(self):
+        self.alive_players = [player for player in self.players if player.alive]
+        # 战斗胜利
+        for alive_player in self.alive_players:
+            if alive_player.HP <= 0:
+                alive_player.alive = False
+        alive_players = [player for player in self.players if player.alive]
+        if len(alive_players) == 1:
+            return alive_players[0]
         # 占点胜利
-        occ_list = {}
-        name = None
-        for name in map_load.MAP.list_pos_win_occ.keys():
-            occ_list.setdefault(name)
-        if len(occ_list.keys()) == 1:
-            for alive_player in alive_players:
-                if alive_player.name == name:
-                    return alive_player
-        return None
+        occ_list = []
+        occ_list_key = map_load.MAP.list_pos_win_occ.keys()
+        for k in occ_list_key:
+            occ_list.append(map_load.MAP.list_pos_win_occ[k])
+        for occ in occ_list:
+            if occ != occ_list[0]:
+                return None
+        for alive_player in self.alive_players:
+            if alive_player.name == occ_list[0]:
+                return alive_player
+            else:
+                return None  # error
+
+    def clear(self):
+        map_load.MAP.__init__()
+        self.__init__()
+        MESSAGE_LIST.__init__()
+        screen.GAMING.__init__()
 
     def __calculate_distance(self, per1_g_pos0, per2_g_pos0):
         x = abs(per1_g_pos0 // 100 - per2_g_pos0 // 100)

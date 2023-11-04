@@ -15,7 +15,6 @@ class FChessGame:
     def __init__(self):
         self.game_ver = "0.10"
         self.operate = operation.Operation()
-        self.turn = turn.Turn()
 
     def run(self):
         code.date_write("-DATE FILE CREATE-", code.DATE_FILE)
@@ -28,12 +27,14 @@ class FChessGame:
             if command == "start":
                 command = screen.MENU.menu_start()
                 if command == "PVP":
-                    command = self.turn.turn_pvp()
+                    command = turn.O_TURN.turn_pvp()
                     if command:
+                        turn.O_TURN.clear()
                         continue
                 elif command == "PVE":
-                    command = self.turn.turn_pve()
+                    command = turn.O_TURN.turn_pve()
                     if command:
+                        turn.O_TURN.clear()
                         continue
                 else:
                     continue  # error

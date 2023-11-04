@@ -7,8 +7,8 @@ import map_load
 class Person:
     def __init__(self, screen, number, pos, name=None):
         self.screen = screen
-        self.img = (pygame.image.load(init.Config["IMG"]["person " + str(number + 1)][0]).convert(),
-                    pygame.image.load(init.Config["IMG"]["person " + str(number + 1)][1]).convert())
+        self.img = (pygame.image.load(init.Config["IMG"]["person " + str(number % 2 + 1)][0]).convert(),
+                    pygame.image.load(init.Config["IMG"]["person " + str(number % 2 + 1)][1]).convert())
         self.img[0].set_colorkey(init.WHITE)
         self.img[1].set_colorkey(init.WHITE)
         self.number = number
@@ -59,6 +59,7 @@ class Person:
             return None
         # 占领点位
         elif self.pos[0] in map_load.MAP.pos_win:
+            map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel[str(self.pos[0])]] = self.name
             return True
         else:
             return None
