@@ -192,6 +192,7 @@ class Menu:
 
 MENU = Menu()
 
+
 # def ui_gaming_turn(count):
 #     operation.O_OPERATE.text_display(init.T["Turn"] + "%03d" % count, (50, 30), button_color=init.WHITE)
 #     pygame.display.flip()
@@ -241,9 +242,11 @@ class Gaming:
 
     def ui_gaming_data_new(self, players):
         for player in players:
-            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * player.number, 537), center=False, button_color=init.GRAY_BG,
+            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * player.number, 537), center=False,
+                                             button_color=init.GRAY_BG,
                                              color=init.RED)
-            operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop), (78 + 111 * player.number, 557), center=False,
+            operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop),
+                                             (78 + 111 * player.number, 557), center=False,
                                              button_color=init.GRAY_BG, color=init.RED)
         pygame.display.flip()
 
@@ -337,6 +340,23 @@ class Gaming:
             else:
                 continue
 
+    def fight_click(self, hit_players_list, AI=None):
+        if not hit_players_list:
+            return None  # error
+        if AI:
+            hit_player = random.choice(hit_players_list)
+            return [hit_player]
+        smallmodel.MUSIC.music_continue()
+        while True:
+            down_mouse_move_g_pos = operation.get_mouse_pos()
+            for player in hit_players_list:
+                if down_mouse_move_g_pos == player.pos[0]:
+                    return [player]
+                elif self.button_rtm.is_click(operation.change_pos(down_mouse_move_g_pos)):
+                    return "return"
+                else:
+                    continue
+
     def display_statue(self, text):
         self.display_statue_count += 1
         operation.MESSAGE_LIST.append_list(text)
@@ -354,10 +374,8 @@ class Gaming:
 
     def screen_win(self, winner):
         if winner:
-            operation.O_OPERATE.text_display(winner + init.T["win this game!"], operation.change_pos(515),
-                                             init.FONT_BIG,
-                                             button_color=init.RED,
-                                             color=init.WHITE)
+            operation.O_OPERATE.text_display(winner.name + init.T["win this game!"], operation.change_pos(515),
+                                             init.FONT_BIG, button_color=init.RED, color=init.WHITE)
             pygame.display.flip()
             time.sleep(2)
             return "over"

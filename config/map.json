@@ -21,10 +21,10 @@
           "D": ""
         },
       "win dot occ list rel": {
-        "A": 303,
-        "B": 307,
-        "C": 703,
-        "D": 707
+        "303": "A",
+        "307": "B",
+        "703": "C",
+        "707": "D"
       },
       "person capacity": 2,
       "person init pos": [109, 901]

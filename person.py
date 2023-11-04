@@ -23,6 +23,7 @@ class Person:
         self.damage_mul = 1
         self.action_move = 1
         self.action_damage = 1
+        self.alive = True
 
     def selected(self, statue=True):
         if statue:
@@ -58,7 +59,7 @@ class Person:
             return None
         # 占领点位
         elif self.pos[0] in map_load.MAP.pos_win:
-            return self.pos[0]
+            return True
         else:
             return None
 
