@@ -35,12 +35,6 @@
 ## Dev0.10 UPDATA regularly - development test version
 - 代码全面重写完成大半
 - 临时过渡版本
-## Beta0.10 UPDATA - early beta version
-- 代码全面重写，力求摆脱1v1的限制
-- 预计重写完成后添加语言切换设置
-- 预计重写完成后可实现自定义地图功能
-- 预计重写完成后可以进行多人混战
-- 临时过渡版本
 ## Dev0.09 UPDATA - development test version
 - 优化了一些代码
 - 临时过渡版本
