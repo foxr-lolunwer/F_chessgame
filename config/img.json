@@ -2,6 +2,7 @@
     "icon": "resource/img/icon.ico",
     "load": "resource/img/load.png",
     "main menu": "resource/img/menu_main_bg.png",
+    "main menu gif": "resource/img/main_menu_gif",
     "person": ["resource/img/person.png", "resource/img/select_person.png"],
     "person 1": ["resource/img/person_p1.png", "resource/img/select_person_p1.png"],
     "person 2": ["resource/img/person_p2.png", "resource/img/select_person_p2.png"],

@@ -7,8 +7,8 @@ import map_load
 class Person:
     def __init__(self, screen, number, pos, name=None):
         self.screen = screen
-        self.img = (pygame.image.load(init.Config["IMG"]["person " + str(number % 2 + 1)][0]).convert(),
-                    pygame.image.load(init.Config["IMG"]["person " + str(number % 2 + 1)][1]).convert())
+        self.img = (pygame.image.load(init.Config["IMG"]["person " + str(number)][0]).convert(),
+                    pygame.image.load(init.Config["IMG"]["person " + str(number)][1]).convert())
         self.img[0].set_colorkey(init.WHITE)
         self.img[1].set_colorkey(init.WHITE)
         self.number = number

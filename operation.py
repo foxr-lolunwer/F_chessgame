@@ -9,12 +9,12 @@ import code
 def change_pos(pos, center_pos=False):
     if type(pos) is int:
         x_init = -48 + 53 * (pos % 100)
-        y_init = -48 + 53 * (pos // 100)
+        y_init = -48 + 52 * (pos // 100)
         pos = (x_init, y_init)
         return pos
     elif type(pos) is tuple:
         x_init = (pos[0] + 52) // 53
-        y_init = (pos[1] + 52) // 53
+        y_init = (pos[1] + 51) // 52
         pos = x_init + 100 * y_init
         if center_pos:
             return change_pos(pos)
@@ -23,9 +23,24 @@ def change_pos(pos, center_pos=False):
         return "error!"
 
 
-def get_mouse_pos(g_pos=True):
+def get_mouse_pos(g_pos=True, once=False):
+    if once:
+        pygame.event.clear()
+        for event_move in pygame.event.get(eventtype=(pygame.MOUSEBUTTONDOWN, pygame.QUIT)):
+            if event_move.type == pygame.MOUSEBUTTONDOWN:
+                event_move.pos = (event_move.pos[0], event_move.pos[1])
+                if g_pos:
+                    return change_pos(event_move.pos)
+                else:
+                    return event_move.pos
+            if event_move.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            else:
+                return None
     pygame.event.clear()
     while True:
+        init.CLOCK.tick(10)
         for event_move in pygame.event.get():
             if event_move.type == pygame.MOUSEBUTTONDOWN:
                 event_move.pos = (event_move.pos[0], event_move.pos[1])

@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import sys
 import time
@@ -16,6 +17,12 @@ class Menu:
     def __init__(self):
         self.__setting_list = {"AI difficulty": (0, 0, 0)}
         self.__main_bg = pygame.image.load(init.Config["IMG"]["main menu"]).convert()
+        self.__main_gif = []
+        paths = os.listdir(init.Config["IMG"]["main menu gif"])
+        for path in paths:
+            self.__main_gif.append(pygame.image.load(init.Config["IMG"]["main menu gif"] + "/" + path).convert())
+            self.__main_gif[-1].set_colorkey(init.WHITE)
+        self.__main_gif_len = len(self.__main_gif)
         self.__toget_setting()
         self.bar_speed = operation.ProgressBar(val=init.Config["SETTING"]["game speed"],
                                                num_display=("r", init.BLACK), val_display_multiplier=0.02)
@@ -31,30 +38,45 @@ class Menu:
         operation.O_OPERATE.text_display(init.T["Setting"], (424, 397.5), color=init.WHITE)
         operation.O_OPERATE.text_display(init.T["Exit Game"], (424, 503.5), color=init.WHITE)
         pygame.display.flip()
+        gif_count = 0
+        gif_rect = None
+        gif_p_pos = operation.change_pos(111)
         while True:
+            init.CLOCK.tick(10)
+            if gif_count:
+                init.screen.fill(color=init.WHITE, rect=gif_rect)
+                pygame.display.flip()
+            gif_img = self.__main_gif[gif_count % self.__main_gif_len]
+            gif_rect = gif_img.get_rect()
+            gif_rect[0] = gif_p_pos[0]
+            gif_rect[1] = gif_p_pos[1]
+            init.screen.blit(gif_img, gif_p_pos)
+            gif_count += 1
+            pygame.display.flip()
             smallmodel.MUSIC.music_continue()
             # 鼠标点击相应按钮并执行相应程序
-            down_mouse_move_g_pos = operation.get_mouse_pos()
-            # 开始游戏
-            if down_mouse_move_g_pos in [407, 408, 409]:
-                return "start"
-            # 教程
-            elif down_mouse_move_g_pos in [607, 608, 609]:
-                return "course"
-            # 设置
-            elif down_mouse_move_g_pos in [807, 808, 809]:
-                return "setting"
-            # 离开游戏
-            elif down_mouse_move_g_pos in [1007, 1008, 1009]:
-                return "exit"
-            else:
-                continue
+            down_mouse_move_g_pos = operation.get_mouse_pos(once=True)
+            if down_mouse_move_g_pos:
+                # 开始游戏
+                if down_mouse_move_g_pos in [407, 408, 409]:
+                    return "start"
+                # 教程
+                elif down_mouse_move_g_pos in [607, 608, 609]:
+                    return "course"
+                # 设置
+                elif down_mouse_move_g_pos in [807, 808, 809]:
+                    return "setting"
+                # 离开游戏
+                elif down_mouse_move_g_pos in [1007, 1008, 1009]:
+                    return "exit"
+                else:
+                    continue
 
     def menu_start(self):
         init.screen.fill(init.WHITE)
         map_img = map_load.MAP.map_img.copy()
         for i in range(1, len(map_load.MAP.person_pos_init) + 1):
-            img_person = pygame.image.load(init.Config["IMG"]["person " + str(i % 2 + 1)][0]).convert()
+            img_person = pygame.image.load(init.Config["IMG"]["person " + str(i)][0]).convert()
             img_person.set_colorkey(init.WHITE)
             map_img.blit(img_person, operation.change_pos(map_load.MAP.person_pos_init[i - 1]))
         init.screen.blit(map_img, (50, 50))
@@ -172,6 +194,7 @@ class Menu:
                 continue
 
     def menu_course(self):
+
         return
 
     def __set_difficulty(self, val):
