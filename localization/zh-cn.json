@@ -40,10 +40,13 @@
   "life recovery": "生命恢复",
   "shield": "盾牌",
   "f": "###",
+  "Next Map": "下一张地图",
   "Play": "开始游戏",
   "Exit": "返回",
-  "default": "默认",
+  "default": "默认地图",
+  "default 2": "默认地图 2",
   "capacity:": "玩家容量：",
   "number of occ:":"点位数量：",
-  "This is a default map\nAuthor:foxr lolunwer": "这是一张默认地图\n作者：foxr lolunwer"
+  "This is a default map\nAuthor:foxr lolunwer": "这是一张默认地图\n作者：foxr lolunwer",
+  "This is also a default map\nBut this map is bigger\nAuthor:foxr lolunwer": "这也是一张默认地图\n不过这张地图更大一些\n作者：foxr lolunwer"
 }

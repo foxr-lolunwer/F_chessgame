@@ -14,18 +14,24 @@ from operation import change_pos, MESSAGE_LIST
 class Turn:
     def __init__(self):
         self.players = []
+        self.n = 0
+        # 创建角色
+        self.alive_players = []
+        self.turn = True
+        self.count = 1
+        # 开始回合
+        code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
+
+    def __create_person(self):
         self.n = map_load.MAP.person_capacity
         # 创建角色
         for i in range(1, self.n + 1):
             g_pos = map_load.MAP.person_pos_init[i - 1]
             self.players.append(person.Person(init.screen, i, (g_pos, change_pos(g_pos))))
         self.alive_players = [player for player in self.players if player.alive]
-        self.turn = True
-        self.count = 1
-        # 开始回合
-        code.date_write("-GAMING INIT DONE-", code.DATE_FILE)
 
     def turn_pvp(self):
+        self.__create_person()
         screen.GAMING.start_init(occ_dict=map_load.MAP.list_pos_win_occ)
         screen.GAMING.flip_screen(self.alive_players, self.count)
         screen.GAMING.ui_gaming_val(self.players)
@@ -64,7 +70,7 @@ class Turn:
         while player.action_move:
             player.selected()
             s_command = self.__move_person_pos(player.pos[0], other_players_g_pos0, t_command_move)
-            screen.GAMING.display_red_dot(s_command)
+            screen.GAMING.display_red_dot(s_command, "m")
             t_person_pos = screen.GAMING.move_click(s_command)
             if t_person_pos == "return":
                 return True
@@ -171,8 +177,9 @@ class Turn:
                                      fight_player.pos[0] + 101, fight_player.pos[0] - 101]:
                     hit_players_list.append(player)
             hit_players_g_pos_list = [player.pos[0] for player in hit_players_list]
-            screen.GAMING.display_red_dot(hit_players_g_pos_list)
+            screen.GAMING.display_red_dot(hit_players_g_pos_list, "f")
             hit_player_list = screen.GAMING.fight_click(hit_players_list)
+            screen.GAMING.flip_screen(self.alive_players, self.count)
             return [1, hit_player_list]
         elif dice_val == "multiple shots":
             smallmodel.MUSIC.play_effect("shot", 1)
@@ -184,8 +191,9 @@ class Turn:
                                      fight_player.pos[0] - 101]:
                     hit_players_list.append(player)
             hit_players_g_pos_list = [player.pos[0] for player in hit_players_list]
-            screen.GAMING.display_red_dot(hit_players_g_pos_list)
+            screen.GAMING.display_red_dot(hit_players_g_pos_list, "f")
             hit_player_list = screen.GAMING.fight_click(hit_players_list)
+            screen.GAMING.flip_screen(self.alive_players, self.count)
             return [2, hit_player_list]
         elif dice_val == "X explosion":
             smallmodel.MUSIC.play_effect("X explosion")

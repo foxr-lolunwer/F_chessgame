@@ -41,20 +41,20 @@ class Person:
         if self.pos[0] not in map_load.MAP.pos_available:
             return None
         # 生命恢复点位
-        if self.pos[0] in [208, 802]:
+        if self.pos[0] in map_load.MAP.pos_recovery:
             if self.HP < 9:
                 self.HP += 1
             return None
         # 堡垒点位
-        elif self.pos[0] in [406, 604]:
+        elif self.pos[0] in map_load.MAP.pos_fort:
             self.DEF_prop = 1
             return None
         # 大炮点位
-        elif self.pos[0] == 505:
+        elif self.pos[0] in map_load.MAP.pos_cannon:
             self.damage_mul = 2
             return None
         # 再次移动点位
-        elif self.pos[0] in [404, 606]:
+        elif self.pos[0] in map_load.MAP.pos_spurt:
             self.action_move += 1
             return None
         # 占领点位

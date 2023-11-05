@@ -1,5 +1,10 @@
 # F'Chessgame UPDATE LOG - EN
 ---
+## Dev0.11 UPDATE 2023.11.5 - development test version
+- Art resources redrawn
+- Added a new map
+- Maps can be switched within the game
+- Add language switching function to the settings interface
 ## Dev0.10 UPDATE regularly 2023.11.4 - development test version
 - Most of the code has been completely rewritten
 - Reworked the start interface
@@ -40,6 +45,11 @@
 ---
 # F'Chessgame UPDATE LOG - CN
 ---
+## Dev0.11 UPDATE 2023.11.5 - development test version
+- 美术资源重绘
+- 新增了一张地图
+- 游戏内可切换地图了
+- 设置界面添加语言切换功能
 ## Dev0.10 UPDATE regularly 2023.11.4 - development test version
 - 代码全面重写完成大半
 - 重做了开始界面

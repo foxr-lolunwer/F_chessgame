@@ -7,6 +7,7 @@
     "person 1": ["resource/img/person_p1.png", "resource/img/select_person_p1.png"],
     "person 2": ["resource/img/person_p2.png", "resource/img/select_person_p2.png"],
     "select box": ["resource/img/select_box.png", "resource/img/selected_box.png"],
-    "select mark": "resource/img/mark_select_red_dot.png",
+    "move dot mark": "resource/img/move_select_red_dot.png",
+    "fight dot mark": "resource/img/fight_select_red_dot.png",
     "gaming ui bottom": "resource/img/gaming_bottom.png"
 }

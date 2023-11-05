@@ -40,7 +40,7 @@ class Menu:
         pygame.display.flip()
         gif_count = 0
         gif_rect = None
-        gif_p_pos = operation.change_pos(111)
+        gif_p_pos = operation.change_pos(320)
         while True:
             init.CLOCK.tick(10)
             if gif_count:
@@ -73,25 +73,7 @@ class Menu:
                     continue
 
     def menu_start(self):
-        init.screen.fill(init.WHITE)
-        map_img = map_load.MAP.map_img.copy()
-        for i in range(1, len(map_load.MAP.person_pos_init) + 1):
-            img_person = pygame.image.load(init.Config["IMG"]["person " + str(i)][0]).convert()
-            img_person.set_colorkey(init.WHITE)
-            map_img.blit(img_person, operation.change_pos(map_load.MAP.person_pos_init[i - 1]))
-        init.screen.blit(map_img, (50, 50))
-        button_play = operation.O_OPERATE.text_display(init.T["Play"], operation.change_pos(913), color=init.WHITE,
-                                                       button_color=init.RED)
-        button_exit = operation.O_OPERATE.text_display(init.T["Exit"], operation.change_pos(1013), color=init.WHITE,
-                                                       button_color=init.RED)
-        operation.O_OPERATE.text_display(map_load.MAP.name, operation.change_pos(314), center=True)
-        operation.O_OPERATE.text_display(init.T["capacity:"] + str(map_load.MAP.person_capacity),
-                                         operation.change_pos(413), center=False)
-        operation.O_OPERATE.text_display(init.T["number of occ:"] + str(len(map_load.MAP.pos_win)),
-                                         operation.change_pos(416), center=False)
-        for i in range(len(map_load.MAP.description)):
-            operation.O_OPERATE.text_display(map_load.MAP.description[i], (641, 217 + i * 30), center=False)
-        pygame.display.flip()
+        button_next_map, button_play, button_exit = self.__change_map()
         while True:
             smallmodel.MUSIC.music_continue()
             down_mouse_pos = operation.get_mouse_pos(False)
@@ -100,8 +82,36 @@ class Menu:
                 return True
             elif button_exit.is_click(down_mouse_pos):
                 return False
+            elif button_next_map.is_click(down_mouse_pos):
+                map_load.MAP.map_dict_count += 1
+                map_load.MAP.loading_map(map_load.MAP.map_dict[map_load.MAP.map_dict_keys[map_load.MAP.map_dict_count % map_load.MAP.map_dict_len]], map_load.MAP.map_dict_count)
+                button_next_map, button_play, button_exit = self.__change_map()
             else:
                 continue
+
+    def __change_map(self):
+        init.screen.fill(init.WHITE)
+        map_img = map_load.MAP.map_img.copy()
+        for i in range(1, len(map_load.MAP.person_pos_init) + 1):
+            img_person = pygame.image.load(init.Config["IMG"]["person " + str(i)][0]).convert()
+            img_person.set_colorkey(init.WHITE)
+            map_img.blit(img_person, operation.change_pos(map_load.MAP.person_pos_init[i - 1]))
+        init.screen.blit(map_img, (50, 50))
+        button_next_map = operation.O_OPERATE.text_display(init.T["Next Map"], operation.change_pos(1305),
+                                                           color=init.WHITE, button_color=init.RED)
+        button_play = operation.O_OPERATE.text_display(init.T["Play"], operation.change_pos(922), color=init.WHITE,
+                                                       button_color=init.RED)
+        button_exit = operation.O_OPERATE.text_display(init.T["Exit"], operation.change_pos(1022), color=init.WHITE,
+                                                       button_color=init.RED)
+        operation.O_OPERATE.text_display(map_load.MAP.name, operation.change_pos(322), center=True)
+        operation.O_OPERATE.text_display(init.T["capacity:"] + str(map_load.MAP.person_capacity),
+                                         operation.change_pos(420), center=False)
+        operation.O_OPERATE.text_display(init.T["number of occ:"] + str(len(map_load.MAP.pos_win)),
+                                         operation.change_pos(423), center=False)
+        for i in range(len(map_load.MAP.description)):
+            operation.O_OPERATE.text_display(map_load.MAP.description[i], (1032, 217 + i * 30), center=False)
+        pygame.display.flip()
+        return button_next_map, button_play, button_exit
 
     def menu_setting(self):
         init.screen.fill(init.WHITE)
@@ -251,38 +261,51 @@ MENU = Menu()
 #
 class Gaming:
     def __init__(self):
-        self.red_dot_mark = pygame.image.load(init.Config["IMG"]["select mark"]).convert()
-        self.red_dot_mark.set_colorkey(init.WHITE)
+        self.move_dot_mark = pygame.image.load(init.Config["IMG"]["move dot mark"]).convert()
+        self.move_dot_mark.set_colorkey(init.WHITE)
+        self.fight_dot_mark = pygame.image.load(init.Config["IMG"]["fight dot mark"]).convert()
+        self.fight_dot_mark.set_colorkey(init.WHITE)
         self.__gaming_bottom = pygame.image.load(init.Config["IMG"]["gaming ui bottom"]).convert()
         self.button_rtm = operation.ButtonText()
+        self.button_rtm_pos = operation.change_pos(219)
+        self.button_thr_pos = operation.change_pos(1220)
+        self.message_win_pos = (operation.change_pos(508))
+        self.message_turn_pos = (operation.change_pos(223))
+        self.message_message_list_start_pos_and_step = ((950, 535), 20)
+        self.message_win_list_start_pos_and_step = (operation.change_pos(321), 52)
+        self.message_player_name_list_start_pos_and_step = ((43, 487), 106)
+        self.message_player_hp_list_start_pos_and_step = ((43, 537), 106)
+        self.message_player_def_list_start_pos_and_step = ((43, 557), 106)
+        self.data_player_hp_list_start_pos_and_step = ((73, 537), 111)
+        self.data_player_def_list_start_pos_and_step = ((78, 557), 111)
         self.display_statue_count = 0
 
     def ui_gaming_val(self, players):
         init.screen.blit(self.__gaming_bottom, (0, 477))
         for player in players:
-            operation.O_OPERATE.text_display(player.name, (43 + 106 * (player.number - 1), 487), center=False)
-            operation.O_OPERATE.text_display(init.T["HP:"], (43 + 106 * (player.number - 1), 537), center=False)
-            operation.O_OPERATE.text_display(init.T["DEF:"], (43 + 106 * (player.number - 1), 557), center=False)
-        operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
+            operation.O_OPERATE.text_display(player.name, (self.message_player_name_list_start_pos_and_step[0][0] + self.message_player_name_list_start_pos_and_step[1] * (player.number - 1), self.message_player_name_list_start_pos_and_step[0][1]), center=False)
+            operation.O_OPERATE.text_display(init.T["HP:"], (self.message_player_hp_list_start_pos_and_step[0][0] + self.message_player_hp_list_start_pos_and_step[1] * (player.number - 1), self.message_player_hp_list_start_pos_and_step[0][1]), center=False)
+            operation.O_OPERATE.text_display(init.T["DEF:"], (self.message_player_def_list_start_pos_and_step[0][0] + self.message_player_def_list_start_pos_and_step[1] * (player.number - 1), self.message_player_def_list_start_pos_and_step[0][1]), center=False)
+        operation.O_OPERATE.text_display(init.T["throw!"], self.button_thr_pos, init.FONT_BIG,
                                          button_color=init.GRAY)  # 掷骰子按钮
-        self.button_rtm = operation.O_OPERATE.text_display(init.T["Return to menu"], operation.change_pos(219),
+        self.button_rtm = operation.O_OPERATE.text_display(init.T["Return to menu"], self.button_rtm_pos,
                                                            init.FONT_BIG, button_color=init.RED, color=init.WHITE)
         i = 0
         for k in map_load.MAP.list_pos_win_occ.keys():
             operation.O_OPERATE.text_display("%05s : %02s" % (k, map_load.MAP.list_pos_win_occ[k]),
-                                             operation.change_pos(211 + i),
+                                             (self.message_win_list_start_pos_and_step[0][0], self.message_win_list_start_pos_and_step[0][1] + i * self.message_win_list_start_pos_and_step[1]),
                                              color=init.RED, button_color=init.WHITE, center=False)
-            i += 100
+            i += 1
         pygame.display.flip()
 
     def ui_gaming_data_new(self, players):
         for player in players:
-            operation.O_OPERATE.text_display("%02s" % str(player.HP), (73 + 111 * (player.number - 1), 537),
+            operation.O_OPERATE.text_display("%02s" % str(player.HP), (self.data_player_hp_list_start_pos_and_step[0][0] + self.data_player_hp_list_start_pos_and_step[1] * (player.number - 1), self.data_player_hp_list_start_pos_and_step[0][1]),
                                              center=False,
                                              button_color=init.GRAY_BG,
                                              color=init.RED)
             operation.O_OPERATE.text_display("%02s" % str(player.DEF_dice + player.DEF_prop),
-                                             (78 + 111 * (player.number - 1), 557), center=False,
+                                             (self.data_player_def_list_start_pos_and_step[0][0] + self.data_player_def_list_start_pos_and_step[1] * (player.number - 1), self.data_player_def_list_start_pos_and_step[0][1]), center=False,
                                              button_color=init.GRAY_BG, color=init.RED)
         pygame.display.flip()
 
@@ -297,27 +320,36 @@ class Gaming:
         init.screen.blit(map_load.MAP.map_img, (0, 0))
         for player in players:
             init.screen.blit(player.img[0], player.pos[1])
-        operation.O_OPERATE.text_display(init.T["Turn"] + "%03d" % count, (50, 30), button_color=init.WHITE)
+        operation.O_OPERATE.text_display(init.T["Turn"] + "%03d" % count, self.message_turn_pos, button_color=init.WHITE)
         pygame.display.flip()
         i = 0
         for k in map_load.MAP.list_pos_win_occ.keys():
             operation.O_OPERATE.text_display("%05s : %08s" % (k, map_load.MAP.list_pos_win_occ[k]),
-                                             operation.change_pos(211 + i),
+                                             (self.message_win_list_start_pos_and_step[0][0], self.message_win_list_start_pos_and_step[0][1] + i * self.message_win_list_start_pos_and_step[1]),
                                              init.FONT_MID, color=init.RED, button_color=init.WHITE, center=False)
-            i += 100
+            i += 1
         pygame.display.flip()
 
-    def display_red_dot(self, g_pos):
+    def display_red_dot(self, g_pos, dot_type):
+        if dot_type == "m":
+            image_dot = self.move_dot_mark
+            correct = (5, 0)
+        elif dot_type == "f":
+            image_dot = self.fight_dot_mark
+            correct = (0, 0)
+        else:
+            return  # error
         if g_pos:
             for i in g_pos:
-                init.screen.blit(self.red_dot_mark, operation.change_pos(i))
+                p_pos = operation.change_pos(i)
+                init.screen.blit(image_dot, (p_pos[0] + correct[0], p_pos[1] + correct[1]))
         pygame.display.flip()
 
     def gaming_throw(self, AI=None):
         if AI:
             time.sleep(0.5)
             return
-        button_thr = operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
+        button_thr = operation.O_OPERATE.text_display(init.T["throw!"], self.button_thr_pos, init.FONT_BIG,
                                                       button_color=init.RED, center=True)
         pygame.display.flip()
         pygame.event.clear()
@@ -331,7 +363,7 @@ class Gaming:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 event.pos = (event.pos[0], event.pos[1])
                 if button_thr.is_click(event.pos):
-                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
+                    operation.O_OPERATE.text_display(init.T["throw!"], self.button_thr_pos, init.FONT_BIG,
                                                      button_color=init.GRAY,
                                                      center=True)
                     pygame.display.flip()
@@ -340,7 +372,7 @@ class Gaming:
                     return "return"
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
-                    operation.O_OPERATE.text_display(init.T["throw!"], operation.change_pos(1112), init.FONT_BIG,
+                    operation.O_OPERATE.text_display(init.T["throw!"], self.button_thr_pos, init.FONT_BIG,
                                                      button_color=init.GRAY,
                                                      center=True)
                     pygame.display.flip()
@@ -390,7 +422,7 @@ class Gaming:
             if self.display_statue_count > 1:
                 pygame.draw.rect(init.screen, init.WHITE, operation.MESSAGE_LIST.list_message_rect[i - 1])
         for i in range(1, operation.MESSAGE_LIST.list_len + 1):
-            text_rect = operation.O_OPERATE.text_display(operation.MESSAGE_LIST.list_message[-i], (747, 535 - 20 * i),
+            text_rect = operation.O_OPERATE.text_display(operation.MESSAGE_LIST.list_message[-i], (self.message_message_list_start_pos_and_step[0][0], self.message_message_list_start_pos_and_step[0][1] - self.message_message_list_start_pos_and_step[1] * i),
                                                          init.FONT_MID,
                                                          color=init.GRAY)
             operation.MESSAGE_LIST.list_message_rect.append(text_rect)

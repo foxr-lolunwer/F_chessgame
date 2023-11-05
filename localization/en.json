@@ -42,10 +42,13 @@
   "life recovery": "life recovery",
   "shield": "shield",
   "f": "###",
+  "Next Map": "Next Map",
   "Play": "Play",
   "Exit": "Exit",
-  "default": "default",
+  "default": "Default Map",
+  "default 2": "Default Map 2",
   "capacity:": "player capacity:",
   "number of occ:": "number of occ:",
-  "This is a default map\nAuthor:foxr lolunwer": "This is a default map\nAuthor:foxrlolunwer"
+  "This is a default map\nAuthor:foxr lolunwer": "This is a default map\nAuthor:foxrlolunwer",
+  "This is also a default map\nBut this map is bigger\nAuthor:foxr lolunwer": "This is also a default map\nBut this map is bigger\nAuthor:foxr lolunwer"
 }

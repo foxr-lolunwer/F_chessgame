@@ -26,9 +26,10 @@ def date_write(text, file):
         return
 
 
-def load_map():
-    map_load = init.Config["MAP"][init.Config["MAP"]["default map"]]
-    return map_load, init.Config["MAP"]["default map"]
+def load_map(loading_map="default"):
+    map_load = init.Config["MAP"][loading_map]
+    name = init.Config["MAP"]["map dict"][loading_map]
+    return map_load, name
 
 # def map_dict_key_rel(val, map_dict_rel=load_map["win dot occ list rel"]):
 #     dict_keys = map_dict_rel.keys()
