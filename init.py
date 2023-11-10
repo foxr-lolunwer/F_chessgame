@@ -6,7 +6,7 @@ T = init_ture.T
 CLOCK = pygame.time.Clock()
 pygame.init()
 pygame.mixer.init()
-game_ver = "0.11"
+game_ver = "0.12"
 pygame.display.set_caption("Game ver " + game_ver)  # 窗口标题显示10
 screen = pygame.display.set_mode((1325, 832))  # 设置游戏窗口大小：530*636（像素）
 icon = pygame.image.load(Config["IMG"]["icon"]).convert()  # 引入窗口图标
