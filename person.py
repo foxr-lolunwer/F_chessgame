@@ -2,6 +2,7 @@ import pygame
 
 import init
 import map_load
+import smallmodel
 
 
 class Person:
@@ -38,31 +39,38 @@ class Person:
         
     def occ_buff(self):
         self.DEF_prop = 0
+        self.damage_mul = 1
         if self.pos[0] not in map_load.MAP.pos_available:
             return None
         # 生命恢复点位
         if self.pos[0] in map_load.MAP.pos_recovery:
             if self.HP < 9:
+                smallmodel.MUSIC.play_effect("life recovery")
                 self.HP += 1
             return None
         # 堡垒点位
         elif self.pos[0] in map_load.MAP.pos_fort:
+            smallmodel.MUSIC.play_effect("shield")
             self.DEF_prop = 1
             return None
         # 大炮点位
         elif self.pos[0] in map_load.MAP.pos_cannon:
+            smallmodel.MUSIC.play_effect("shield")
             self.damage_mul = 2
             return None
         # 再次移动点位
         elif self.pos[0] in map_load.MAP.pos_spurt:
+            smallmodel.MUSIC.play_effect("life recovery")
             self.action_move += 1
             return None
         # 占领点位
         elif self.pos[0] in map_load.MAP.pos_win:
+            smallmodel.MUSIC.play_effect("life recovery")
             map_load.MAP.list_pos_win_occ[map_load.MAP.list_pos_win_rel[str(self.pos[0])]] = self.name
             return True
         else:
             return None
+
 
 class AIPerson(Person):
     def __init__(self, number, pos, name, AI_Config_difficulty=init.Config["SETTING"]["AI Difficulty"][init.Config["SETTING"]["AI Difficulty"]["setting"]]):

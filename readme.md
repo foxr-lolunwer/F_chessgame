@@ -1,5 +1,8 @@
 # F'Chessgame UPDATE LOG - EN
 ---
+## Dev0.12 UPDATE 2023.11.10 - development test version
+- Art resources redrawn
+- Optimized part of the code
 ## Dev0.11 UPDATE 2023.11.5 - development test version
 - Art resources redrawn
 - Added a new map
@@ -19,7 +22,7 @@
 - Optimized some codes
 - Temporary transitional version
 ## Dev0.08 UPDATE - development test version
-- Another update of pygame. For some reasons, we do not plan to use other graphics libraries.
+- Another update of pygame. For some reason, we do not plan to use other graphics libraries.
 - Optimized some codes
 - Changed the recognition range of the button to make it more accurate and no longer misrecognize it.
 - Chinese and English localization has been introduced, but for the time being, switching between Chinese and English can only be achieved by modifying the code.
@@ -44,6 +47,9 @@
 ---
 # F'Chessgame UPDATE LOG - CN
 ---
+## Dev0.12 UPDATE 2023.11.10 - development test version
+- 美术资源重绘
+- 优化了一部分代码
 ## Dev0.11 UPDATE 2023.11.5 - development test version
 - 美术资源重绘
 - 新增了一张地图

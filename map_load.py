@@ -16,7 +16,8 @@ class Map:
         self.map_dict_keys = list(self.map_dict.keys())
         self.map_dict_count = count
         self.map_dict_len = len(self.map_dict_keys)
-        self.map_img = image.load(load_map["img"]).convert()
+        self.map_img = image.load(load_map["img"])
+        self.map_img.set_colorkey(init.WHITE)
         self.pos = load_map["list pos"]
         self.pos_tp = load_map["list pos"]["tp"]
         self.pos_win = load_map["list pos"]["win"]

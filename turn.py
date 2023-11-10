@@ -62,11 +62,11 @@ class Turn:
     def __turn_move(self, player, other_players):
         other_players_g_pos0 = [p.pos[0] for p in other_players]
         player.selected()
-        screen.GAMING.display_statue(player.name + init.T["Please throw!"])
+        screen.GAMING.display_statue(player.name + ": " + init.T["Please throw!"])
         if screen.GAMING.gaming_throw():
             return True
         t_command_move = random.choice(init.Config["SETTING"]["M_dice"])
-        screen.GAMING.display_statue(player.name + init.T[t_command_move])
+        screen.GAMING.display_statue(player.name + ": " + init.T[t_command_move])
         while player.action_move:
             player.selected()
             s_command = self.__move_person_pos(player.pos[0], other_players_g_pos0, t_command_move)
@@ -89,11 +89,11 @@ class Turn:
             player.DEF_dice = 0
             screen.GAMING.ui_gaming_data_new(player, other_players)
         player.selected()
-        screen.GAMING.display_statue(player.name + init.T["Please throw!"])
+        screen.GAMING.display_statue(player.name + ": " + init.T["Please throw!"])
         if screen.GAMING.gaming_throw():
             return True
         t_command_fight = random.choice(init.Config["SETTING"]["F_dice"])
-        screen.GAMING.display_statue(player.name + init.T[t_command_fight])
+        screen.GAMING.display_statue(player.name + ": " + init.T[t_command_fight])
         time.sleep((100 - init.Config["SETTING"]["game speed"]) * 0.02 * 1)
         t_command = self.__fight_kill_val(player, other_players, t_command_fight)
         if t_command[1]:
@@ -107,21 +107,21 @@ class Turn:
     def __hit_player(self, player, kill_val, hit_players_list):
         for hit_player in hit_players_list:
             if kill_val >= 0:
-                kill_val = kill_val - (hit_player.DEF_prop + hit_player.DEF_dice)
+                kill_val = kill_val * player.damage_mul - (hit_player.DEF_prop + hit_player.DEF_dice)
                 if kill_val > 0:
                     hit_player.HP -= kill_val
-                    screen.GAMING.display_statue(player.name + init.T["Kill Val is "] + str(kill_val))
+                    screen.GAMING.display_statue(player.name + ": " + init.T["Kill Val is "] + str(kill_val))
                 else:
-                    screen.GAMING.display_statue(player.name + init.T["MISS"])
+                    screen.GAMING.display_statue(player.name + ": " + init.T["MISS"])
             elif kill_val == -1:
                 player.HP += 1
-                screen.GAMING.display_statue(player.name + init.T["HP Recovery"])
+                screen.GAMING.display_statue(player.name + ": " + init.T["HP Recovery"])
             elif kill_val == -2:
                 player.DEF_dice += 1
-                screen.GAMING.display_statue(player.name + init.T["DEF + 1"])
+                screen.GAMING.display_statue(player.name + ": " + init.T["DEF + 1"])
             else:
                 "fight error"
-            time.sleep((100 - init.Config["SETTING"]["game speed"]) * 0.02 * 1)
+            time.sleep((105 - init.Config["SETTING"]["game speed"]) * 0.02 * 1)
         return
 
     # 获取可以移动的所有位置
@@ -168,7 +168,6 @@ class Turn:
     def __fight_kill_val(self, fight_player, other_players, dice_val):
         hit_players_list = []
         if dice_val == "single shot":
-            smallmodel.MUSIC.play_effect("shot")
             for player in other_players:
                 if player.pos[0] in [fight_player.pos[0], fight_player.pos[0] + 1, fight_player.pos[0] - 1,
                                      fight_player.pos[0] + 100, fight_player.pos[0] - 100, fight_player.pos[0] + 2,
@@ -179,10 +178,13 @@ class Turn:
             hit_players_g_pos_list = [player.pos[0] for player in hit_players_list]
             screen.GAMING.display_red_dot(hit_players_g_pos_list, "f")
             hit_player_list = screen.GAMING.fight_click(hit_players_list)
+            if hit_player_list:
+                smallmodel.MUSIC.play_effect("shot")
+            else:
+                screen.GAMING.display_statue(fight_player.name + ": " + init.T["MISS"])
             screen.GAMING.flip_screen(self.alive_players, self.count)
             return [1, hit_player_list]
         elif dice_val == "multiple shots":
-            smallmodel.MUSIC.play_effect("shot", 1)
             for player in other_players:
                 if player.pos[0] in [fight_player.pos[0], fight_player.pos[0] + 1, fight_player.pos[0] - 1,
                                      fight_player.pos[0] + 100, fight_player.pos[0] - 100, fight_player.pos[0] + 2,
@@ -193,6 +195,10 @@ class Turn:
             hit_players_g_pos_list = [player.pos[0] for player in hit_players_list]
             screen.GAMING.display_red_dot(hit_players_g_pos_list, "f")
             hit_player_list = screen.GAMING.fight_click(hit_players_list)
+            if hit_player_list:
+                smallmodel.MUSIC.play_effect("shot", 1)
+            else:
+                screen.GAMING.display_statue(fight_player.name + ": " + init.T["MISS"])
             screen.GAMING.flip_screen(self.alive_players, self.count)
             return [2, hit_player_list]
         elif dice_val == "X explosion":
@@ -210,6 +216,8 @@ class Turn:
             for player in other_players:
                 if player.pos[0] in fight_pos_l:
                     hit_players_list.append(player)
+            if not hit_players_list:
+                screen.GAMING.display_statue(fight_player.name + ": " + init.T["MISS"])
             return [2, hit_players_list]
         elif dice_val == "bomb":
             smallmodel.MUSIC.play_effect("bomb")

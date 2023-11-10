@@ -53,32 +53,67 @@ def get_mouse_pos(g_pos=True, once=False):
                 sys.exit()
 
 
-class Operation:
-    def __init__(self):
-        return
+class TextDisplay:
 
     # 文本显示函数（文本内容，显示位置，字体大小，是否抗锯齿，传入坐标意义-默认为中心点坐标，按钮颜色，字体颜色）
-    def text_display(
-            self, text, p_pos, size=init.FONT_MID, anti=True, center=True, button_color=None, color=init.BLACK, get_rect=False):
-        if button_color:
-            text_show = size.render(text, anti, color, button_color)
+    def __init__(self, text, p_pos, size=init.FONT_MID, anti=True, center=True, bg_color=None, color=init.BLACK, get_button_rect=False, tip=False):
+        self.tip = tip
+        self.pos = (change_pos(p_pos), p_pos)
+        self.get_button_rect = get_button_rect
+        self.bg_color = bg_color
+        if bg_color:
+            self.text_show = size.render(text, anti, color, bg_color)
         else:
-            text_show = size.render(text, anti, color)
-        text_rect = text_show.get_rect()
+            self.text_show = size.render(text, anti, color)
+        self.text_rect = self.text_show.get_rect()
         if center:
-            text_rect.center = p_pos
+            self.text_rect.center = p_pos
         else:
-            text_rect.topleft = p_pos
-        if not button_color and color != init.WHITE:
-            text_show.set_colorkey(init.WHITE)
-        init.screen.blit(text_show, text_rect)
-        if button_color or get_rect:
-            button = ButtonText((change_pos(p_pos), p_pos), text_rect, button_color)
+            self.text_rect.topleft = p_pos
+        if not bg_color and color != init.WHITE:
+            self.text_show.set_colorkey(init.WHITE)
+        if self.tip:
+            self.button_text_rect = init.button_rect
+            if center:
+                self.button_text_rect.center = p_pos
+            else:
+                self.button_text_rect.topleft = p_pos
+
+    def display(self):
+        if self.tip:
+            init.screen.blit(init.button_default[0], init.button_rect)
+        init.screen.blit(self.text_show, self.text_rect)
+        if self.bg_color or self.get_button_rect and not self.tip:
+            button = ButtonText(self.pos, self.text_rect, self.tip)
             return button
-        return text_rect
+        elif self.get_button_rect or self.tip:
+            button = ButtonText(self.pos, self.button_text_rect, self.tip)
+            return button
+        return self.text_rect
 
 
-O_OPERATE = Operation()
+class ButtonText:
+    def __init__(self, pos=((0, 0), 0), rect=None, tip=None):
+        if rect is None:
+            rect = [0, 0, 0, 0]
+        self.pos = pos
+        self.rect = rect.copy()
+        self.tip = tip
+
+    def change_pos(self, p_pos):
+        self.pos = (change_pos(p_pos), p_pos)
+        self.rect = (p_pos[0], p_pos[1], self.rect[2], self.rect[3])
+
+    def is_click(self, mouse_p_pos):
+        if mouse_p_pos[0] in range(self.rect[0], self.rect[0] + self.rect[2] + 1) and mouse_p_pos[1] in range(
+                self.rect[1], self.rect[1] + self.rect[3] + 1):
+            self.__tip_color()
+            return True
+        else:
+            return False
+
+    def __tip_color(self):
+        return
 
 
 # 进度条
@@ -96,7 +131,6 @@ class ProgressBar:
         self.val_display_mul = val_display_multiplier
         self.num_statue = num_display
         self.text_rect = None
-        self.operate = Operation()
 
     def display(self, screen=None, val=None):
         if screen:
@@ -113,13 +147,11 @@ class ProgressBar:
             if self.text_rect:
                 pygame.draw.rect(display_screen, rect=self.text_rect, color=self.bg_color)
             if self.num_statue[0] == "r":
-                self.text_rect = self.operate.text_display("%03s" % str(round(self.val * self.val_display_mul, 1)), (
-                    self.pos[0] + self.length + 10, self.pos[1] + self.width // 2), color=self.num_statue[1],
-                                                           size=init.FONT_SMALL)
+                text_bar_message = TextDisplay("%03s" % str(round(self.val * self.val_display_mul, 1)), (self.pos[0] + self.length + 10, self.pos[1] + self.width // 2), color=self.num_statue[1], size=init.FONT_SMALL)
+                self.text_rect = text_bar_message.display()
             if self.num_statue[0] == "c":
-                self.text_rect = screen.operate.text_display("%03s" % str(round(self.val * self.val_display_mul, 1)), (
-                    self.pos[0] + self.length // 2, self.pos[1] + self.width // 2), color=self.num_statue[1],
-                                                             size=init.FONT_SMALL)
+                text_bar_message = TextDisplay("%03s" % str(round(self.val * self.val_display_mul, 1)), (self.pos[0] + self.length // 2, self.pos[1] + self.width // 2), color=self.num_statue[1], size=init.FONT_SMALL)
+                self.text_rect = text_bar_message.display()
         pygame.display.flip()
 
     def mouse_get_val(self, mouse_pos):
@@ -131,33 +163,20 @@ class ProgressBar:
                 elif self.length - self.val <= 5:
                     self.val = self.length
                 return True
+                # while True:
+                #     event_bar = pygame.event.get()
+                #     for event in event_bar:
+                #         if event.type == pygame.MOUSEBUTTONUP:
+                #             return True
+                #         mouse_pos = event.pos
+                #         if mouse_pos[1] in range(self.pos[1], self.pos[1] + self.width + 1):
+                #             if mouse_pos[0] in range(self.pos[0], self.pos[0] + self.length + 1):
+                #                 self.val = mouse_pos[0] - self.pos[0]
+                #                 if self.val <= 5:
+                #                     self.val = 0
+                #                 elif self.length - self.val <= 5:
+                #                     self.val = self.length
         return False
-
-
-class ButtonText:
-    def __init__(self, pos=((0, 0), 0), rect=None, tip_color=None):
-        self.pos = pos
-        self.rect = rect
-        self.color = tip_color
-        self.tip_color = tip_color
-
-    def change_pos(self, p_pos):
-        self.pos = (change_pos(p_pos), p_pos)
-        self.rect = (p_pos[0], p_pos[1], self.rect[2], self.rect[3])
-
-    def is_click(self, mouse_p_pos):
-        if mouse_p_pos[0] in range(self.rect[0], self.rect[0] + self.rect[2] + 1) and mouse_p_pos[1] in range(
-                self.rect[1], self.rect[1] + self.rect[3] + 1):
-            self._tip_color()
-            return True
-        else:
-            return False
-
-    def _tip_color(self):
-        return
-
-
-button_box = ButtonText(rect=init.IMG[0].get_rect())
 
 
 class MessageList:

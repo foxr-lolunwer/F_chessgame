@@ -1,6 +1,9 @@
 {
     "icon": "resource/img/icon.ico",
+    "background": "resource/img/background.png",
     "load": "resource/img/load.png",
+    "button default": ["resource/img/button.png", "resource/img/button_tip.png"],
+    "message list": "resource/img/message_list.png",
     "main menu": "resource/img/menu_main_bg.png",
     "main menu gif": "resource/img/main_menu_gif",
     "person": ["resource/img/person.png", "resource/img/select_person.png"],

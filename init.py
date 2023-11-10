@@ -15,6 +15,9 @@ pygame.display.set_icon(icon)  # 显示窗口坐标
 FONT_BIG = pygame.font.SysFont('SimHei', 30)  # 默认大号字体
 FONT_MID = pygame.font.SysFont('SimHei', 16)  # 默认正常字体
 FONT_SMALL = pygame.font.SysFont('SimHei', 12)  # 默认小号字体
+button_default = (pygame.image.load(Config["IMG"]["button default"][0]),
+                  pygame.image.load(Config["IMG"]["button default"][1]))
+button_rect = button_default[0].get_rect()
 IMG = [pygame.image.load(Config["IMG"]["select box"][0]).convert(),
        pygame.image.load(Config["IMG"]["select box"][1]).convert()]
 WHITE = (255, 255, 255)
