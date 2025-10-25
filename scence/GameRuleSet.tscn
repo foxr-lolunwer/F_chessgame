@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckb3ssuhfrobv"]
+
+[ext_resource type="Texture2D" uid="uid://gdx2bqa2mp0n" path="res://image/background.png" id="1_4jvca"]
+[ext_resource type="Texture2D" uid="uid://boxng2b3fcv2b" path="res://image/map1.png" id="2_l17hc"]
+[ext_resource type="Script" uid="uid://dkbpup0c6m5ui" path="res://src/Game/button_play.gd" id="3_3p148"]
+[ext_resource type="Script" uid="uid://b8mp7hmia74nf" path="res://src/GameRuleSet/button_back.gd" id="3_l17hc"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_4jvca")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_l17hc")
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="ButtonPlay" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Play"
+script = ExtResource("3_3p148")
+
+[node name="ButtonBack" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Back
+"
+script = ExtResource("3_l17hc")
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonPlay" to="HBoxContainer/VBoxContainer/ButtonPlay" method="_on_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonBack" to="HBoxContainer/VBoxContainer/ButtonBack" method="_on_pressed"]

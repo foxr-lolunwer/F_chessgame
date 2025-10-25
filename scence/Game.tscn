@@ -1,0 +1,139 @@
+[gd_scene load_steps=9 format=4 uid="uid://62mrkd4ffbkm"]
+
+[ext_resource type="Script" uid="uid://cjmx6tk0ia5rj" path="res://src/Game/node_2d.gd" id="1_63lcg"]
+[ext_resource type="TileSet" uid="uid://b1glghk0dxe8q" path="res://map/default/default_map_tile.tres" id="1_jw8fb"]
+[ext_resource type="Script" uid="uid://rjpe6mb4sfqt" path="res://src/Game/game.gd" id="1_yam53"]
+[ext_resource type="Script" uid="uid://cko6pbvtvhupv" path="res://src/Game/ui_properties.gd" id="2_u7lkv"]
+[ext_resource type="Script" uid="uid://d3hbs7a7fsclt" path="res://src/script/f_character.gd" id="2_yam53"]
+[ext_resource type="Texture2D" uid="uid://58opsjnexicl" path="res://image/person_p1.png" id="3_vyywr"]
+[ext_resource type="Texture2D" uid="uid://b2ypdf353d6c2" path="res://image/person_p2.png" id="4_yam53"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyywr"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_yam53")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 0.95
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_u7lkv")
+
+[node name="LabelPlayer" type="Label" parent="Control/HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Player1"
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="Control/HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="LabelHP" type="Label" parent="Control/HBoxContainer/VBoxContainer1/HBoxContainer1"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "HP"
+
+[node name="LabelHPVal" type="Label" parent="Control/HBoxContainer/VBoxContainer1/HBoxContainer1"]
+layout_mode = 2
+text = "999"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="LabelDEF" type="Label" parent="Control/HBoxContainer/VBoxContainer1/HBoxContainer2"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "DEF"
+
+[node name="LabelDEFVal" type="Label" parent="Control/HBoxContainer/VBoxContainer1/HBoxContainer2"]
+layout_mode = 2
+text = "999"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_u7lkv")
+
+[node name="LabelPlayer" type="Label" parent="Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Player2"
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="LabelHP" type="Label" parent="Control/HBoxContainer/VBoxContainer2/HBoxContainer1"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "HP"
+
+[node name="LabelHPVal" type="Label" parent="Control/HBoxContainer/VBoxContainer2/HBoxContainer1"]
+layout_mode = 2
+text = "999"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="LabelDEF" type="Label" parent="Control/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "DEF"
+
+[node name="LabelDEFVal" type="Label" parent="Control/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "999"
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_63lcg")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Node2D"]
+tile_map_data = PackedByteArray("AAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAACAAAAAAAIAAkAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAEAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAABAAAAAAAKAAcAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAADAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAAMAAMAAAAAAAAAAAAMAAQAAAABAAAAAAAMAAUAAAAAAAAAAAAMAAYAAAAEAAAAAAAMAAcAAAAAAAAAAAANAAEAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAAAAAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAYAAAAAAAAAAAANAAcAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAIAAAACAAAAAAAOAAMAAAAAAAAAAAAPAAEAAAAAAAAAAAAPAAIAAAAAAAAAAAAPAAMAAAAAAAAAAAA=")
+tile_set = ExtResource("1_jw8fb")
+
+[node name="FCharacter1" type="CharacterBody2D" parent="Node2D" node_paths=PackedStringArray("ui_properties")]
+motion_mode = 1
+script = ExtResource("2_yam53")
+ui_properties = NodePath("../../Control/HBoxContainer/VBoxContainer1")
+flip_h = false
+grid_position = Vector2i(15, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/FCharacter1"]
+shape = SubResource("RectangleShape2D_vyywr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/FCharacter1"]
+texture = ExtResource("3_vyywr")
+
+[node name="FCharacter2" type="CharacterBody2D" parent="Node2D" node_paths=PackedStringArray("ui_properties")]
+motion_mode = 1
+script = ExtResource("2_yam53")
+ui_properties = NodePath("../../Control/HBoxContainer/VBoxContainer2")
+cname = "Character2"
+grid_position = Vector2i(7, 9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/FCharacter2"]
+shape = SubResource("RectangleShape2D_vyywr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/FCharacter2"]
+texture = ExtResource("4_yam53")
