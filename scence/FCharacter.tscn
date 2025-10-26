@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://e3kei7i6s3hv"]
+
+[ext_resource type="Script" uid="uid://dw558oncf55xk" path="res://src/Game/FCharacter.gd" id="1_f6cma"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tqu8"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_f6cma")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7tqu8")
