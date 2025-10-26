@@ -1,4 +1,0 @@
-git add .
-git commit -m "Initial commit: upload Godot project"
-git remote add origin https://github.com/foxr-lolunwer/F_chessgame
-git push
