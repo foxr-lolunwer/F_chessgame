@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=4 uid="uid://62mrkd4ffbkm"]
 
-[ext_resource type="Script" uid="uid://cjmx6tk0ia5rj" path="res://src/Game/node_2d.gd" id="1_63lcg"]
 [ext_resource type="TileSet" uid="uid://b1glghk0dxe8q" path="res://map/default/default_map_tile.tres" id="1_jw8fb"]
 [ext_resource type="Script" uid="uid://rjpe6mb4sfqt" path="res://src/Game/game.gd" id="1_yam53"]
 [ext_resource type="Script" uid="uid://cko6pbvtvhupv" path="res://src/Game/ui_properties.gd" id="2_u7lkv"]
+[ext_resource type="Script" uid="uid://np1hi15myaq1" path="res://src/Game/node2d_2.gd" id="3_577yh"]
 [ext_resource type="Texture2D" uid="uid://58opsjnexicl" path="res://image/person_p1.png" id="3_vyywr"]
 [ext_resource type="Texture2D" uid="uid://b2ypdf353d6c2" path="res://image/person_p2.png" id="4_yam53"]
 [ext_resource type="TileSet" uid="uid://6o3r4xd43ptl" path="res://map/default/move_hint_tile.tres" id="5_577yh"]
@@ -177,18 +177,17 @@ layout_mode = 2
 text = "999"
 
 [node name="Node2D" type="Node2D" parent="."]
-script = ExtResource("1_63lcg")
-characters = Array[NodePath]([NodePath("Player1"), NodePath("Player2")])
-move_hint_layer = NodePath("MoveHintLayer")
-tile_map_layer = NodePath("TileMapLayer")
+script = ExtResource("3_577yh")
+characters_paths = Array[NodePath]([NodePath("Player1"), NodePath("Player2")])
+move_hint_layer_path = NodePath("MoveHintLayer")
+tile_map_layer_path = NodePath("TileMapLayer")
+ex_map_layer_path = NodePath("ExLayer")
+ui_name_container_path = NodePath("../UiTab/HBoxContainer/HBoxContainer/VBoxContainer1")
+ui_info_container_path = NodePath("../UiTab/HBoxContainer/HBoxContainer/VBoxContainer2")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="Node2D"]
 tile_map_data = PackedByteArray("AAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAACAAAAAAAIAAkAAAAAAAAAAAAJAAMAAQAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAQABAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAEAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAABAAAAAAAKAAcAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAADAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAAMAAMAAAAAAAAAAAAMAAQAAAABAAAAAAAMAAUAAAAAAAAAAAAMAAYAAAAEAAAAAAAMAAcAAAAAAAAAAAANAAEAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAQACAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAYAAAAAAAAAAAANAAcAAQADAAAAAAAOAAEAAAAAAAAAAAAOAAIAAAACAAAAAAAOAAMAAAAAAAAAAAAPAAEAAAAAAAAAAAAPAAIAAAAAAAAAAAAPAAMAAAAAAAAAAAA=")
 tile_set = ExtResource("1_jw8fb")
-
-[node name="MoveHintLayer" type="TileMapLayer" parent="Node2D"]
-tile_map_data = PackedByteArray("AAAHAAcAAgABAAAAAAAHAAgAAgABAAAAAAAHAAkAAgABAAAAAAAIAAcAAgABAAAAAAAIAAgAAgABAAAAAAAIAAkAAgABAAAAAAAJAAMAAgABAAAAAAAJAAQAAgABAAAAAAAJAAUAAgABAAAAAAAJAAYAAgABAAAAAAAJAAcAAgABAAAAAAAJAAgAAgABAAAAAAAJAAkAAgABAAAAAAAKAAMAAgABAAAAAAAKAAQAAgABAAAAAAAKAAUAAgABAAAAAAAKAAYAAgABAAAAAAAKAAcAAgABAAAAAAALAAMAAgABAAAAAAALAAQAAgABAAAAAAALAAUAAgABAAAAAAALAAYAAgABAAAAAAALAAcAAgABAAAAAAAMAAMAAgABAAAAAAAMAAQAAgABAAAAAAAMAAUAAgABAAAAAAAMAAYAAgABAAAAAAAMAAcAAgABAAAAAAANAAEAAgABAAAAAAANAAIAAgABAAAAAAANAAMAAgABAAAAAAANAAQAAgABAAAAAAANAAUAAgABAAAAAAANAAYAAgABAAAAAAANAAcAAgABAAAAAAAOAAEAAgABAAAAAAAOAAIAAgABAAAAAAAOAAMAAgABAAAAAAAPAAEAAgABAAAAAAAPAAIAAgABAAAAAAAPAAMAAgABAAAAAAA=")
-tile_set = ExtResource("5_577yh")
 
 [node name="Player1" type="CharacterBody2D" parent="Node2D" node_paths=PackedStringArray("ui_properties")]
 script = ExtResource("5_u7lkv")
@@ -217,3 +216,12 @@ shape = SubResource("RectangleShape2D_yam53")
 
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/Player2"]
 texture = ExtResource("4_yam53")
+
+[node name="MoveHintLayer" type="TileMapLayer" parent="Node2D"]
+tile_map_data = PackedByteArray("AAAHAAcAAgABAAAAAAAHAAgAAgABAAAAAAAHAAkAAgABAAAAAAAIAAcAAgABAAAAAAAIAAgAAgABAAAAAAAIAAkAAgABAAAAAAAJAAMAAgABAAAAAAAJAAQAAgABAAAAAAAJAAUAAgABAAAAAAAJAAYAAgABAAAAAAAJAAcAAgABAAAAAAAJAAgAAgABAAAAAAAJAAkAAgABAAAAAAAKAAMAAgABAAAAAAAKAAQAAgABAAAAAAAKAAUAAgABAAAAAAAKAAYAAgABAAAAAAAKAAcAAgABAAAAAAALAAMAAgABAAAAAAALAAQAAgABAAAAAAALAAUAAgABAAAAAAALAAYAAgABAAAAAAALAAcAAgABAAAAAAAMAAMAAgABAAAAAAAMAAQAAgABAAAAAAAMAAUAAgABAAAAAAAMAAYAAgABAAAAAAAMAAcAAgABAAAAAAANAAEAAgABAAAAAAANAAIAAgABAAAAAAANAAMAAgABAAAAAAANAAQAAgABAAAAAAANAAUAAgABAAAAAAANAAYAAgABAAAAAAANAAcAAgABAAAAAAAOAAEAAgABAAAAAAAOAAIAAgABAAAAAAAOAAMAAgABAAAAAAAPAAEAAgABAAAAAAAPAAIAAgABAAAAAAAPAAMAAgABAAAAAAA=")
+tile_set = ExtResource("5_577yh")
+
+[node name="ExLayer" type="TileMapLayer" parent="Node2D"]
+tile_set = ExtResource("5_577yh")
+
+[node name="SummonToolLayer" type="TileMapLayer" parent="Node2D"]
