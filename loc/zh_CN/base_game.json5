@@ -1,0 +1,38 @@
+{
+	ui: {
+		load: {
+			lang: "加载语言中",
+			mainmenu: "跳转主界面"
+		},
+		menu: {
+			start: "开始游戏",
+			play: "开始游戏",
+			exit: "退出游戏",
+			back: "返回",
+			comfirm: "确认",
+			cancel: "取消",
+			yes: "是",
+			no: "否",
+			pre_map: "<",
+			next_map: ">",
+			f_true: "[color=green]是[/color]",
+			f_false: "[color=red]否[/color]",
+			xslashx: "{$0}/{$1}",
+			author: "作者："
+		}
+	},
+	game: {
+		play: {
+			default_name: "玩家{$0}",
+			hp: "血量",
+			max_hp: "最大血量",
+			attack: "攻击",
+			defense: "防御",
+			temp_attack: "临时攻击",
+			temp_defense: "临时防御",
+			move_range: "移动范围",
+			is_alive: "存活状态",
+			is_moving: "移动状态"
+		}
+	}
+}

@@ -1,0 +1,9 @@
+{
+	map: {
+		default: {
+			name: "默认地图",
+			desc: "标准的2人地图",
+			author: "官方：FL"
+		}
+	}
+}

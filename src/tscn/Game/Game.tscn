@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://62mrkd4ffbkm"]
+
+[ext_resource type="Script" uid="uid://np1hi15myaq1" path="res://src/tscn/Game/Play.gd" id="1_qb2ae"]
+[ext_resource type="PackedScene" uid="uid://dry51wo77wyhy" path="res://src/tscn/Game/Map/Map.tscn" id="2_rn0ke"]
+[ext_resource type="PackedScene" uid="uid://df1owoa1nkhhw" path="res://src/tscn/Game/UiLayer/UiLayer.tscn" id="6_rn0ke"]
+
+[node name="Play" type="Node2D" unique_id=667419712]
+script = ExtResource("1_qb2ae")
+characters_paths = null
+move_hint_layer_path = null
+tile_map_layer_path = null
+ex_map_layer_path = null
+ui_name_container_path = null
+ui_info_container_path = null
+move_type_roll = null
+fight_type_roll = null
+
+[node name="Map" parent="." unique_id=1939245242 instance=ExtResource("2_rn0ke")]
+
+[node name="Players" type="Node2D" parent="." unique_id=2095118076]
+
+[node name="CanvasLayer" parent="." unique_id=1245970063 instance=ExtResource("6_rn0ke")]

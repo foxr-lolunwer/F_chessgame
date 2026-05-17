@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bgr1sm5hw4ieh"]
+
+[ext_resource type="Script" uid="uid://f3ejuvjfgqlf" path="res://src/tscn/Game/Character/Player.gd" id="1_3c2jv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m3sjp"]
+
+[node name="Player" type="CharacterBody2D" unique_id=1323448994]
+script = ExtResource("1_3c2jv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1092006325]
+shape = SubResource("RectangleShape2D_m3sjp")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=270027890]

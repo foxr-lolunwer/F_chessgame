@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://ckb3ssuhfrobv"]
+
+[ext_resource type="Script" uid="uid://dvu8xrhm2vjel" path="res://src/tscn/PrePlay/PrePlayMenu.gd" id="1_1odc8"]
+[ext_resource type="Texture2D" uid="uid://boxng2b3fcv2b" path="res://asset/map/default/default_map.png" id="3_16l7e"]
+
+[node name="PrePlay" type="Control" unique_id=544403001]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1odc8")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=333072883]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1906643096]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=171634900]
+layout_mode = 2
+texture = ExtResource("3_16l7e")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1586247946]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=1240653893]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelDesc" type="Label" parent="HBoxContainer/VBoxContainer2" unique_id=2124776494]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2" unique_id=496528229]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelAuthor" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=953226878]
+layout_mode = 2
+text = "Author: "
+
+[node name="LabelAuthorName" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=818333457]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "XXX"
+
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1709725062]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=2006301878]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="LabelNameMap" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1508975844]
+layout_mode = 2
+text = "MapName"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=116314443]
+layout_mode = 2
+
+[node name="ButtonPre" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=413363973]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<"
+
+[node name="ButtonNext" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=176831274]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ">"
+
+[node name="ButtonPlay" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1150497815]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Play"
+
+[node name="ButtonBack" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1216395629]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Back
+"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonPlay" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]

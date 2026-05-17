@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://ber03snyy0hs1"]
+
+[ext_resource type="Script" uid="uid://cko6pbvtvhupv" path="res://src/tscn/Game/UiLayer/CharacterInfo/CharacterInfoEntry.gd" id="1_3pgni"]
+
+[node name="CharacterUiProperties" type="VBoxContainer" unique_id=954544038]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_3pgni")
+
+[node name="LabelName" type="Label" parent="." unique_id=728349221]
+layout_mode = 2
+text = "Player1"
+
+[node name="Line1" type="HBoxContainer" parent="." unique_id=1522036568]
+layout_mode = 2
+
+[node name="LabelHP" type="Label" parent="Line1" unique_id=1139417258]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "HP"
+
+[node name="LabelHPVal" type="Label" parent="Line1" unique_id=1153508312]
+layout_mode = 2
+text = "999"
+
+[node name="Line2" type="HBoxContainer" parent="." unique_id=711310429]
+layout_mode = 2
+
+[node name="LabelAttack" type="Label" parent="Line2" unique_id=151202051]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Attack"
+
+[node name="LabelAttackVal" type="Label" parent="Line2" unique_id=7433572]
+layout_mode = 2
+text = "999"
+
+[node name="Line3" type="HBoxContainer" parent="." unique_id=1448715153]
+layout_mode = 2
+
+[node name="LabelDEF" type="Label" parent="Line3" unique_id=1464528578]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "DEF"
+
+[node name="LabelDEFVal" type="Label" parent="Line3" unique_id=2008941787]
+layout_mode = 2
+text = "999"

@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://df1owoa1nkhhw"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1245970063]
+
+[node name="UiBottom" type="Control" parent="." unique_id=1151158894]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 3
+anchor_left = 0.01
+anchor_top = 0.85
+anchor_right = 0.99
+anchor_bottom = 0.98
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+
+[node name="BG" type="TextureRect" parent="UiBottom" unique_id=2002045382]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemsContainer" type="HBoxContainer" parent="UiBottom" unique_id=1748889569]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -52.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UiTab" type="Control" parent="." unique_id=278650360]
+layout_mode = 3
+anchor_left = 0.9
+anchor_top = 0.3
+anchor_right = 0.98
+anchor_bottom = 0.7
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 10.279999
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UiTab" unique_id=416513459]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="ItemsContainer" type="VBoxContainer" parent="UiTab/ScrollContainer" unique_id=1591503031]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

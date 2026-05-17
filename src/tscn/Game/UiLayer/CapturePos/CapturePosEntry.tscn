@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://8aiihm4qjl7j"]
+
+[ext_resource type="Script" uid="uid://cxfry13eb6c6q" path="res://src/tscn/Game/UiLayer/CapturePos/CapturePosEntry.gd" id="1_j0g5w"]
+
+[node name="CapturePosItem" type="Control" unique_id=2021002657]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j0g5w")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1942582730]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="HBoxContainer" unique_id=1319385728]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=510060706]
+layout_mode = 2

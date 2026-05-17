@@ -1,0 +1,26 @@
+[gd_resource type="TileSet" format=3 uid="uid://b1glghk0dxe8q"]
+
+[ext_resource type="Texture2D" uid="uid://caa6eguvaifyh" path="res://asset/images/map_tile/terrain.png" id="1_q6gyh"]
+[ext_resource type="Texture2D" uid="uid://ctfat5qoa62t6" path="res://asset/images/map_tile/occ_pos.png" id="2_var8x"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r8wcs"]
+texture = ExtResource("1_q6gyh")
+texture_region_size = Vector2i(52, 52)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fvnng"]
+texture = ExtResource("2_var8x")
+texture_region_size = Vector2i(52, 52)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[resource]
+tile_size = Vector2i(52, 52)
+sources/0 = SubResource("TileSetAtlasSource_r8wcs")
+sources/1 = SubResource("TileSetAtlasSource_fvnng")
