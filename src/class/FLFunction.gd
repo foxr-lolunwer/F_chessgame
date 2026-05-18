@@ -68,12 +68,13 @@ static func deep_get(data: Variant, keys: Array, default: Variant):
 
 	return current
 
-static func set_ui_text(ui: Control, text_key: String,):
-	if "set_text" in ui:
-		ui.set_text(FLang.get_text(text_key))
+static func set_ui_text(ui: Control, text_str: String, text_key: bool = true) -> void:
+	if not _ui_has_func_set_text(ui):
+		return
+	if text_key:
+		ui.set_text(FLang.get_text(text_str))
 	else:
-		FLogger.error("UI:%s, type:%s has not \"set_text\" func"
-			% [ui.get_name(), ui.get_class()])
+		ui.set_text(text_str)
 
 static func set_selector_data(
 	selector: OptionButton,
@@ -102,32 +103,16 @@ static func set_selector_data(
 
 		selector.add_item(text)
 		selector.set_item_metadata(idx, key)
-		
-static func set_ui_text_xslashx(ui: Control, a, b, rf: float = 0.1) -> void:
-	if not ui.has_method("set_text"):
+
+static func set_ui_text_with_param(ui: Control, text_str: String, params: Dictionary = {}) -> void:
+	if not _ui_has_func_set_text(ui):
+		return
+	ui.set_text(FLang.get_text_format(text_str, params))
+
+static func _ui_has_func_set_text(ui: Control) -> bool:
+	if "set_text" in ui:
+		return true
+	else:
 		FLogger.error("UI:%s, type:%s has not \"set_text\" func"
 			% [ui.get_name(), ui.get_class()])
-		return
-
-	var value_a: String
-	var value_b: String
-
-	if a is float:
-		value_a = str(snapped(a, -rf))
-	else:
-		value_a = str(a)
-
-	if b is float:
-		value_b = str(snapped(b, -rf))
-	else:
-		value_b = str(b)
-
-	ui.set_text(
-		FLang.get_text_format(
-			"ui_core.xslashx",
-			{
-				"0": value_a,
-				"1": value_b
-			}
-		)
-	)
+		return false

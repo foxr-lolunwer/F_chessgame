@@ -22,4 +22,6 @@ func _load_map_data(dir_path: String = "res://asset/map/") -> void:
 		var info_path = dir_path + sub_dir + "/info.json"
 		var json_data = FL.get_json_data(json, info_path)
 		if json_data is Dictionary:
-			map_data[json_data.get("id")] = json_data.get("data")
+			var temp_key = json_data.get("id")
+			map_data[temp_key] = json_data.get("data")
+			map_data[temp_key]["folderpath"] = dir_path + sub_dir

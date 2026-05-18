@@ -4,27 +4,9 @@ extends CharacterBody2D
 var ui_link: bool = false
 @export var is_player_controlled: bool = false
 @export var cname: String = "null"
-@export var max_hp: int = 5:
-	set(value):
-		if value < 0:
-			value = 0
-			is_alive = false
-		if value < current_hp:
-			current_hp = value
-		max_hp = value
-		info_ui_update()
-@export var attack: int = 1:
-	set(value):
-		if value < 0:
-			value = 0
-		attack = value
-		info_ui_update()
-@export var defense: int = 0:
-	set(value):
-		if value < 0:
-			value = 0
-		defense = value
-		info_ui_update()
+@export var max_hp: int = 5
+@export var attack: int = 1
+@export var defense: int = 0
 @export var move_range: int = 1  # 移动长度
 @export var is_main_player: bool = true
 @export var tp_position_set: bool = false
@@ -32,60 +14,32 @@ var ui_link: bool = false
 @export var tp_range: int = 3  # 传送矩形的1/2边长
 @export var move_speed: float = 6.0  # 每秒移动几格（越大越快）
 @export var damage_range: int = 2  # 攻击范围
-@export var health_val: int = 1:
-	set(value):
-		if value < 0:
-			value = 0
-		health_val = value
-
+@export var health_val: int = 1
 @export var flip_h: bool = true
-@export var current_hp: int = max_hp:
-	set(value):
-		if value < 0:
-			value = 0
-			is_alive = false
-		if value > max_hp:
-			value = max_hp
-		current_hp = value
-		info_ui_update()
+@export var current_hp: int = max_hp
 @export var is_alive: bool = true
-@export var temp_attack: int= 0:
-	set(value):
-		if -value > attack:
-			value = 0
-		temp_attack = value
-		info_ui_update()
-@export var temp_defense: int= 0:
-	set(value):
-		if -value > defense:
-			value = 0
-		temp_defense = value
-		info_ui_update()
+@export var temp_attack: int= 0
+@export var temp_defense: int= 0
 
 var c_pos: Vector2i = Vector2i(0, 0)
 var t_pos: Vector2i
-var tilemap: TileMapLayer
 var is_moving: bool = false
 var tile_size: Vector2
 
-@onready var sprite: Sprite2D = $Sprite2D
+#@onready var sprite: Sprite2D = $Sprite2D
 
-@export var info_ui: CharacterUiProperties
+#@export var info_ui: CharacterUiProperties
 
 signal move_finished
 
-func _ready():
-	tilemap = $"../TileMapLayer"
-	tile_size = tilemap.tile_set.tile_size
-	current_hp = max_hp
-	## 初始化位置到瓦片中心
-	
-func set_up(pos, ui):
+func setup(pos: Vector2i, m_cname: String = "null"):
 	c_pos = pos
-	info_ui = ui
-	global_position = tilemap.map_to_local(c_pos)
-	ui_link = true
-	info_ui_update()
+	cname = m_cname
+	current_hp = max_hp
+	#info_ui = ui
+	global_position = PD.map_layer.map_to_local(c_pos)
+	#ui_link = true
+	#attr_update()
 
 func _process(delta):
 	if is_moving:
@@ -101,14 +55,14 @@ func move_to(target: Vector2i):
 	t_pos = target
 	is_moving = true
 
-	if target.x < c_pos.x:
-		sprite.flip_h = not flip_h
-	elif target.x > c_pos.x:
-		sprite.flip_h = flip_h
+	#if target.x < c_pos.x:
+		#sprite.flip_h = not flip_h
+	#elif target.x > c_pos.x:
+		#sprite.flip_h = flip_h
 
 # --- 移动动画 ---
 func _move_towards_target(delta):
-	var target_pos = tilemap.map_to_local(t_pos)
+	var target_pos = PD.tilemap.map_to_local(t_pos)
 	var move_step = move_speed * tile_size.x * delta
 	var diff = target_pos - global_position
 
@@ -122,14 +76,60 @@ func _move_towards_target(delta):
 
 # --- 判断是否可到达 ---
 func _can_move_to(target: Vector2i) -> bool:
-	var tile_data = tilemap.get_cell_tile_data(target)
+	var tile_data = PD.tilemap.get_cell_tile_data(target)
 	return tile_data != null
 
 func remove_tile_effect():
 	temp_attack = 0
 	temp_defense = 0
 	
-func info_ui_update():
-	if ui_link:
-		info_ui.update_properties(self)
+func attr_update(attr: String = ""):
+	# 视情况覆写
+	pass
 	
+func set_max_hp(value):
+	if value < 0:
+		value = 0
+		is_alive = false
+	if value < current_hp:
+		current_hp = value
+	max_hp = value
+	attr_update("hp")
+	
+func set_attack(value):
+	if value < 0:
+		value = 0
+	attack = value
+	attr_update("attack")
+
+func set_defense(value):
+	if value < 0:
+		value = 0
+	defense = value
+	attr_update("defense")
+	
+func set_health_val(value):
+	if value < 0:
+		value = 0
+	health_val = value
+
+func set_current_hp(value):
+	if value < 0:
+		value = 0
+		is_alive = false
+	if value > max_hp:
+		value = max_hp
+	current_hp = value
+	attr_update("hp")
+
+func set_temp_attack(value):
+	if -value > attack:
+		value = 0
+	temp_attack = value
+	attr_update("attack")
+
+func set_temp_defense(value):
+	if -value > defense:
+		value = 0
+	temp_defense = value
+	attr_update("defense")

@@ -13,7 +13,7 @@ const MAP_LAYER_ID = {
 	"HEAL": Vector2i(2, 0),
 	"CANNON": Vector2i(3, 0),
 	"SPEED": Vector2i(4, 0),
-	"CAPTURE": Vector2i(-1, -1) # 假设这是capture的特殊标识
+	"CAPTURE": Vector2i(5, 0) # 假设这是capture的特殊标识
 }
 
 enum MOVE_OPERATION { CROSS, DIAGONAL, DOUBLE_CROSS, TELEPORT }

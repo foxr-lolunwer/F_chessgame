@@ -26,6 +26,7 @@ GameData="*uid://kwdqnn1i6l8r"
 JsonxDataParser="*uid://cov7a1cytrfua"
 FLang="*uid://d4f5l8b2h3xm"
 FLogger="*uid://dgih7cekk66fu"
+PD="*uid://cmfpdq8wmqyp4"
 
 [input]
 
@@ -39,3 +40,9 @@ right_click={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":2,"canceled":false,"pressed":false,"double_click":false,"script":null)
 ]
 }
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true

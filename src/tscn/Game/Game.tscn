@@ -6,14 +6,6 @@
 
 [node name="Play" type="Node2D" unique_id=667419712]
 script = ExtResource("1_qb2ae")
-characters_paths = null
-move_hint_layer_path = null
-tile_map_layer_path = null
-ex_map_layer_path = null
-ui_name_container_path = null
-ui_info_container_path = null
-move_type_roll = null
-fight_type_roll = null
 
 [node name="Map" parent="." unique_id=1939245242 instance=ExtResource("2_rn0ke")]
 

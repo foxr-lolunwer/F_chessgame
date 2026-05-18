@@ -2,10 +2,20 @@ class_name CharacterUiProperties
 extends VBoxContainer
 
 # 引用 UI 组件
-@onready var name_label: Label = $LabelName
-@onready var hp_label: Label = $Line1/LabelHPVal
-@onready var attack_label: Label = $Line2/LabelAttackVal
-@onready var defense_label: Label = $Line3/LabelDEFVal
+@onready var name_label: Label = $MarginContainer/VBoxContainer/LabelName
+@onready var hp_label: Label = $MarginContainer/VBoxContainer/Line1/LabelHPVal
+@onready var attack_label: Label = $MarginContainer/VBoxContainer/Line2/LabelAttackVal
+@onready var defense_label: Label = $MarginContainer/VBoxContainer/Line3/LabelDEFVal
+
+func setup(player: FCharacter):
+	set_ui_loc()
+	
+
+func set_ui_loc():
+	FL.set_ui_text(
+		$MarginContainer/VBoxContainer/LabelName,
+		""
+	)
 
 func update_properties(character: FCharacter):
 	"""根据角色数据更新 UI 显示"""

@@ -45,6 +45,7 @@ func update_select_map(set_map_id: String = ""):
 	)
 
 func _on_button_play_pressed() -> void:
+	PD.select_map_id = selected_map_id
 	get_tree().change_scene_to_file("res://src/tscn/Game/Game.tscn")
 
 
