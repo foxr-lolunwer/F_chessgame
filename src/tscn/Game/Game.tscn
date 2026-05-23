@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://np1hi15myaq1" path="res://src/tscn/Game/Play.gd" id="1_qb2ae"]
 [ext_resource type="PackedScene" uid="uid://dry51wo77wyhy" path="res://src/tscn/Game/Map/Map.tscn" id="2_rn0ke"]
+[ext_resource type="Script" uid="uid://tj4j773jrcdh" path="res://src/tscn/Game/Players.gd" id="3_55b3m"]
+[ext_resource type="Script" uid="uid://b521kxb55l1pu" path="res://src/tscn/Game/Camera.gd" id="4_rdllf"]
 [ext_resource type="PackedScene" uid="uid://df1owoa1nkhhw" path="res://src/tscn/Game/UiLayer/UiLayer.tscn" id="6_rn0ke"]
 
 [node name="Play" type="Node2D" unique_id=667419712]
@@ -10,5 +12,9 @@ script = ExtResource("1_qb2ae")
 [node name="Map" parent="." unique_id=1939245242 instance=ExtResource("2_rn0ke")]
 
 [node name="Players" type="Node2D" parent="." unique_id=2095118076]
+script = ExtResource("3_55b3m")
 
 [node name="CanvasLayer" parent="." unique_id=1245970063 instance=ExtResource("6_rn0ke")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=504271214]
+script = ExtResource("4_rdllf")

@@ -14,8 +14,9 @@ func set_ui_loc():
 	)
 
 func _on_button_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://src/tscn/PrePlay/PrePlayMenu.tscn")
-
+	var pre_play_menu = preload("res://src/tscn/PrePlay/PrePlayMenu.tscn").instantiate()
+	pre_play_menu.setup("default")
+	get_tree().change_scene_to_node(pre_play_menu)
 
 func _on_button_exit_pressed() -> void:
 	get_tree().quit()

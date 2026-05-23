@@ -1,58 +1,18 @@
 extends Node
 
-@onready var node_map: Node2D = $Map
-@onready var node_players: Node2D = $Players
-@onready var node_ui_layer: CanvasLayer = $CanvasLayer
-
-@export_group("Game Settings")
-# 各种移动类型的机率
-@export var move_type_roll: Array[Array] = [
-	[ConstData.MOVE_OPERATION.CROSS, 2],
-	[ConstData.MOVE_OPERATION.DIAGONAL, 2],
-	[ConstData.MOVE_OPERATION.DOUBLE_CROSS, 1],
-	[ConstData.MOVE_OPERATION.TELEPORT, 1]
-]
-# 各种战斗类型的机率
-@export var fight_type_roll: Array[Array] = [
-	[ConstData.FIGHT_OPERATION.NORMAL_SHOT, 2],
-	[ConstData.FIGHT_OPERATION.X_RAY, 1],
-	[ConstData.FIGHT_OPERATION.POWER_SHOT, 1],
-	[ConstData.FIGHT_OPERATION.BOMB, 0],
-	[ConstData.FIGHT_OPERATION.HEALTH, 1]
-]
-
-# --- 内部变量 ---
-# 节点缓存
-var player_nodes: Array[FCharacter] = []
-
-# 游戏状态
-var current_active_char: Node # 当前行动的角色实例
-var current_char_index := 0 # 
-var turn_type: int = ConstData.GAME_TURN_TYPE.MOVE # 回合类型
-
-var turn_count: int = 0  # 回合计数
-var win_index: int = -1  # 获胜玩家id
-var is_game_over: bool = false  # 游戏是否已结束
-
-# 当前回合临时数据
-var action_type: int # 行动类型，move和fight类型
-var valid_attack_targets: Array[String] = [] # 可攻击的目标id列表
-
 func _ready() -> void:
 	_load_sub_tscn()
+	TurnManager.start_game()
+	$Camera2D.setup()
 
 func _load_sub_tscn():
-	PD.map_data = GameData.map_data[PD.select_map_id]
-	node_map.setup()
-	var players_pos: Array = PD.map_data["player_num"].get(PD.player_count, [])
-	if not players_pos:
-		FLogger.fatal("player pos data is null")
-	var player_node = preload("res://src/tscn/Game/Character/Player.tscn")
-	for player_pos in players_pos:
-		var player = player_node.instantiate()
-		player.setup(Vector2i(player_pos[0], player_pos[1]))
-		node_players.add_child(player)
-		player_nodes.append(player)
+	TurnManager.node_map = $Map
+	TurnManager.node_players = $Players
+	TurnManager.node_ui_layer = $CanvasLayer
+	TurnManager.node_map.setup()
+	
+
+		
 #
 #func _capture_ui_init():
 	#_update_capture_ui()

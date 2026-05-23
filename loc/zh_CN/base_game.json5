@@ -23,6 +23,7 @@
 	},
 	game: {
 		play: {
+			log_turn: "回合：",
 			default_name: "玩家{$0}",
 			hp: "血量",
 			max_hp: "最大血量",

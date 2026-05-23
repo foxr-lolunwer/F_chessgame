@@ -4,7 +4,9 @@ var selected_map_id = "default"
 
 func _ready() -> void:
 	set_ui_loc()
-	update_select_map()
+
+func setup(set_map_id) -> void:
+	update_select_map(set_map_id)
 
 func set_ui_loc():
 	FL.set_ui_text(
@@ -28,9 +30,11 @@ func set_ui_loc():
 		"ui.menu.next_map"
 	)
 
-func update_select_map(set_map_id: String = ""):
-	if set_map_id:
+func update_select_map(set_map_id):
+	if not set_map_id.is_empty():
 		selected_map_id = set_map_id
+	else:
+		FLogger.fatal("selected_map_id is null!")
 	FL.set_ui_text(
 		$HBoxContainer/VBoxContainer/LabelNameMap,
 		"map.%s.name" % selected_map_id
@@ -45,7 +49,7 @@ func update_select_map(set_map_id: String = ""):
 	)
 
 func _on_button_play_pressed() -> void:
-	PD.select_map_id = selected_map_id
+	TurnManager.set_select_map_id(selected_map_id)
 	get_tree().change_scene_to_file("res://src/tscn/Game/Game.tscn")
 
 
