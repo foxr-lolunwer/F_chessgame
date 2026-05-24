@@ -4,7 +4,6 @@ func setup():
 	TurnManager.map_layer = $MapLayer
 	TurnManager.select_layer = $SeletLayer
 	TurnManager.ex_layer = $ExLayer
-	TurnManager.map_data["folderpath"]
 	var tile_set: TileSet = load(TurnManager.map_data["folderpath"] + "/map_tile.tres")
 	TurnManager.map_layer.set_tile_set(tile_set)
 	TurnManager.tile_size = tile_set.tile_size

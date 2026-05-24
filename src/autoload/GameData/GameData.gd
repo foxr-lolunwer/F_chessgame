@@ -2,6 +2,7 @@ extends Node
 
 var json = JSON.new()
 var map_data: Dictionary = {}
+var players_color: Array[Color] = [Color.AQUA, Color.BEIGE, Color.BLUE]
 
 func _ready() -> void:
 	_load_map_data()

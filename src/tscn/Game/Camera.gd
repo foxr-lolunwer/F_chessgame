@@ -15,7 +15,7 @@ var map_height_pixels: float
 @export var zoom_speed: float = 0.1     ## 缩放速度
 @export var min_zoom := 0.1            ## 最小缩放
 @export var min_zoom_padding: float = 1  ## 基于地图尺寸的最小缩放乘数
-@export var max_zoom: float = 2.0      ## 最大缩放
+@export var max_zoom: float = 2.0      ## 最大缩放 鼠标滚轮向上滚动，拉近镜头
 @export var zoom_duration: float = 0.15 ## 缩放平滑时间
 
 var target_zoom: float = 1.0
@@ -41,7 +41,7 @@ func _update_dynamic_zoom():
 	# 视口尺寸 = 地图尺寸 × 1.25
 	var zoom_x = (map_width_pixels * min_zoom_padding) / viewport_size.x
 	var zoom_y = (map_height_pixels * min_zoom_padding) / viewport_size.y
-	min_zoom = max(max(zoom_x, zoom_y), min_zoom)
+	min_zoom = max(min(zoom_x, zoom_y), min_zoom)
 
 func _process(delta):
 	if not setuped:

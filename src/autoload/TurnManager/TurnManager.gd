@@ -6,7 +6,7 @@ var move_type_roll: Array[Array] = [
 	[ConstData.MOVE_OPERATION.CROSS, 2],
 	[ConstData.MOVE_OPERATION.DIAGONAL, 2],
 	[ConstData.MOVE_OPERATION.DOUBLE_CROSS, 1],
-	[ConstData.MOVE_OPERATION.TELEPORT, 1]
+	[ConstData.MOVE_OPERATION.TELEPORT, 0]
 ]
 ## 各种战斗类型的机率
 var fight_type_roll: Array[Array] = [
@@ -71,33 +71,15 @@ func init_map_data() -> void: # 由Map节点调用
 ## 开始一场全新的游戏
 func start_game() -> void:
 	turn_count = 1
-	while not is_game_over:
-		if not enter_phase(ConstData.GAME_PHASE.MOVE_STAGE): break
-		# 这里可以处理毒圈伤害、Buff流逝、护盾刷新等逻辑
-		turn_count += 1
+	is_game_over = false
+	# 不写 while 循环！直接触发第一步，后续全部交给事件链条驱动
+	enter_phase(ConstData.GAME_PHASE.MOVE_STAGE)
 
 ## 切换全局阶段
-func enter_phase(new_phase: ConstData.GAME_PHASE) -> bool:
+func enter_phase(new_phase: ConstData.GAME_PHASE) -> void:
 	current_phase = new_phase
-	
-	match current_phase:
-		ConstData.GAME_PHASE.MOVE_STAGE:
-			FLogger.info("Move Phase", get_game_time())
-			# 1. 填充行动队列（把所有能动的角色加进来）
-			if not _prepare_action_queue(): return false
-			# 2. 激活队列第一个角色
-			_next_player_action()
-			
-		ConstData.GAME_PHASE.FIGHT_STAGE:
-			FLogger.info("Move Phase", get_game_time())
-			if not _prepare_action_queue(): return false
-			_next_player_action()
-			
-		ConstData.GAME_PHASE.TURN_END:
-			FLogger.info("Game End", get_game_time())
-			return true
-			
-	return true
+	_prepare_action_queue()
+	_run_next_player() # 驱动第一个人
 
 ## 准备当前阶段的轮流队列
 func _prepare_action_queue() -> bool:
@@ -109,39 +91,38 @@ func _prepare_action_queue() -> bool:
 		if player.is_alive: # 确保角色还活着（如果有死亡机制）
 			action_queue.append(player)
 	return true
-	
-## 驱动队列：让下一个玩家行动
-func _next_player_action() -> void:
+
+## 驱动队列：没有 while 循环，一次只处理一个人！
+func _run_next_player() -> void:
 	if action_queue.is_empty():
-		# 如果当前阶段队列空了，说明【全部Player都进行完了当前操作】
+		# 队列空了，代表全员该阶段做完了
 		_on_phase_complete()
 		return
 		
-	# 弹出队列第一个玩家
+	# 一次只弹出一个玩家
 	current_active_char = action_queue.pop_front()
-	# 改变当前角色的状态
 	current_active_char.start_turn_phase(current_phase)
-	# 触发信号（让UI更新，比如显示当前是谁的回合）
-	# active_char_changed.emit(current_active_char)
+	# 此时函数直接安全结束，完全不会锁死程序。
+	# 游戏引擎会继续正常渲染、处理输入、播放玩家的移动动画。
 
-## 当有玩家做完了他的操作（由Player通过代码回调这个方法）
-func finish_current_player_action() -> void:
-	if current_active_char:
-		current_active_char.end_turn_phase()
-		current_active_char = null
+## 供玩家节点在“所有动画和逻辑都完毕后”主动调用
+func mint_player_action_finished() -> void:
+	current_active_char = null
 	
-	# 继续驱动队列，让下一个人动
-	_next_player_action()
+	# 核心：老玩家彻底结算完了，我们手动触发下一次点名
+	_run_next_player()
 
-## 当前全局阶段圆满结束
+## 当全员都完成了当前阶段
 func _on_phase_complete() -> void:
 	match current_phase:
 		ConstData.GAME_PHASE.MOVE_STAGE:
-			# 移动阶段全员结束 -> 进入战斗阶段
+			# 全员移动完 -> 进入全员战斗
 			enter_phase(ConstData.GAME_PHASE.FIGHT_STAGE)
 		ConstData.GAME_PHASE.FIGHT_STAGE:
-			# 战斗阶段全员结束 -> 进入回合结束结算
-			enter_phase(ConstData.GAME_PHASE.TURN_END)
+			# 全员战斗完 -> 回合数递增，重新开始移动阶段
+			turn_count += 1
+			# 处理毒圈/Buff结算...
+			enter_phase(ConstData.GAME_PHASE.MOVE_STAGE)
 
 
 
@@ -240,7 +221,9 @@ func _on_phase_complete() -> void:
 
 
 
-
+func clear_hints():
+	select_layer.clear()
+	ex_layer.clear()
 
 func _back_to_main_menu() -> void:
 	current_phase = ConstData.GAME_PHASE.TURN_END

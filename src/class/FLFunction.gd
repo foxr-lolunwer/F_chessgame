@@ -116,3 +116,34 @@ static func _ui_has_func_set_text(ui: Control) -> bool:
 		FLogger.error("UI:%s, type:%s has not \"set_text\" func"
 			% [ui.get_name(), ui.get_class()])
 		return false
+
+## 根据权重配置进行可调试的随机抽签
+## @param roll_config 传入的权重数组（支持权重为0的项）[[项目, 权重], ...]
+## @param rng 传入一个配置好种子的 RandomNumberGenerator 实例
+## @return 返回选中的项目
+static func roll_with_weight(roll_config: Array[Array], rng: RandomNumberGenerator) -> Variant:
+	if roll_config.is_empty():
+		FLogger.error("roll_config is empty.")
+		return null
+		
+	# 1. 计算总权重
+	var total_weight: int = 0
+	for item in roll_config:
+		total_weight += item[1]
+
+	if total_weight <= 0:
+		FLogger.error("total_weight<=0.")
+		return null
+
+	# 2. 使用传入的专属 rng 实例生成 0 到总权重之间的随机数
+	# rng.randi_range(min, max) 包含两端，所以上限要 -1 才能精准匹配区间 [0, total_weight - 1]
+	var random_value: int = rng.randi_range(0, total_weight - 1)
+	
+	# 3. 区间扫描判定
+	var current_sum: int = 0
+	for item in roll_config:
+		current_sum += item[1]
+		if random_value < current_sum:
+			return item[0]
+
+	return roll_config[0][0]

@@ -2,14 +2,16 @@ extends Node
 
 func _ready() -> void:
 	_load_sub_tscn()
-	TurnManager.start_game()
 	$Camera2D.setup()
+	await get_tree().physics_frame
+	TurnManager.start_game()
 
 func _load_sub_tscn():
 	TurnManager.node_map = $Map
 	TurnManager.node_players = $Players
 	TurnManager.node_ui_layer = $CanvasLayer
 	TurnManager.node_map.setup()
+	TurnManager.node_players.setup()
 	
 
 		
